@@ -1,0 +1,11 @@
+# local preview / editor tooling
+.claude/
+
+# stale duplicate of index.html
+index (1).html
+
+# OS / misc
+.DS_Store
+Thumbs.db
+.frames/
+.frames2/
