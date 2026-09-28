@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://protfolio-dharmike-baria.vercel.app/sitemap.xml
