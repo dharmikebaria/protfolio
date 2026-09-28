@@ -3,8 +3,69 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Dharmike Baria — AI Developer & Data Scientist</title>
-<meta name="description" content="Dharmike Baria — AI Developer, Data Scientist, Data Analyst, and Python Developer building ML models, multi-agent LLM systems, ETL pipelines, BI dashboards, and full-stack SaaS products." />
+
+<!-- ============ SEO: primary ============ -->
+<title>Dharmike Baria — Python Developer &amp; AI/ML Engineer | Mumbai</title>
+<meta name="description" content="Dharmike Baria is a Python Developer and AI/ML Engineer in Mumbai building Django APIs, multi-agent LLM systems, ETL pipelines, and automation tools. View projects, experience and resume." />
+<meta name="author" content="Dharmike Baria" />
+<meta name="robots" content="index, follow, max-image-preview:large" />
+<link rel="canonical" href="https://protfolio-dharmike-baria.vercel.app/" />
+<meta name="theme-color" content="#0A0A0A" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230A0A0A'/%3E%3Ctext x='50%25' y='56%25' text-anchor='middle' dominant-baseline='middle' font-family='Arial' font-weight='900' font-size='38' fill='%23F4F2EE'%3ED%3C/text%3E%3C/svg%3E" />
+
+<!-- ============ SEO: Open Graph (LinkedIn / WhatsApp / Facebook previews) ============ -->
+<meta property="og:type" content="profile" />
+<meta property="og:site_name" content="Dharmike Baria — Portfolio" />
+<meta property="og:title" content="Dharmike Baria — Python Developer &amp; AI/ML Engineer" />
+<meta property="og:description" content="Django APIs, multi-agent LLM systems, ETL pipelines and automation — built in production. Based in Mumbai, open to remote." />
+<meta property="og:url" content="https://protfolio-dharmike-baria.vercel.app/" />
+<meta property="og:image" content="https://protfolio-dharmike-baria.vercel.app/dharmike-baria.jpg" />
+<meta property="og:image:alt" content="Dharmike Baria, Python Developer" />
+<meta property="og:locale" content="en_IN" />
+<meta property="profile:first_name" content="Dharmike" />
+<meta property="profile:last_name" content="Baria" />
+
+<!-- ============ SEO: Twitter / X ============ -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Dharmike Baria — Python Developer &amp; AI/ML Engineer" />
+<meta name="twitter:description" content="Django APIs, multi-agent LLM systems, ETL pipelines and automation — built in production." />
+<meta name="twitter:image" content="https://protfolio-dharmike-baria.vercel.app/dharmike-baria.jpg" />
+
+<!-- ============ SEO: structured data for Google ============ -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Person",
+      "@id": "https://protfolio-dharmike-baria.vercel.app/#person",
+      "name": "Dharmike Baria",
+      "url": "https://protfolio-dharmike-baria.vercel.app/",
+      "image": "https://protfolio-dharmike-baria.vercel.app/dharmike-baria.jpg",
+      "jobTitle": "Python Developer",
+      "description": "Python Developer and AI/ML Engineer building Django APIs, multi-agent LLM systems, ETL pipelines, and automation tools.",
+      "worksFor": { "@type": "Organization", "name": "Jolly Clamps Pvt. Ltd." },
+      "alumniOf": { "@type": "CollegeOrUniversity", "name": "Ganpat University" },
+      "address": { "@type": "PostalAddress", "addressLocality": "Mumbai", "addressRegion": "Maharashtra", "addressCountry": "IN" },
+      "email": "mailto:dharmikkbaria712@gmail.com",
+      "sameAs": [
+        "https://www.linkedin.com/in/dharmike-baria/",
+        "https://github.com/dharmikebaria"
+      ],
+      "knowsAbout": ["Python","Django","Django REST Framework","PostgreSQL","Machine Learning","Generative AI","Large Language Models","RAG","ETL","Google BigQuery","Selenium","Web Scraping","Automation","Power BI"]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://protfolio-dharmike-baria.vercel.app/#website",
+      "url": "https://protfolio-dharmike-baria.vercel.app/",
+      "name": "Dharmike Baria — Portfolio",
+      "author": { "@id": "https://protfolio-dharmike-baria.vercel.app/#person" },
+      "inLanguage": "en"
+    }
+  ]
+}
+</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
@@ -53,6 +114,13 @@
   :focus-visible{ outline:2px solid var(--ink); outline-offset:3px; }
 
   .wrap{ width:100%; max-width:var(--max); margin-inline:auto; padding-inline:var(--pad); }
+
+  /* screen-reader / SEO only text */
+  .sr-only{
+    position:absolute !important; width:1px !important; height:1px !important;
+    padding:0 !important; margin:-1px !important; overflow:hidden !important;
+    clip:rect(0 0 0 0) !important; white-space:nowrap !important; border:0 !important;
+  }
 
   /* shared label / eyebrow */
   .label{
@@ -116,7 +184,7 @@
     overflow:hidden; max-height:0; opacity:0; padding:0 8px;
     transition:max-height .45s var(--ease), opacity .3s var(--ease), padding .45s var(--ease);
   }
-  .menu.is-open .menu__panel{ max-height:340px; opacity:1; padding:10px 8px 8px; }
+  .menu.is-open .menu__panel{ max-height:480px; opacity:1; padding:10px 8px 8px; }
   .menu__panel a{
     background:var(--paper); color:var(--ink);
     border-radius:14px; padding:13px 20px;
@@ -130,6 +198,8 @@
   .menu.is-open .menu__panel a:nth-child(2){ transition-delay:.12s; }
   .menu.is-open .menu__panel a:nth-child(3){ transition-delay:.18s; }
   .menu.is-open .menu__panel a:nth-child(4){ transition-delay:.24s; }
+  .menu.is-open .menu__panel a:nth-child(5){ transition-delay:.30s; }
+  .menu.is-open .menu__panel a:nth-child(6){ transition-delay:.36s; }
 
   .btn{
     display:inline-flex; align-items:center; gap:.6ch;
@@ -146,7 +216,7 @@
   .btn--ghost:hover{ background:var(--ink); color:var(--paper); transform:translateY(-2px); }
 
   /* ============================================================
-     HERO
+     HERO  (unchanged)
      ============================================================ */
   .hero{ position:relative; padding-top:clamp(64px,8vh,82px); }
   .hero__inner{ position:relative; }
@@ -250,7 +320,7 @@
   .about__col p + p{ margin-top:1em; }
   .about__col--r{ display:flex; flex-direction:column; gap:clamp(20px,3vh,34px); }
   .about__slot{ width:100%; aspect-ratio:1/1; }   /* invisible anchor; the card docks here */
-  .about__cta{ margin-top:0; }
+  .about__cta{ margin-top:0; display:flex; gap:10px; flex-wrap:wrap; }
 
   /* MARQUEE */
   .marquee{
@@ -268,6 +338,15 @@
   }
   .marquee__item .sep{ -webkit-text-stroke:0; color:var(--ink); padding-inline:.35ch; }
   @keyframes scroll{ from{ transform:translateX(0);} to{ transform:translateX(-50%);} }
+
+  /* ============================================================
+     STATS / IMPACT  (new)
+     ============================================================ */
+  .stats{ padding-top:clamp(20px,4vh,50px); }
+  .stats__grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:clamp(18px,3vw,40px); }
+  .stat{ border-top:2px solid var(--ink); padding-top:clamp(14px,2vh,22px); }
+  .stat__num{ font-size:clamp(2.6rem,6vw,5.2rem); font-weight:900; letter-spacing:-.045em; line-height:1; }
+  .stat__label{ font-family:var(--mono); font-size:12px; text-transform:uppercase; letter-spacing:.03em; color:var(--muted); margin-top:12px; max-width:22ch; }
 
   /* ============================================================
      MANIFESTO — big statement, words darken on scroll
@@ -292,6 +371,45 @@
   .shead__link{ font-size:14px; font-weight:600; display:inline-flex; gap:.6ch; align-items:center; }
   .shead__link .arr{ transition:transform .4s var(--ease); }
   .shead__link:hover .arr{ transform:translate(3px,-3px); }
+
+  /* ============================================================
+     EXPERIENCE  (new)
+     ============================================================ */
+  .xp{ padding-block:var(--sec); }
+  .xrow{
+    display:grid; grid-template-columns:220px 1fr; gap:clamp(16px,4vw,60px);
+    padding-block:clamp(28px,4.4vh,50px);
+    border-bottom:1px solid var(--line);
+    transition:padding-left .5s var(--ease);
+  }
+  .xrow:hover{ padding-left:clamp(8px,2vw,24px); }
+  .xrow__date{ font-family:var(--mono); font-size:12px; text-transform:uppercase; color:var(--muted); }
+  .xrow__now{ margin-top:10px; }
+  .xrow__role{ font-size:clamp(1.4rem,2.8vw,2.4rem); font-weight:700; letter-spacing:-.025em; line-height:1.08; }
+  .xrow__co{ font-family:var(--mono); font-size:13px; text-transform:uppercase; color:var(--ink-70); margin-top:10px; }
+  .xrow__list{ list-style:none; margin-top:20px; display:grid; gap:10px; color:var(--ink-70); max-width:74ch; }
+  .xrow__list li{ position:relative; padding-left:1.6em; }
+  .xrow__list li::before{ content:"→"; position:absolute; left:0; color:var(--ink); font-family:var(--mono); }
+  .xrow__tags{ display:flex; gap:8px; flex-wrap:wrap; margin-top:20px; }
+
+  /* ============================================================
+     SKILLS  (new)
+     ============================================================ */
+  .skills{ padding-block:var(--sec); background:var(--paper-2); }
+  .skills__grid{
+    margin-top:clamp(30px,5vh,56px);
+    display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:clamp(16px,1.6vw,24px);
+  }
+  .skill{
+    background:var(--paper); border:1px solid var(--line-2); border-radius:24px;
+    padding:clamp(22px,2vw,32px);
+    transition:transform .45s var(--ease), background .35s var(--ease), color .35s var(--ease);
+  }
+  .skill:hover{ transform:translateY(-4px); background:var(--ink); color:var(--paper); }
+  .skill:hover .tag{ border-color:rgba(244,242,238,.35); }
+  .skill__no{ font-family:var(--mono); font-size:12px; color:var(--muted); }
+  .skill__name{ font-size:clamp(1.3rem,2vw,1.7rem); font-weight:700; letter-spacing:-.02em; margin-top:8px; line-height:1.1; }
+  .skill__tags{ display:flex; gap:8px; flex-wrap:wrap; margin-top:20px; }
 
   /* ============================================================
      SERVICES
@@ -324,6 +442,7 @@
   .work__grid{
     margin-top:clamp(30px,5vh,56px);
     display:grid; grid-template-columns:repeat(2,1fr); gap:clamp(18px,3vw,40px);
+    row-gap:clamp(34px,5vh,60px);
   }
   .card{ display:block; }
   .card__media{
@@ -356,7 +475,8 @@
     padding-top:16px; border-top:1px solid var(--line); margin-top:16px;
   }
   .card__name{ font-size:clamp(1.3rem,2.4vw,2rem); font-weight:700; letter-spacing:-.02em; }
-  .card__type{ font-family:var(--mono); font-size:12px; text-transform:uppercase; color:var(--muted); }
+  .card__type{ font-family:var(--mono); font-size:12px; text-transform:uppercase; color:var(--muted); white-space:nowrap; }
+  .card__desc{ margin-top:10px; color:var(--ink-70); font-size:15px; line-height:1.5; max-width:60ch; }
 
   /* ============================================================
      TESTIMONIALS
@@ -380,9 +500,25 @@
   .quote__role{ font-family:var(--mono); font-size:11px; text-transform:uppercase; color:rgba(244,242,238,.6); }
 
   /* ============================================================
+     EDUCATION & CERTIFICATIONS  (new)
+     ============================================================ */
+  .edu{ padding-block:var(--sec); }
+  .edu__grid{ margin-top:clamp(30px,5vh,56px); display:grid; grid-template-columns:1fr 1fr; gap:clamp(30px,5vw,80px); }
+  .edu__head{ margin-bottom:8px; }
+  .erow{
+    display:flex; justify-content:space-between; align-items:baseline; gap:18px;
+    padding-block:clamp(18px,2.8vh,28px); border-bottom:1px solid var(--line);
+    transition:padding-left .5s var(--ease);
+  }
+  .erow:hover{ padding-left:clamp(6px,1.4vw,16px); }
+  .erow__name{ font-size:clamp(1.1rem,1.8vw,1.5rem); font-weight:700; letter-spacing:-.02em; line-height:1.2; }
+  .erow__meta{ color:var(--ink-70); font-size:14px; margin-top:4px; }
+  .erow__date{ font-family:var(--mono); font-size:12px; text-transform:uppercase; color:var(--muted); white-space:nowrap; }
+
+  /* ============================================================
      THOUGHTS / BLOG
      ============================================================ */
-  .thoughts{ padding-block:var(--sec); }
+  .thoughts{ padding-block:var(--sec); background:var(--paper-2); }
   .posts{ margin-top:clamp(20px,3vh,40px); }
   .post{
     display:grid; grid-template-columns:140px 1fr auto;
@@ -394,9 +530,10 @@
   .post:hover{ padding-left:clamp(8px,2vw,24px); }
   .post__date{ font-family:var(--mono); font-size:12px; text-transform:uppercase; color:var(--muted); }
   .post__title{ font-size:clamp(1.3rem,2.4vw,2rem); font-weight:700; letter-spacing:-.02em; line-height:1.1; }
-  .post__desc{ color:var(--ink-70); font-size:14px; margin-top:6px; max-width:54ch; line-height:1.5; }
+  .post__desc{ display:block; color:var(--ink-70); font-size:14px; margin-top:6px; max-width:54ch; line-height:1.5; }
   .post__arr{ font-family:var(--mono); transition:transform .4s var(--ease); }
   .post:hover .post__arr{ transform:translate(4px,-4px); }
+  .post__soon{ font-family:var(--mono); font-size:11px; text-transform:uppercase; border:1px solid var(--line-2); border-radius:100px; padding:.4em .8em; white-space:nowrap; }
 
   /* ============================================================
      CONTACT
@@ -433,6 +570,7 @@
   }
   .field input::placeholder, .field textarea::placeholder{ color:rgba(244,242,238,.42); }
   .field input:focus, .field textarea:focus{ outline:none; border-color:rgba(244,242,238,.55); background:rgba(244,242,238,.08); }
+  .form__hp{ display:none; }
   .form__submit{
     margin-top:4px; width:100%;
     background:var(--paper); color:var(--ink);
@@ -440,7 +578,9 @@
     transition:transform .4s var(--ease), opacity .3s var(--ease);
   }
   .form__submit:hover{ transform:translateY(-2px); }
+  .form__submit:disabled{ opacity:.6; cursor:wait; transform:none; }
   .form__note{ font-family:var(--mono); font-size:12px; color:rgba(244,242,238,.7); min-height:1em; }
+  .form__note a{ text-decoration:underline; }
 
   /* ============================================================
      FOOTER
@@ -508,6 +648,9 @@
     .work__grid{ grid-template-columns:1fr; }
     .contact__grid{ grid-template-columns:1fr; gap:44px; }
     .foot__top{ grid-template-columns:1fr; gap:36px; }
+    .stats__grid{ grid-template-columns:repeat(2,1fr); row-gap:32px; }
+    .xrow{ grid-template-columns:1fr; gap:10px; }
+    .edu__grid{ grid-template-columns:1fr; }
 
     .srow{ grid-template-columns:auto 1fr; row-gap:14px; }
     .srow__tags{ grid-column:1 / -1; justify-content:flex-start; }
@@ -519,6 +662,7 @@
     .hero__base .label.is-hide-sm{ display:none; }
     .card__foot{ flex-direction:column; align-items:flex-start; gap:6px; }
     .quotes__grid{ grid-template-columns:1fr; }
+    .erow{ flex-direction:column; gap:6px; }
   }
 
   @media (prefers-reduced-motion:reduce){
@@ -540,7 +684,7 @@
 <body>
 <div class="grain" aria-hidden="true"></div>
 
-<!-- TRAVELLING FLIP CARD: starts in hero (back/dark), slides + flips down to the centre of section two (front/red) -->
+<!-- TRAVELLING FLIP CARD: starts in hero (back/dark), slides + flips down to the centre of section two (front) -->
 <div class="flipcard" id="flipCard" aria-hidden="true">
   <div class="flipcard__inner" id="flipInner">
     <div class="flipcard__face flipcard__face--back">
@@ -564,13 +708,16 @@
   </div>
   <div class="menu__panel" id="menuPanel">
     <a href="#about">About Me</a>
-    <a href="#services">Services</a>
+    <a href="#experience">Experience</a>
+    <a href="#skills">Skills</a>
     <a href="#work">Projects</a>
     <a href="#contact">Contact</a>
+    <a href="resume.pdf" target="_blank" rel="noopener">Resume ↓</a>
   </div>
 </nav>
 
-<!-- ====================== HERO ====================== -->
+<main>
+<!-- ====================== HERO (only headline text changed) ====================== -->
 <section class="hero" id="hero">
   <div class="deco deco--a" aria-hidden="true">
     <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
@@ -611,17 +758,18 @@
   </div>
   <div class="wrap hero__inner">
     <div class="hero__top">
-      <span class="label">©2026 — AI &amp; Data</span>
-      <span class="label" style="text-align:right">AI Developer<br>&amp; Data Scientist</span>
+      <span class="label">©2026 — Python · AI · Automation</span>
+      <span class="label" style="text-align:right">Python Developer<br>&amp; AI/ML Engineer</span>
     </div>
 
     <div class="hero__stage">
       <h1 class="hero__title">
-        <span class="ln1" style="--i:0">AI</span>
+        <span class="sr-only">Dharmike Baria — </span>
+        <span class="ln1" style="--i:0">Python</span>
         <span class="ln2" style="--i:1">Developer</span>
       </h1>
       <div class="hero__portrait" id="heroSlot">
-        <img class="slot-img" src="dharmike-baria.jpg" alt="Portrait of Dharmike Baria" />
+        <img class="slot-img" src="dharmike-baria.jpg" alt="Dharmike Baria, Python Developer in Mumbai" />
       </div>
     </div>
 
@@ -639,16 +787,17 @@
     <h2 class="about__hey" data-reveal>Hey!</h2>
     <div class="about__grid">
       <div class="about__col about__col--l">
-        <p data-reveal>I'm Dharmike — an AI Developer, Data Scientist, Data Analyst, and Python Developer based in Mumbai, currently building production AI &amp; data systems at MCM BPO (MyCountryMobile).</p>
-        <p data-reveal style="--d:80ms">With 1+ years across machine learning, data analysis, and backend development, I turn complex data into business value — shipping ML models, multi-agent LLM systems, ETL pipelines, BI dashboards, and full-stack SaaS products.</p>
+        <p data-reveal>I'm Dharmike — a Python Developer and AI/ML Engineer based in Mumbai, currently building Python-based internal tools and data automation at Jolly Clamps Pvt. Ltd.</p>
+        <p data-reveal style="--d:80ms">With 1.5 years across backend development, machine learning, and data engineering, I ship Django APIs, multi-agent LLM systems, ETL pipelines, and full-stack SaaS products that turn complex data into business value.</p>
       </div>
       <div class="about__slot" id="aboutSlot">
-        <img class="slot-img" src="dharmike-baria.jpg" alt="Portrait of the portfolio creator" />
+        <img class="slot-img" src="dharmike-baria.jpg" alt="Portrait of Dharmike Baria" />
       </div>
       <div class="about__col about__col--r">
-        <p data-reveal>I've deployed predictive models, RAG chat systems, and BI dashboards that cut time-to-insight by 70% and delivered $100K+ in measurable business value.</p>
+        <p data-reveal>Previously at MCM BPO, I built LLM reporting pipelines, BigQuery ETL, and dashboards that cut time-to-insight by 70% and delivered $100K+ in measurable business value.</p>
         <div class="about__cta" data-reveal style="--d:80ms">
           <a href="#contact" class="btn">Get in touch <span class="arr">↗</span></a>
+          <a href="resume.pdf" target="_blank" rel="noopener" class="btn btn--ghost">Download Resume <span class="arr">↓</span></a>
         </div>
       </div>
     </div>
@@ -656,8 +805,32 @@
 
   <div class="marquee" aria-hidden="true">
     <div class="marquee__track">
-      <span class="marquee__item">Python <span class="sep">—</span> Machine Learning <span class="sep">—</span> Generative AI <span class="sep">—</span> LLMs &amp; RAG <span class="sep">—</span> Data Analysis <span class="sep">—</span> Power BI <span class="sep">—</span> ETL <span class="sep">—</span>&nbsp;</span>
-      <span class="marquee__item">Python <span class="sep">—</span> Machine Learning <span class="sep">—</span> Generative AI <span class="sep">—</span> LLMs &amp; RAG <span class="sep">—</span> Data Analysis <span class="sep">—</span> Power BI <span class="sep">—</span> ETL <span class="sep">—</span>&nbsp;</span>
+      <span class="marquee__item">Python <span class="sep">—</span> Django <span class="sep">—</span> Machine Learning <span class="sep">—</span> Generative AI <span class="sep">—</span> LLMs &amp; RAG <span class="sep">—</span> Automation <span class="sep">—</span> ETL <span class="sep">—</span>&nbsp;</span>
+      <span class="marquee__item">Python <span class="sep">—</span> Django <span class="sep">—</span> Machine Learning <span class="sep">—</span> Generative AI <span class="sep">—</span> LLMs &amp; RAG <span class="sep">—</span> Automation <span class="sep">—</span> ETL <span class="sep">—</span>&nbsp;</span>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== STATS (new) ====================== -->
+<section class="stats" aria-label="Impact in numbers">
+  <div class="wrap">
+    <div class="stats__grid">
+      <div class="stat" data-reveal>
+        <div class="stat__num" data-count="70" data-suffix="%">70%</div>
+        <p class="stat__label">Faster time-to-insight</p>
+      </div>
+      <div class="stat" data-reveal style="--d:80ms">
+        <div class="stat__num" data-count="100" data-prefix="$" data-suffix="K+">$100K+</div>
+        <p class="stat__label">Measurable business value</p>
+      </div>
+      <div class="stat" data-reveal style="--d:160ms">
+        <div class="stat__num" data-count="15" data-suffix="+">15+</div>
+        <p class="stat__label">Automation workflows shipped</p>
+      </div>
+      <div class="stat" data-reveal style="--d:240ms">
+        <div class="stat__num" data-count="10" data-suffix="+">10+</div>
+        <p class="stat__label">Hours of manual work saved weekly</p>
+      </div>
     </div>
   </div>
 </section>
@@ -666,8 +839,90 @@
 <section class="manifesto" id="manifesto">
   <div class="wrap">
     <p class="manifesto__text" data-manifesto>
-      <span class="w">From</span> <span class="w">raw</span> <span class="w">data</span> <span class="w">to</span> <span class="w">real</span> <span class="w">decisions.</span> <span class="w">Machine</span> <span class="w">learning</span> <span class="w">models,</span> <span class="w">LLM</span> <span class="w">systems,</span> <span class="w">and</span> <span class="w">analytics</span> <span class="w">built</span> <span class="w">to</span> <span class="w">scale,</span> <span class="w">ship</span> <span class="w">fast,</span> <span class="w">and</span> <span class="w">deliver</span> <span class="w">measurable</span> <span class="w">value</span> <span class="w">in</span> <span class="w">production.</span>
+      <span class="w">From</span> <span class="w">raw</span> <span class="w">data</span> <span class="w">to</span> <span class="w">real</span> <span class="w">decisions.</span> <span class="w">Python</span> <span class="w">systems,</span> <span class="w">LLM</span> <span class="w">pipelines,</span> <span class="w">and</span> <span class="w">automation</span> <span class="w">built</span> <span class="w">to</span> <span class="w">scale,</span> <span class="w">ship</span> <span class="w">fast,</span> <span class="w">and</span> <span class="w">deliver</span> <span class="w">measurable</span> <span class="w">value</span> <span class="w">in</span> <span class="w">production.</span>
     </p>
+  </div>
+</section>
+
+<!-- ====================== EXPERIENCE (new) ====================== -->
+<section class="xp" id="experience">
+  <div class="wrap">
+    <div class="shead" data-reveal>
+      <h2 class="shead__title">Experience</h2>
+      <span class="label">Where I've worked — (02)</span>
+    </div>
+
+    <article class="xrow" data-reveal>
+      <div>
+        <p class="xrow__date">Aug 2026 — Present</p>
+        <span class="mark xrow__now">Current</span>
+      </div>
+      <div>
+        <h3 class="xrow__role">Python Developer (Data Analyst &amp; Automation)</h3>
+        <p class="xrow__co">Jolly Clamps Pvt. Ltd. — Mumbai</p>
+        <ul class="xrow__list">
+          <li>Built an internal enterprise portal with Django REST Framework, React, and PostgreSQL to centralise production-planning and dispatch data.</li>
+          <li>Wrote a reusable openpyxl parser library that ingests daily ERP and PPC Excel exports (dispatch trends, lead times, MPS/MTO schedules, forecast demand) into structured data models.</li>
+          <li>Automated recurring production and dispatch reports with Python and Google Apps Script, replacing manual spreadsheet work.</li>
+        </ul>
+        <div class="xrow__tags"><span class="tag">Python</span><span class="tag">Django REST</span><span class="tag">PostgreSQL</span><span class="tag">openpyxl</span><span class="tag">React</span></div>
+      </div>
+    </article>
+
+    <article class="xrow" data-reveal>
+      <div>
+        <p class="xrow__date">Apr 2025 — Jul 2026</p>
+      </div>
+      <div>
+        <h3 class="xrow__role">Data Scientist &amp; AI/ML Developer</h3>
+        <p class="xrow__co">MCM BPO (MyCountryMobile) — Mumbai</p>
+        <ul class="xrow__list">
+          <li>Deployed multi-agent LLM pipelines (Claude, GPT, Gemini) that flag KPI anomalies and send executive summaries via Slack and WhatsApp — saving 10+ hours/week and delivering $100K+ in value.</li>
+          <li>Engineered ETL pipelines across Google BigQuery, the Google Ads API, and dual PostgreSQL schemas; built 15+ n8n workflows that cut manual data work by 35%.</li>
+          <li>Built a Selenium framework with proxy rotation collecting data from 15+ platforms at an 85% success rate, and an OCR pipeline with 95% extraction accuracy.</li>
+          <li>Shipped Looker Studio and Power BI dashboards that reduced time-to-insight by 70%.</li>
+        </ul>
+        <div class="xrow__tags"><span class="tag">LLMs</span><span class="tag">BigQuery</span><span class="tag">Selenium</span><span class="tag">n8n</span><span class="tag">Power BI</span></div>
+      </div>
+    </article>
+  </div>
+</section>
+
+<!-- ====================== SKILLS (new) ====================== -->
+<section class="skills" id="skills">
+  <div class="wrap">
+    <div class="shead" data-reveal>
+      <h2 class="shead__title">Skills &amp; Stack</h2>
+      <span class="label">Tools I use — (05)</span>
+    </div>
+
+    <div class="skills__grid">
+      <div class="skill" data-reveal>
+        <span class="skill__no">01</span>
+        <h3 class="skill__name">Python &amp; Backend</h3>
+        <div class="skill__tags"><span class="tag">Python</span><span class="tag">Django</span><span class="tag">Django REST</span><span class="tag">REST APIs</span><span class="tag">Celery</span><span class="tag">Redis</span><span class="tag">SQL</span></div>
+      </div>
+      <div class="skill" data-reveal style="--d:80ms">
+        <span class="skill__no">02</span>
+        <h3 class="skill__name">AI / ML &amp; GenAI</h3>
+        <div class="skill__tags"><span class="tag">Scikit-learn</span><span class="tag">Pandas</span><span class="tag">NumPy</span><span class="tag">OpenAI</span><span class="tag">Claude</span><span class="tag">Gemini</span><span class="tag">RAG</span><span class="tag">ElevenLabs</span></div>
+      </div>
+      <div class="skill" data-reveal style="--d:160ms">
+        <span class="skill__no">03</span>
+        <h3 class="skill__name">Data &amp; Databases</h3>
+        <div class="skill__tags"><span class="tag">PostgreSQL</span><span class="tag">MySQL</span><span class="tag">BigQuery</span><span class="tag">GA4</span><span class="tag">ETL</span><span class="tag">Power BI</span><span class="tag">Looker Studio</span></div>
+      </div>
+      <div class="skill" data-reveal>
+        <span class="skill__no">04</span>
+        <h3 class="skill__name">Automation</h3>
+        <div class="skill__tags"><span class="tag">Selenium</span><span class="tag">BeautifulSoup</span><span class="tag">n8n</span><span class="tag">Apps Script</span><span class="tag">APScheduler</span><span class="tag">openpyxl</span><span class="tag">OCR</span></div>
+      </div>
+      <div class="skill" data-reveal style="--d:80ms">
+        <span class="skill__no">05</span>
+        <h3 class="skill__name">DevOps &amp; Frontend</h3>
+        <div class="skill__tags"><span class="tag">Docker</span><span class="tag">Git</span><span class="tag">GCP</span><span class="tag">React</span><span class="tag">Next.js</span><span class="tag">Streamlit</span><span class="tag">MinIO / S3</span></div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -676,35 +931,42 @@
   <div class="wrap">
     <div class="shead" data-reveal>
       <h2 class="shead__title">Services</h2>
-      <span class="label">What I do — (04)</span>
+      <span class="label">What I do — (05)</span>
     </div>
 
     <div data-reveal>
       <div class="srow">
         <span class="srow__no">01</span>
-        <h3 class="srow__name">AI &amp; LLM Development</h3>
-        <div class="srow__tags"><span class="tag">Generative AI</span><span class="tag">RAG</span><span class="tag">Multi-Agent</span></div>
+        <h3 class="srow__name">Python &amp; Backend Development</h3>
+        <div class="srow__tags"><span class="tag">Django</span><span class="tag">PostgreSQL</span><span class="tag">REST APIs</span></div>
       </div>
     </div>
     <div data-reveal style="--d:80ms">
       <div class="srow">
         <span class="srow__no">02</span>
-        <h3 class="srow__name">Machine Learning &amp; Data Science</h3>
-        <div class="srow__tags"><span class="tag">Scikit-learn</span><span class="tag">Predictive Modeling</span><span class="tag">Statistics</span></div>
+        <h3 class="srow__name">AI &amp; LLM Development</h3>
+        <div class="srow__tags"><span class="tag">Generative AI</span><span class="tag">RAG</span><span class="tag">Multi-Agent</span></div>
       </div>
     </div>
     <div data-reveal style="--d:160ms">
       <div class="srow">
         <span class="srow__no">03</span>
-        <h3 class="srow__name">Data Analysis &amp; BI</h3>
-        <div class="srow__tags"><span class="tag">Power BI</span><span class="tag">SQL</span><span class="tag">Looker Studio</span></div>
+        <h3 class="srow__name">Automation &amp; Web Scraping</h3>
+        <div class="srow__tags"><span class="tag">Selenium</span><span class="tag">n8n</span><span class="tag">Apps Script</span></div>
       </div>
     </div>
     <div data-reveal style="--d:240ms">
       <div class="srow">
         <span class="srow__no">04</span>
-        <h3 class="srow__name">Python &amp; Backend Development</h3>
-        <div class="srow__tags"><span class="tag">Django</span><span class="tag">FastAPI</span><span class="tag">REST APIs</span></div>
+        <h3 class="srow__name">Machine Learning &amp; Data Science</h3>
+        <div class="srow__tags"><span class="tag">Scikit-learn</span><span class="tag">Predictive Modeling</span><span class="tag">Statistics</span></div>
+      </div>
+    </div>
+    <div data-reveal style="--d:320ms">
+      <div class="srow">
+        <span class="srow__no">05</span>
+        <h3 class="srow__name">Data Engineering &amp; BI</h3>
+        <div class="srow__tags"><span class="tag">ETL</span><span class="tag">BigQuery</span><span class="tag">Power BI</span></div>
       </div>
     </div>
   </div>
@@ -719,46 +981,90 @@
     </div>
 
     <div class="work__grid">
+      <!-- TODO: replace each href with that project's own repo / demo URL -->
       <a href="https://github.com/dharmikebaria" target="_blank" rel="noopener" class="card" data-reveal>
         <div class="card__media">
           <span class="card__badge">Django · BigQuery — 2025</span>
           <span class="card__go">↗</span>
-          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1100&h=825&fit=crop" alt="GA4 Paid Traffic Dashboard preview" loading="lazy" />
+          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1100&h=825&fit=crop" alt="GA4 Paid Traffic Dashboard — BigQuery BI tool" loading="lazy" />
         </div>
-        <div class="card__foot"><span class="card__name">GA4 Paid Traffic Dashboard</span><span class="card__type">BI / Analytics</span></div>
+        <div class="card__foot"><h3 class="card__name">GA4 Paid Traffic Dashboard</h3><span class="card__type">BI / Analytics</span></div>
+        <p class="card__desc">BigQuery-backed BI tool that cross-references GA4 events with Google Ads spend, using date-partitioned tables and scheduled APScheduler reports.</p>
       </a>
 
       <a href="https://github.com/dharmikebaria" target="_blank" rel="noopener" class="card" data-reveal style="--d:90ms">
         <div class="card__media">
           <span class="card__badge">Django · Next.js — 2025</span>
           <span class="card__go">↗</span>
-          <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1100&h=825&fit=crop" alt="WorkTrackZilla employee monitoring platform preview" loading="lazy" />
+          <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=1100&h=825&fit=crop" alt="WorkTrackZilla multi-tenant employee monitoring SaaS" loading="lazy" />
         </div>
-        <div class="card__foot"><span class="card__name">WorkTrackZilla</span><span class="card__type">Multi-Tenant SaaS</span></div>
+        <div class="card__foot"><h3 class="card__name">WorkTrackZilla</h3><span class="card__type">Multi-Tenant SaaS</span></div>
+        <p class="card__desc">Employee monitoring SaaS with a Django 5 API, Next.js 15 dashboard, Electron desktop agent, Celery + Redis jobs, and MinIO/S3 storage.</p>
       </a>
 
       <a href="https://github.com/dharmikebaria" target="_blank" rel="noopener" class="card" data-reveal style="--d:60ms">
         <div class="card__media">
           <span class="card__badge">Streamlit · LLM — 2025</span>
           <span class="card__go">↗</span>
-          <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=1100&h=825&fit=crop" alt="Conversational AI Data Analyst preview" loading="lazy" />
+          <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=1100&h=825&fit=crop" alt="Conversational AI Data Analyst app" loading="lazy" />
         </div>
-        <div class="card__foot"><span class="card__name">Conversational AI Data Analyst</span><span class="card__type">Generative AI</span></div>
+        <div class="card__foot"><h3 class="card__name">Conversational AI Data Analyst</h3><span class="card__type">Generative AI</span></div>
+        <p class="card__desc">Upload a CSV or Excel file and ask questions in plain English to get profiling, correlation and outlier analysis, charts, and exportable reports.</p>
       </a>
 
       <a href="https://github.com/dharmikebaria" target="_blank" rel="noopener" class="card" data-reveal style="--d:120ms">
         <div class="card__media">
           <span class="card__badge">Python · OCR — 2025</span>
           <span class="card__go">↗</span>
-          <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=1100&h=825&fit=crop" alt="Medical Data Extraction Pipeline preview" loading="lazy" />
+          <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=1100&h=825&fit=crop" alt="Medical Data Extraction OCR pipeline" loading="lazy" />
         </div>
-        <div class="card__foot"><span class="card__name">Medical Data Extraction</span><span class="card__type">OCR / ML</span></div>
+        <div class="card__foot"><h3 class="card__name">Medical Data Extraction</h3><span class="card__type">OCR / ML</span></div>
+        <p class="card__desc">OCR pipeline with PyMuPDF, OpenCV, and pytesseract that extracts structured data from PDFs at 95% accuracy, cutting manual entry time by 80%.</p>
+      </a>
+
+      <a href="https://github.com/dharmikebaria" target="_blank" rel="noopener" class="card" data-reveal>
+        <div class="card__media">
+          <span class="card__badge">RAG · Voice AI — 2025</span>
+          <span class="card__go">↗</span>
+          <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=1100&h=825&fit=crop" alt="RAG voice chat system" loading="lazy" onerror="this.style.display='none'" />
+        </div>
+        <div class="card__foot"><h3 class="card__name">RAG Voice Chat System</h3><span class="card__type">NLP / Voice AI</span></div>
+        <p class="card__desc">Production retrieval-augmented chat with ElevenLabs voice and real-time transcription — the stack behind 10+ chatbots for 8+ client brands.</p>
+      </a>
+
+      <a href="https://github.com/dharmikebaria" target="_blank" rel="noopener" class="card" data-reveal style="--d:90ms">
+        <div class="card__media">
+          <span class="card__badge">Python · Selenium — 2025</span>
+          <span class="card__go">↗</span>
+          <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1100&h=825&fit=crop" alt="Selenium web automation framework" loading="lazy" onerror="this.style.display='none'" />
+        </div>
+        <div class="card__foot"><h3 class="card__name">Selenium Automation Framework</h3><span class="card__type">Web Automation</span></div>
+        <p class="card__desc">Reusable scraping framework with proxy rotation that collects data from 15+ platforms at an 85% success rate.</p>
+      </a>
+
+      <div class="card" data-reveal style="--d:60ms">
+        <div class="card__media">
+          <span class="card__badge">Django · PostgreSQL — 2026</span>
+          <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=1100&h=825&fit=crop" alt="ERP data automation portal for manufacturing" loading="lazy" onerror="this.style.display='none'" />
+        </div>
+        <div class="card__foot"><h3 class="card__name">ERP Data Automation Portal</h3><span class="card__type">Private · Internal Tool</span></div>
+        <p class="card__desc">Internal portal at Jolly Clamps with an openpyxl parser library that turns daily ERP and production-planning Excel exports into structured data models.</p>
+      </div>
+
+      <a href="https://github.com/dharmikebaria" target="_blank" rel="noopener" class="card" data-reveal style="--d:120ms">
+        <div class="card__media">
+          <span class="card__badge">Power BI · DAX — 2025</span>
+          <span class="card__go">↗</span>
+          <img src="https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?q=80&w=1100&h=825&fit=crop" alt="Atliq Grand hotel revenue Power BI dashboard" loading="lazy" onerror="this.style.display='none'" />
+        </div>
+        <div class="card__foot"><h3 class="card__name">Atliq Grand BI Dashboard</h3><span class="card__type">Power BI</span></div>
+        <p class="card__desc">Hotel revenue and occupancy dashboard with DAX measures and KPIs across 5+ revenue streams.</p>
       </a>
     </div>
   </div>
 </section>
 
-<!-- ====================== TESTIMONIALS ====================== -->
+<!-- ====================== TESTIMONIALS (unchanged) ====================== -->
 <section class="quotes" id="quotes">
   <div class="wrap">
     <div class="shead" data-reveal>
@@ -802,30 +1108,69 @@
   </div>
 </section>
 
-<!-- ====================== THOUGHTS ====================== -->
+<!-- ====================== EDUCATION & CERTIFICATIONS (new) ====================== -->
+<section class="edu" id="education">
+  <div class="wrap">
+    <div class="shead" data-reveal>
+      <h2 class="shead__title">Education &amp; Certifications</h2>
+      <span class="label">Learning — (05)</span>
+    </div>
+
+    <div class="edu__grid">
+      <div data-reveal>
+        <h3 class="label edu__head">/ Education</h3>
+        <div class="erow">
+          <div><p class="erow__name">Bachelor of Information Technology — Data Science</p><p class="erow__meta">Ganpat University, Gujarat</p></div>
+          <span class="erow__date">2025</span>
+        </div>
+        <div class="erow">
+          <div><p class="erow__name">HSC — Computer Science</p><p class="erow__meta">Reena Mehta College of Science, Mumbai</p></div>
+          <span class="erow__date">2023</span>
+        </div>
+      </div>
+      <div data-reveal style="--d:90ms">
+        <h3 class="label edu__head">/ Certifications</h3>
+        <div class="erow">
+          <div><p class="erow__name">Microsoft Power BI Data Analyst Associate</p><p class="erow__meta">Coursera</p></div>
+          <span class="erow__date">Jun 2025</span>
+        </div>
+        <div class="erow">
+          <div><p class="erow__name">Python Programming Certificate</p><p class="erow__meta">Codebasics</p></div>
+          <span class="erow__date">Apr 2025</span>
+        </div>
+        <div class="erow">
+          <div><p class="erow__name">IBM Data Analyst Professional Certificate</p><p class="erow__meta">Coursera</p></div>
+          <span class="erow__date">Nov 2024</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== THOUGHTS (marked as upcoming — no dead links) ====================== -->
 <section class="thoughts" id="thoughts">
   <div class="wrap">
     <div class="shead" data-reveal>
       <h2 class="shead__title">Thoughts</h2>
-      <a href="#thoughts" class="shead__link">View all <span class="arr">↗</span></a>
+      <span class="label">Writing — coming soon</span>
     </div>
 
     <div class="posts">
-      <a href="#thoughts" class="post" data-reveal>
-        <span class="post__date">May 5, 2025</span>
+      <div class="post" data-reveal>
+        <span class="post__date">In progress</span>
         <span><span class="post__title">Deploying Multi-Agent LLM Systems in Production</span><span class="post__desc">Lessons from building autonomous Claude, GPT, and Gemini pipelines that analyze data and report on their own.</span></span>
-        <span class="post__arr">↗</span>
-      </a>
-      <a href="#thoughts" class="post" data-reveal style="--d:80ms">
-        <span class="post__date">Jun 16, 2025</span>
+        <span class="post__soon">Soon</span>
+      </div>
+      <div class="post" data-reveal style="--d:80ms">
+        <span class="post__date">In progress</span>
         <span><span class="post__title">From ETL to Insight: Building Reliable Data Pipelines</span><span class="post__desc">How to wire BigQuery, Google Ads, and PostgreSQL into pipelines you can actually trust.</span></span>
-        <span class="post__arr">↗</span>
-      </a>
-      <a href="#thoughts" class="post" data-reveal style="--d:160ms">
-        <span class="post__date">Jun 16, 2025</span>
+        <span class="post__soon">Soon</span>
+      </div>
+      <div class="post" data-reveal style="--d:160ms">
+        <span class="post__date">In progress</span>
         <span><span class="post__title">RAG in Practice: Grounding LLMs in Your Own Data</span><span class="post__desc">A practical look at retrieval-augmented generation, voice AI, and shipping chatbots that stay accurate.</span></span>
-        <span class="post__arr">↗</span>
-      </a>
+        <span class="post__soon">Soon</span>
+      </div>
     </div>
   </div>
 </section>
@@ -836,8 +1181,8 @@
     <div class="contact__grid">
       <div>
         <h2 class="contact__title" data-reveal>Let's<br>talk.</h2>
-        <p class="contact__sub" data-reveal style="--d:80ms">Have a data, ML, or AI project in mind? Fill out the form, and I'll get back to you soon.</p>
-        <nav class="contact__social" data-reveal style="--d:160ms">
+        <p class="contact__sub" data-reveal style="--d:80ms">Hiring for a Python or AI role, or have a data, automation, or LLM project in mind? Send a message and I'll get back to you soon.</p>
+        <nav class="contact__social" data-reveal style="--d:160ms" aria-label="Social links">
           <a href="https://github.com/dharmikebaria" target="_blank" rel="noopener" aria-label="GitHub">
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.2.8-.5v-2c-3.2.7-3.9-1.4-3.9-1.4-.5-1.3-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.7 1.3 3.4 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.8 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17 4.6 18 4.9 18 4.9c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.8 1.2 3.1 0 4.5-2.7 5.5-5.3 5.8.4.4.8 1.1.8 2.2v3.3c0 .3.2.6.8.5 4.6-1.5 7.9-5.8 7.9-10.9C23.5 5.7 18.3.5 12 .5z"/></svg>
           </a>
@@ -856,13 +1201,15 @@
       <form class="form" id="form" data-reveal style="--d:120ms">
         <div class="field"><label for="cName">Name</label><input id="cName" type="text" name="name" placeholder="Enter your name" required autocomplete="name"></div>
         <div class="field"><label for="cEmail">Email</label><input id="cEmail" type="email" name="email" placeholder="Enter your email" required autocomplete="email"></div>
-        <div class="field"><label for="cProject">Your Project</label><textarea id="cProject" name="project" rows="5" placeholder="Tell us about your project" required></textarea></div>
+        <div class="field"><label for="cProject">Your Message</label><textarea id="cProject" name="message" rows="5" placeholder="Tell me about your project or role" required></textarea></div>
+        <input class="form__hp" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
         <button type="submit" class="form__submit">Submit</button>
         <p class="form__note" id="formNote" role="status"></p>
       </form>
     </div>
   </div>
 </section>
+</main>
 
 <!-- ====================== FOOTER ====================== -->
 <footer class="foot">
@@ -874,9 +1221,11 @@
         <div class="foot__pills">
           <a href="#hero">Home</a>
           <a href="#about">About Me</a>
-          <a href="#services">Services</a>
+          <a href="#experience">Experience</a>
+          <a href="#skills">Skills</a>
           <a href="#work">Projects</a>
           <a href="#contact">Contact</a>
+          <a href="resume.pdf" target="_blank" rel="noopener">Resume</a>
         </div>
       </div>
       <div class="foot__col">
@@ -891,7 +1240,7 @@
   <div class="wrap">
     <div class="foot__bar">
       <span>© 2026 Dharmike Baria — All rights reserved</span>
-      <span>AI Developer · Data Scientist · Python Developer</span>
+      <span>Python Developer · AI/ML Engineer · Automation</span>
     </div>
   </div>
 </footer>
@@ -942,7 +1291,7 @@
     onMani();
   }
 
-  /* ---------- pinned 3D flip: the card STAYS at the centre of the screen, flips
+  /* ---------- pinned 3D flip (UNCHANGED): the card STAYS at the centre of the screen, flips
                 and grows in place; the About section scrolls up and its slot lands
                 exactly on the card. The card never moves up/down during the flip. ---------- */
   const flipCard  = document.getElementById('flipCard');
@@ -1006,13 +1355,52 @@
     setTimeout(frame, 250);   // re-settle after fonts/layout
   }
 
-  /* ---------- contact form (front-end only) ---------- */
+  /* ---------- stats: count up when visible (new) ---------- */
+  const counters = document.querySelectorAll('[data-count]');
+  if (!reduceMotion && 'IntersectionObserver' in window){
+    const co = new IntersectionObserver((entries) => {
+      entries.forEach(en => {
+        if (!en.isIntersecting) return;
+        const el = en.target; co.unobserve(el);
+        const end = +el.dataset.count, pre = el.dataset.prefix || '', suf = el.dataset.suffix || '';
+        const t0 = performance.now(), dur = 1600;
+        const step = (t) => {
+          const p = Math.min((t - t0) / dur, 1);
+          el.textContent = pre + Math.round(end * (1 - Math.pow(1 - p, 3))) + suf;
+          if (p < 1) requestAnimationFrame(step);
+        };
+        el.textContent = pre + '0' + suf;
+        requestAnimationFrame(step);
+      });
+    }, { threshold:0.4 });
+    counters.forEach(c => co.observe(c));
+  }
+
+  /* ---------- contact form: sends to your email via FormSubmit (new) ---------- */
   const form = document.getElementById('form');
   const note = document.getElementById('formNote');
-  form.addEventListener('submit', (ev) => {
+  const submitBtn = form.querySelector('.form__submit');
+  form.addEventListener('submit', async (ev) => {
     ev.preventDefault();
-    note.textContent = 'Thanks — message ready to send. (Hook this up to your backend.)';
-    form.reset();
+    submitBtn.disabled = true; submitBtn.textContent = 'Sending…'; note.textContent = '';
+    const data = Object.fromEntries(new FormData(form));
+    data._subject = 'New portfolio message from ' + (data.name || 'a visitor');
+    data._template = 'table';
+    try{
+      const res = await fetch('https://formsubmit.co/ajax/dharmikkbaria712@gmail.com', {
+        method:'POST',
+        headers:{ 'Content-Type':'application/json', 'Accept':'application/json' },
+        body:JSON.stringify(data)
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok || String(json.success) === 'false') throw new Error('send failed');
+      note.textContent = 'Thanks! Your message has been sent — I\'ll reply soon.';
+      form.reset();
+    }catch(err){
+      note.innerHTML = 'Couldn\'t send right now — please email me at <a href="mailto:dharmikkbaria712@gmail.com">dharmikkbaria712@gmail.com</a>.';
+    }finally{
+      submitBtn.disabled = false; submitBtn.textContent = 'Submit';
+    }
   });
 </script>
 </body>
