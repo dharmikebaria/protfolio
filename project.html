@@ -203,6 +203,25 @@
 const GH = 'https://github.com/dharmikebaria';
 const PROJECTS = [
   {
+    slug:'floatchat',
+    title:'FloatChat', type:'Agentic AI', year:'2026', where:'Self-hosted platform · built on Chatwoot',
+    img:'https://images.unsplash.com/photo-1553877522-43269d4ea984?q=80&w=1800&h=790&fit=crop',
+    summary:'A self-hosted, omnichannel customer-support platform built on Chatwoot 4.13, with a multi-agent AI layer that answers customers from the knowledge base, hands off to humans when it can\'t, and learns new FAQs from resolved conversations.',
+    problem:'Support teams answer the same questions across live chat, email, WhatsApp and social channels. They needed AI that resolves routine questions from the company\'s own knowledge, hands everything else safely to a human, and keeps improving — on a platform they host and fully control.',
+    built:[
+      'Set up FloatChat as a rebranded, self-hosted fork of Chatwoot 4.13 — Rails 7.1, Vue 3, PostgreSQL, Redis / Sidekiq, deployed with Docker.',
+      'Brought the Captain AI agent system into the core app and enabled the v2 multi-agent flow behind the captain_integration_v2 flag, orchestrated with the ai-agents gem and ruby_llm.',
+      'Configured an orchestrator assistant that hands off to admin-defined scenario agents using 7 built-in tools — FAQ lookup, human handoff, resolve, private and contact notes, labels and priority — capped at 8 handoffs, 12 tool calls and 30 messages of history per run.',
+      'Set up the RAG knowledge base: crawled websites and uploaded PDFs are turned into Q&A pairs, embedded with text-embedding-3-small and searched with pgvector (1536-dim, cosine similarity).',
+      'Enabled the learning loop — resolved conversations are mined for new FAQ entries, saved as pending for review and de-duplicated against approved ones.',
+      'Hardened agent runs with an LLM timeout guard, history truncation, a Redis run registry that prevents duplicate replies and repeated tool actions, and a run logger.',
+      'Made models configurable per assistant (GPT-4.1 by default), with provider mapping for OpenAI, Anthropic, Google, Mistral and DeepSeek.'
+    ],
+    impact:[{n:'7',l:'Built-in agent tools, plus custom HTTP tools'},{n:'9+',l:'Channels in one inbox — chat, email, WhatsApp, social, SMS'},{n:'8 / 12',l:'Handoff & tool-call safety limits per run'},{n:'Auto',l:'Human handoff to an agent with free capacity'}],
+    stack:['Ruby on Rails 7.1','Vue 3','ai-agents','ruby_llm','OpenAI GPT-4.1','PostgreSQL','pgvector','Redis','Sidekiq','Docker'],
+    repo:'https://github.com/dharmikebaria/floatchat'
+  },
+  {
     slug:'ga4-paid-traffic-dashboard',
     title:'GA4 Paid Traffic Dashboard', type:'BI / Analytics', year:'2025', where:'MCM BPO (MyCountryMobile)',
     img:'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1800&h=790&fit=crop',
@@ -329,6 +348,10 @@ const PROJECTS = [
     repo:GH
   }
 ];
+
+/* display order: engineering / AI projects first, analytics projects last */
+const ORDER = ['floatchat','worktrackzilla','rag-voice-chat-system','conversational-ai-data-analyst','selenium-automation-framework','erp-data-automation-portal','medical-data-extraction','ga4-paid-traffic-dashboard','atliq-grand-bi-dashboard'];
+PROJECTS.sort((a,b) => ORDER.indexOf(a.slug) - ORDER.indexOf(b.slug));
 
 /* ---------- render ---------- */
 const BASE = 'https://protfolio-dharmike-baria.vercel.app/';
