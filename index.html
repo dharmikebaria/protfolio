@@ -52,7 +52,7 @@
         "https://www.linkedin.com/in/dharmike-baria/",
         "https://github.com/dharmikebaria"
       ],
-      "knowsAbout": ["Python","Django","Django REST Framework","PostgreSQL","Machine Learning","Generative AI","Large Language Models","RAG","ETL","Google BigQuery","Selenium","Web Scraping","Automation","Power BI"]
+      "knowsAbout": ["Python","SQL","Django","Django REST Framework","PostgreSQL","Agentic AI","Multi-Agent Systems","Large Language Models","Retrieval-Augmented Generation","pgvector","Machine Learning","Pandas","Scikit-learn","ETL","Google BigQuery","Selenium","Web Scraping","n8n","Automation","Power BI","Data Analysis"]
     },
     {
       "@type": "WebSite",
@@ -396,20 +396,41 @@
      SKILLS  (new)
      ============================================================ */
   .skills{ padding-block:var(--sec); background:var(--paper-2); }
+  .skills__legend{ display:flex; gap:20px; flex-wrap:wrap; margin-top:18px; }
+  .skills__legend span{ display:inline-flex; align-items:center; gap:8px; }
+  .dot{ width:10px; height:10px; border-radius:50%; border:1px solid var(--ink); display:inline-block; }
+  .dot--core{ background:var(--ink); }
   .skills__grid{
-    margin-top:clamp(30px,5vh,56px);
-    display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:clamp(16px,1.6vw,24px);
+    margin-top:clamp(26px,4vh,44px);
+    display:grid; grid-template-columns:repeat(3,1fr); gap:clamp(16px,1.6vw,24px);
   }
   .skill{
+    display:flex; flex-direction:column;
     background:var(--paper); border:1px solid var(--line-2); border-radius:24px;
     padding:clamp(22px,2vw,32px);
     transition:transform .45s var(--ease), background .35s var(--ease), color .35s var(--ease);
   }
   .skill:hover{ transform:translateY(-4px); background:var(--ink); color:var(--paper); }
   .skill:hover .tag{ border-color:rgba(244,242,238,.35); }
+  .skill:hover .tag--core{ background:var(--paper); color:var(--ink); border-color:var(--paper); }
+  .skill:hover .skill__desc, .skill:hover .skill__used{ color:rgba(244,242,238,.7); }
+  .skill__head{ display:flex; justify-content:space-between; align-items:baseline; gap:12px; }
   .skill__no{ font-family:var(--mono); font-size:12px; color:var(--muted); }
+  .skill__count{ font-family:var(--mono); font-size:11px; text-transform:uppercase; color:var(--muted); }
   .skill__name{ font-size:clamp(1.3rem,2vw,1.7rem); font-weight:700; letter-spacing:-.02em; margin-top:8px; line-height:1.1; }
-  .skill__tags{ display:flex; gap:8px; flex-wrap:wrap; margin-top:20px; }
+  .skill__desc{ color:var(--ink-70); font-size:.95rem; margin-top:8px; line-height:1.45; transition:color .35s var(--ease); }
+  .skill__tags{ display:flex; gap:8px; flex-wrap:wrap; margin-top:18px; }
+  .skill .tag--core{ background:var(--ink); color:var(--paper); border-color:var(--ink); }
+  .skill__used{ margin-top:auto; padding-top:20px; font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.02em; color:var(--muted); line-height:1.8; transition:color .35s var(--ease); }
+  .skill__used a{ text-decoration:underline; text-underline-offset:3px; }
+  .skills__also{ margin-top:clamp(22px,3vh,34px); padding-top:22px; border-top:1px solid var(--line); display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+  .skills__also .label{ margin-right:6px; }
+  @media (max-width:1100px){ .skills__grid{ grid-template-columns:repeat(2,1fr); } }
+  @media (hover:none){
+    .skill:hover .skill__desc, .skill:hover .skill__used{ color:var(--muted); }
+    .skill:hover .skill__desc{ color:var(--ink-70); }
+    .skill:hover .tag--core{ background:var(--ink); color:var(--paper); border-color:var(--ink); }
+  }
 
   /* ============================================================
      SERVICES
@@ -960,35 +981,66 @@
   <div class="wrap">
     <div class="shead" data-reveal>
       <h2 class="shead__title">Skills &amp; Stack</h2>
-      <span class="label">Tools I use — (05)</span>
+      <span class="label">What I work with — (06)</span>
+    </div>
+    <div class="skills__legend label" data-reveal>
+      <span><i class="dot dot--core"></i>Core — use daily</span>
+      <span><i class="dot"></i>Working knowledge</span>
     </div>
 
     <div class="skills__grid">
-      <div class="skill" data-reveal>
-        <span class="skill__no">01</span>
-        <h3 class="skill__name">Python &amp; Backend</h3>
-        <div class="skill__tags"><span class="tag">Python</span><span class="tag">Django</span><span class="tag">Django REST</span><span class="tag">REST APIs</span><span class="tag">Celery</span><span class="tag">Redis</span><span class="tag">SQL</span></div>
-      </div>
-      <div class="skill" data-reveal style="--d:80ms">
-        <span class="skill__no">02</span>
-        <h3 class="skill__name">AI / ML &amp; GenAI</h3>
-        <div class="skill__tags"><span class="tag">Scikit-learn</span><span class="tag">Pandas</span><span class="tag">NumPy</span><span class="tag">OpenAI</span><span class="tag">Claude</span><span class="tag">Gemini</span><span class="tag">RAG</span><span class="tag">ElevenLabs</span></div>
-      </div>
-      <div class="skill" data-reveal style="--d:160ms">
-        <span class="skill__no">03</span>
-        <h3 class="skill__name">Data &amp; Databases</h3>
-        <div class="skill__tags"><span class="tag">PostgreSQL</span><span class="tag">MySQL</span><span class="tag">BigQuery</span><span class="tag">GA4</span><span class="tag">ETL</span><span class="tag">Power BI</span><span class="tag">Looker Studio</span></div>
-      </div>
-      <div class="skill" data-reveal>
-        <span class="skill__no">04</span>
-        <h3 class="skill__name">Automation</h3>
-        <div class="skill__tags"><span class="tag">Selenium</span><span class="tag">BeautifulSoup</span><span class="tag">n8n</span><span class="tag">Apps Script</span><span class="tag">APScheduler</span><span class="tag">openpyxl</span><span class="tag">OCR</span></div>
-      </div>
-      <div class="skill" data-reveal style="--d:80ms">
-        <span class="skill__no">05</span>
-        <h3 class="skill__name">DevOps &amp; Frontend</h3>
-        <div class="skill__tags"><span class="tag">Docker</span><span class="tag">Git</span><span class="tag">GCP</span><span class="tag">React</span><span class="tag">Next.js</span><span class="tag">Streamlit</span><span class="tag">MinIO / S3</span></div>
-      </div>
+      <article class="skill" data-reveal>
+        <div class="skill__head"><span class="skill__no">01</span><span class="skill__count">8 tools</span></div>
+        <h3 class="skill__name">Backend &amp; APIs</h3>
+        <p class="skill__desc">REST APIs, multi-tenant backends and background job systems.</p>
+        <div class="skill__tags"><span class="tag tag--core">Python</span><span class="tag tag--core">SQL</span><span class="tag tag--core">Django</span><span class="tag tag--core">Django REST Framework</span><span class="tag">REST APIs</span><span class="tag">Celery</span><span class="tag">Redis</span><span class="tag">Ruby on Rails</span></div>
+        <p class="skill__used">Used in: <a href="project.html?p=worktrackzilla">WorkTrackZilla</a> · <a href="project.html?p=erp-data-automation-portal">ERP Portal</a> · <a href="project.html?p=ga4-paid-traffic-dashboard">GA4 Dashboard</a> · <a href="project.html?p=floatchat">FloatChat</a></p>
+      </article>
+
+      <article class="skill" data-reveal style="--d:80ms">
+        <div class="skill__head"><span class="skill__no">02</span><span class="skill__count">10 tools</span></div>
+        <h3 class="skill__name">Agentic AI &amp; LLMs</h3>
+        <p class="skill__desc">Multi-agent orchestration, tool calling and answers grounded in real data.</p>
+        <div class="skill__tags"><span class="tag tag--core">Multi-Agent Systems</span><span class="tag tag--core">RAG</span><span class="tag tag--core">OpenAI</span><span class="tag">Tool Calling</span><span class="tag">Claude</span><span class="tag">Gemini</span><span class="tag">Embeddings</span><span class="tag">pgvector</span><span class="tag">ElevenLabs</span><span class="tag">Vapi.ai</span></div>
+        <p class="skill__used">Used in: <a href="project.html?p=floatchat">FloatChat</a> · <a href="project.html?p=rag-voice-chat-system">RAG Voice Chat</a> · <a href="project.html?p=conversational-ai-data-analyst">AI Data Analyst</a></p>
+      </article>
+
+      <article class="skill" data-reveal style="--d:160ms">
+        <div class="skill__head"><span class="skill__no">03</span><span class="skill__count">7 tools</span></div>
+        <h3 class="skill__name">Data Science &amp; ML</h3>
+        <p class="skill__desc">Exploring, testing and modelling data to find what actually matters.</p>
+        <div class="skill__tags"><span class="tag tag--core">Pandas</span><span class="tag tag--core">NumPy</span><span class="tag tag--core">Scikit-learn</span><span class="tag">Statistical Analysis</span><span class="tag">A/B Testing</span><span class="tag">EDA</span><span class="tag">Jupyter</span></div>
+        <p class="skill__used">Used in: <a href="project.html?p=conversational-ai-data-analyst">AI Data Analyst</a> · <a href="project.html?p=ga4-paid-traffic-dashboard">GA4 Dashboard</a></p>
+      </article>
+
+      <article class="skill" data-reveal>
+        <div class="skill__head"><span class="skill__no">04</span><span class="skill__count">7 tools</span></div>
+        <h3 class="skill__name">Data Engineering &amp; Databases</h3>
+        <p class="skill__desc">Pipelines and databases that reports and AI can rely on.</p>
+        <div class="skill__tags"><span class="tag tag--core">PostgreSQL</span><span class="tag tag--core">BigQuery</span><span class="tag tag--core">ETL Pipelines</span><span class="tag">MySQL</span><span class="tag">SQLite</span><span class="tag">GA4</span><span class="tag">Google Ads API</span></div>
+        <p class="skill__used">Used in: <a href="project.html?p=ga4-paid-traffic-dashboard">GA4 Dashboard</a> · <a href="project.html?p=erp-data-automation-portal">ERP Portal</a> · <a href="project.html?p=floatchat">FloatChat</a></p>
+      </article>
+
+      <article class="skill" data-reveal style="--d:80ms">
+        <div class="skill__head"><span class="skill__no">05</span><span class="skill__count">9 tools</span></div>
+        <h3 class="skill__name">Automation &amp; Scraping</h3>
+        <p class="skill__desc">Replacing repetitive manual work with reliable code and workflows.</p>
+        <div class="skill__tags"><span class="tag tag--core">Selenium</span><span class="tag tag--core">n8n</span><span class="tag">BeautifulSoup</span><span class="tag">Apps Script</span><span class="tag">APScheduler</span><span class="tag">openpyxl</span><span class="tag">PyMuPDF</span><span class="tag">OpenCV</span><span class="tag">Tesseract OCR</span></div>
+        <p class="skill__used">Used in: <a href="project.html?p=selenium-automation-framework">Selenium Framework</a> · <a href="project.html?p=medical-data-extraction">Medical OCR</a> · <a href="project.html?p=erp-data-automation-portal">ERP Portal</a></p>
+      </article>
+
+      <article class="skill" data-reveal style="--d:160ms">
+        <div class="skill__head"><span class="skill__no">06</span><span class="skill__count">7 tools</span></div>
+        <h3 class="skill__name">BI &amp; Visualization</h3>
+        <p class="skill__desc">Dashboards and reports that leadership actually uses.</p>
+        <div class="skill__tags"><span class="tag tag--core">Power BI</span><span class="tag tag--core">Advanced Excel</span><span class="tag">DAX</span><span class="tag">Looker Studio</span><span class="tag">Plotly</span><span class="tag">Matplotlib</span><span class="tag">Seaborn</span></div>
+        <p class="skill__used">Used in: <a href="project.html?p=atliq-grand-bi-dashboard">Atliq Grand</a> · <a href="project.html?p=ga4-paid-traffic-dashboard">GA4 Dashboard</a></p>
+      </article>
+    </div>
+
+    <div class="skills__also" data-reveal>
+      <span class="label">Also work with</span>
+      <span class="tag">Docker</span><span class="tag">Git &amp; GitHub</span><span class="tag">GCP</span><span class="tag">MinIO / S3</span><span class="tag">React</span><span class="tag">Next.js</span><span class="tag">Electron</span><span class="tag">Streamlit</span><span class="tag">Agile / Scrum</span>
     </div>
   </div>
 </section>
