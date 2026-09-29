@@ -106,6 +106,36 @@
   .impact__n{ font-size:clamp(2rem,3.6vw,3.2rem); font-weight:900; letter-spacing:-.04em; line-height:1; }
   .impact__l{ font-family:var(--mono); font-size:12px; text-transform:uppercase; color:rgba(244,242,238,.65); }
 
+  /* ---------- how it works (flow) ---------- */
+  .flow{ display:grid; max-width:76ch; }
+  .flow__step{ display:grid; grid-template-columns:56px 1fr; gap:16px; padding-block:18px; border-top:1px solid var(--line); }
+  .flow__step:last-child{ border-bottom:1px solid var(--line); }
+  .flow__n{ width:40px; height:40px; border-radius:50%; background:var(--ink); color:var(--paper); display:grid; place-items:center; font-family:var(--mono); font-size:12px; }
+  .flow__t{ font-weight:700; font-size:clamp(1.05rem,1.4vw,1.2rem); letter-spacing:-.01em; }
+  .flow__d{ color:var(--ink-70); margin-top:4px; font-size:clamp(.95rem,1.2vw,1.05rem); }
+
+  /* ---------- key features ---------- */
+  .feat{ display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:14px; }
+  .feat__card{ background:var(--paper-2); border:1px solid var(--line-2); border-radius:18px; padding:20px 22px; transition:transform .4s var(--ease), border-color .3s var(--ease); }
+  .feat__card:hover{ transform:translateY(-3px); border-color:var(--ink); }
+  .feat__t{ font-weight:700; font-size:1.05rem; letter-spacing:-.01em; }
+  .feat__d{ color:var(--ink-70); font-size:.95rem; margin-top:6px; line-height:1.5; }
+
+  /* ---------- challenges & solutions ---------- */
+  .chal{ display:grid; gap:14px; }
+  .chal__row{ display:grid; grid-template-columns:1fr 1fr; border:1px solid var(--line-2); border-radius:18px; overflow:hidden; }
+  .chal__c, .chal__s{ padding:18px 22px; font-size:clamp(.95rem,1.2vw,1.05rem); line-height:1.5; }
+  .chal__c{ background:var(--paper-2); color:var(--ink-70); }
+  .chal__s{ background:var(--ink); color:var(--paper); }
+  .chal__k{ display:block; font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.04em; opacity:.6; margin-bottom:6px; }
+  @media (max-width:760px){
+    .flow__step{ grid-template-columns:44px 1fr; gap:12px; }
+    .flow__n{ width:34px; height:34px; font-size:11px; }
+    .chal__row{ grid-template-columns:1fr; }
+    .feat{ grid-template-columns:1fr; }
+  }
+  @media (hover:none){ .feat__card:hover{ transform:none; border-color:var(--line-2); } }
+
   /* ---------- next project ---------- */
   .next{ display:block; border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding-block:clamp(40px,8vh,90px); transition:background .4s var(--ease), color .4s var(--ease); }
   .next:hover{ background:var(--ink); color:var(--paper); }
@@ -353,6 +383,215 @@ const PROJECTS = [
 const ORDER = ['floatchat','worktrackzilla','rag-voice-chat-system','conversational-ai-data-analyst','selenium-automation-framework','erp-data-automation-portal','medical-data-extraction','ga4-paid-traffic-dashboard','atliq-grand-bi-dashboard'];
 PROJECTS.sort((a,b) => ORDER.indexOf(a.slug) - ORDER.indexOf(b.slug));
 
+/* =====================================================================
+   EXTRA CASE-STUDY CONTENT — role, how it works, features, challenges.
+   Edit freely; any field you delete simply won't be shown.
+   ===================================================================== */
+const EXTRA = {
+  'floatchat':{
+    role:'AI integration & platform setup',
+    flow:[
+      {t:'A customer message arrives', d:'A customer writes in on any channel — live chat, email, WhatsApp, social or SMS — and the conversation sits in the pending (bot) state.'},
+      {t:'The listener queues a job', d:'CaptainListener checks that the inbox has an AI assistant attached and queues the reply job on Sidekiq.'},
+      {t:'The orchestrator decides', d:'The orchestrator assistant reads up to 30 messages of history and either answers or hands off to the right scenario agent.'},
+      {t:'Agents use tools', d:'Agents call tools such as faq_lookup (pgvector semantic search), add labels, update priority or leave private notes for the team.'},
+      {t:'Reply or human handoff', d:'The answer is posted to the customer — or the chat leaves bot mode, gets an activity note and is auto-assigned to an agent with free capacity.'},
+      {t:'Learning from resolved chats', d:'After a conversation is resolved, a job mines it for new FAQ entries, saved as pending for review and de-duplicated against approved ones.'}
+    ],
+    features:[
+      {t:'Omnichannel inbox', d:'Chat, email, Facebook, Instagram, X, WhatsApp, Telegram, Line and SMS in one place.'},
+      {t:'AI auto-replies', d:'Answers routine questions from the knowledge base on any inbox with an assistant.'},
+      {t:'Safe human handoff', d:'Hands over to a person when the AI can\'t help, with an activity note and auto-assignment.'},
+      {t:'Self-learning FAQs', d:'Turns resolved conversations into reviewed, de-duplicated FAQ entries.'},
+      {t:'Copilot for agents', d:'Helps human agents search conversations, contacts and Help Center articles with 6 read-only tools.'},
+      {t:'One-click AI tasks', d:'Summarise a conversation, suggest replies, rewrite text and suggest labels.'},
+      {t:'Any LLM provider', d:'Model, provider and temperature set per assistant — OpenAI, Anthropic, Google, Mistral or DeepSeek.'}
+    ],
+    challenges:[
+      {c:'A slow or hanging LLM call could block the reply queue.', s:'Added an LLM timeout guard so slow model calls fail fast instead of stalling Sidekiq workers.'},
+      {c:'Job retries could post the same reply twice or repeat a tool action.', s:'Added a Redis run registry that tracks each run and prevents duplicate replies and repeated tool actions.'},
+      {c:'Long conversations push past model context limits and cost budgets.', s:'Truncated history and messages, and capped each run at 8 handoffs, 12 tool calls and 30 messages.'},
+      {c:'Hard to see what an agent did and why.', s:'Added a run logger that records every agent run for tracing and debugging.'}
+    ]
+  },
+  'worktrackzilla':{
+    role:'Architecture & full-stack development',
+    flow:[
+      {t:'Desktop agent captures activity', d:'An Electron app runs on employee machines and records work activity.'},
+      {t:'Tenant-scoped API', d:'Data is sent to the Django 5 backend, which scopes every record to its own organisation.'},
+      {t:'Background processing', d:'Celery workers backed by Redis handle heavy tasks away from the request path.'},
+      {t:'Storage', d:'Files go to MinIO / S3 object storage; structured data lives in PostgreSQL.'},
+      {t:'Manager dashboard', d:'Managers review team activity in the Next.js 15 dashboard.'}
+    ],
+    features:[
+      {t:'Multi-tenant isolation', d:'Many organisations on one platform, each seeing only its own data.'},
+      {t:'Desktop tracking agent', d:'Cross-platform Electron app for employees.'},
+      {t:'Manager dashboard', d:'Next.js 15 web app for reviewing activity.'},
+      {t:'Async jobs', d:'Celery + Redis keep the API fast.'},
+      {t:'Object storage', d:'MinIO / S3 for files and captures.'},
+      {t:'Containerised', d:'The whole stack runs in Docker.'}
+    ],
+    challenges:[
+      {c:'Keeping each organisation\'s data separate in one shared platform.', s:'Designed tenant-scoped data access in the Django backend so every query is limited to its organisation.'},
+      {c:'Heavy processing slowing down API responses.', s:'Moved long-running work to Celery workers backed by Redis.'},
+      {c:'Storing large files without bloating the database.', s:'Used MinIO / S3 object storage and kept only references in PostgreSQL.'}
+    ]
+  },
+  'rag-voice-chat-system':{
+    role:'RAG pipeline & voice integration',
+    flow:[
+      {t:'Prepare brand knowledge', d:'Each client brand\'s own content becomes the chatbot\'s knowledge source.'},
+      {t:'Retrieve', d:'For every question, the most relevant passages are retrieved from that brand\'s content.'},
+      {t:'Generate a grounded answer', d:'The LLM answers using only the retrieved passages.'},
+      {t:'Listen & speak', d:'Real-time transcription turns speech into text; ElevenLabs turns answers into natural voice.'},
+      {t:'Deploy per brand', d:'The same stack is configured and deployed for each client brand.'}
+    ],
+    features:[
+      {t:'Grounded answers', d:'Replies come from the brand\'s own content, not generic model knowledge.'},
+      {t:'Natural voice', d:'ElevenLabs voice output.'},
+      {t:'Real-time transcription', d:'Users can talk instead of type.'},
+      {t:'Multi-brand', d:'10+ chatbots running for 8+ client brands.'},
+      {t:'Voice outreach', d:'Vapi.ai configured for outbound calls across 4 countries.'}
+    ],
+    challenges:[
+      {c:'Generic LLM answers that don\'t match a brand\'s real facts.', s:'Grounded every answer in retrieved brand content with RAG.'},
+      {c:'Serving many brands without rebuilding a bot each time.', s:'Built one reusable stack configured per brand — now behind 10+ chatbots.'}
+    ]
+  },
+  'conversational-ai-data-analyst':{
+    role:'Design & development',
+    flow:[
+      {t:'Upload', d:'The user uploads a CSV or Excel file.'},
+      {t:'Profile', d:'The app profiles the data automatically — types, missing values and summary stats.'},
+      {t:'Ask in plain English', d:'The user types a question like they would to a colleague.'},
+      {t:'Analyse', d:'OpenAI or Gemini turns the question into Pandas analysis, including correlation and outlier checks.'},
+      {t:'Visualise & export', d:'Results appear as Plotly / Matplotlib charts and can be exported as a Markdown report.'}
+    ],
+    features:[
+      {t:'Plain-English questions', d:'No code needed to explore a dataset.'},
+      {t:'Auto data profiling', d:'Instant overview of any uploaded file.'},
+      {t:'Correlation & outliers', d:'Built-in statistical checks with Scikit-learn.'},
+      {t:'Interactive charts', d:'Plotly and Matplotlib visuals.'},
+      {t:'Report export', d:'One-click Markdown reports.'},
+      {t:'Two LLM providers', d:'Works with OpenAI and Google Gemini.'}
+    ],
+    challenges:[
+      {c:'Business users couldn\'t write Pandas code for quick questions.', s:'LLMs translate plain-English questions into analysis automatically.'},
+      {c:'Uploaded files arrive messy, with mixed types and gaps.', s:'Automatic profiling surfaces column types, missing values and outliers before any analysis.'}
+    ]
+  },
+  'selenium-automation-framework':{
+    role:'Framework design & development',
+    flow:[
+      {t:'Define the platform', d:'Each new website gets a small configuration and parser instead of a new script.'},
+      {t:'Rotate proxies', d:'Requests go out through rotating proxies to reduce blocking.'},
+      {t:'Automate the browser', d:'Selenium navigates the site and collects the required data.'},
+      {t:'Parse', d:'Pages are parsed into clean, structured rows.'},
+      {t:'Feed reporting', d:'Collected data flows into Python scripts that replace manual reporting.'}
+    ],
+    features:[
+      {t:'Reusable core', d:'One framework, many websites.'},
+      {t:'Proxy rotation', d:'Built in, not bolted on.'},
+      {t:'15+ platforms', d:'Covered by the same codebase.'},
+      {t:'Report automation', d:'Replaces repetitive manual collection and reporting.'}
+    ],
+    challenges:[
+      {c:'Websites blocking repeated automated requests.', s:'Built-in proxy rotation, reaching an 85% success rate across 15+ platforms.'},
+      {c:'One-off scripts breaking and being rewritten for every site.', s:'A shared framework where each new platform only needs a small config and parser.'}
+    ]
+  },
+  'erp-data-automation-portal':{
+    role:'Design & development (in-house)',
+    flow:[
+      {t:'Daily exports', d:'The ERP and PPC systems produce Excel exports every day.'},
+      {t:'Parse', d:'The openpyxl parser library reads each export — dispatch, lead time, MPS / MTO and forecast demand.'},
+      {t:'Store', d:'Parsed data is saved into structured PostgreSQL models through Django REST Framework.'},
+      {t:'View', d:'Teams use the React portal instead of passing spreadsheets around.'},
+      {t:'Report', d:'Recurring production and dispatch reports are generated automatically with Google Apps Script.'}
+    ],
+    features:[
+      {t:'Reusable parser library', d:'One library for every ERP / PPC export type.'},
+      {t:'REST API', d:'Django REST Framework over PostgreSQL.'},
+      {t:'Internal portal', d:'React front-end for the operations team.'},
+      {t:'Automated reports', d:'Apps Script handles recurring reports.'}
+    ],
+    challenges:[
+      {c:'Every export type has its own Excel layout.', s:'Wrote a reusable parser library that maps each export into a consistent data model.'},
+      {c:'Daily manual spreadsheet handling.', s:'Replaced it with a repeatable ingestion pipeline and automated reports.'}
+    ]
+  },
+  'medical-data-extraction':{
+    role:'Design & development',
+    flow:[
+      {t:'Load documents', d:'PyMuPDF extracts text and page images from PDFs.'},
+      {t:'Clean images', d:'OpenCV pre-processes scanned pages to improve readability.'},
+      {t:'OCR', d:'pytesseract reads text from the cleaned images.'},
+      {t:'Parse', d:'Text — and HTML sources via BeautifulSoup4 — is mapped into structured fields.'},
+      {t:'Output', d:'Structured records are ready for storage, replacing manual typing.'}
+    ],
+    features:[
+      {t:'Digital & scanned PDFs', d:'Handles both text PDFs and image scans.'},
+      {t:'Image pre-processing', d:'OpenCV clean-up before OCR.'},
+      {t:'HTML parsing', d:'BeautifulSoup4 for web sources.'},
+      {t:'Structured output', d:'Clean fields instead of raw text.'}
+    ],
+    challenges:[
+      {c:'Scanned pages give poor OCR results.', s:'Pre-processed images with OpenCV before OCR, reaching 95% extraction accuracy.'},
+      {c:'Data arrives from mixed sources — PDFs and HTML.', s:'Combined PyMuPDF and BeautifulSoup4 in one pipeline.'}
+    ]
+  },
+  'ga4-paid-traffic-dashboard':{
+    role:'Design & development',
+    flow:[
+      {t:'GA4 data in BigQuery', d:'GA4 events are exported daily into date-partitioned BigQuery tables.'},
+      {t:'Pick the date range', d:'Parameterised table IDs select the right partitions for any reporting window.'},
+      {t:'Pull ad spend', d:'Campaign spend is fetched from the Google Ads API.'},
+      {t:'Join & compute', d:'Events and spend are combined to measure performance per campaign.'},
+      {t:'Serve & schedule', d:'Results are served via Django REST Framework and emailed on a schedule by APScheduler.'}
+    ],
+    features:[
+      {t:'Date-partitioned queries', d:'Efficient BigQuery access for any window.'},
+      {t:'Spend vs results', d:'Google Ads cost matched to GA4 behaviour.'},
+      {t:'REST API', d:'Django REST Framework + PostgreSQL.'},
+      {t:'Scheduled reports', d:'Automatic email delivery.'}
+    ],
+    challenges:[
+      {c:'Querying GA4\'s daily partitioned tables for any date range.', s:'Parameterised the GA4 table IDs so the right partitions are selected automatically.'},
+      {c:'Unreliable tracking between ad clicks and GA4 sessions.', s:'Validated GCLID and UTM tracking with statistical analysis and A/B testing, reaching 100% data accuracy.'}
+    ]
+  },
+  'atliq-grand-bi-dashboard':{
+    role:'Data modelling & dashboard design',
+    flow:[
+      {t:'Load', d:'Hotel booking and revenue data is loaded into Power BI.'},
+      {t:'Model', d:'Tables are connected in a clean data model.'},
+      {t:'Measure', d:'DAX measures calculate revenue, occupancy and other hospitality KPIs.'},
+      {t:'Visualise', d:'An interactive dashboard with filters by property, city and period.'}
+    ],
+    features:[
+      {t:'KPI cards', d:'Headline revenue and occupancy numbers.'},
+      {t:'Interactive filters', d:'Slice by property, city and period.'},
+      {t:'5+ revenue streams', d:'All in one view.'}
+    ],
+    challenges:[
+      {c:'Revenue spread across many streams and properties.', s:'Built one data model and DAX measures that roll everything into a single set of KPIs.'}
+    ]
+  }
+};
+PROJECTS.forEach(p => Object.assign(p, EXTRA[p.slug] || {}));
+
+/* builds the numbered case-study sections for a project */
+function sections(p){
+  const S = [];
+  S.push(['The problem', `<p>${p.problem}</p>`]);
+  if (p.flow) S.push(['How it works', `<div class="flow">${p.flow.map((f,i)=>`<div class="flow__step"><span class="flow__n">${String(i+1).padStart(2,'0')}</span><div><p class="flow__t">${f.t}</p><p class="flow__d">${f.d}</p></div></div>`).join('')}</div>`]);
+  S.push(['What I built', `<ul class="list">${p.built.map(b=>`<li>${b}</li>`).join('')}</ul>`]);
+  if (p.features) S.push(['Key features', `<div class="feat">${p.features.map(f=>`<div class="feat__card"><p class="feat__t">${f.t}</p><p class="feat__d">${f.d}</p></div>`).join('')}</div>`]);
+  if (p.challenges) S.push(['Challenges &amp; solutions', `<div class="chal">${p.challenges.map(c=>`<div class="chal__row"><div class="chal__c"><span class="chal__k">Challenge</span>${c.c}</div><div class="chal__s"><span class="chal__k">Solution</span>${c.s}</div></div>`).join('')}</div>`]);
+  S.push(['Impact', `<div class="impact">${p.impact.map(m=>`<div class="impact__card"><span class="impact__n">${m.n}</span><span class="impact__l">${m.l}</span></div>`).join('')}</div>`]);
+  return S.map((s,i)=>`<div class="block" data-reveal><h2 class="block__h"><span class="label">${String(i+1).padStart(2,'0')}</span>${s[0]}</h2>${s[1]}</div>`).join('');
+}
+
 /* ---------- render ---------- */
 const BASE = 'https://protfolio-dharmike-baria.vercel.app/';
 const app = document.getElementById('app');
@@ -405,16 +644,10 @@ if (idx === -1){
           <div class="meta__row"><p class="label">Where</p><p class="meta__val">${p.where}</p></div>
           <div class="meta__row"><p class="label">Year</p><p class="meta__val">${p.year}</p></div>
           <div class="meta__row"><p class="label">Category</p><p class="meta__val">${p.type}</p></div>
-          <div class="meta__row"><p class="label">Built by</p><p class="meta__val">Dharmike Baria</p></div>
+          <div class="meta__row"><p class="label">My role</p><p class="meta__val">${p.role || 'Dharmike Baria'}</p></div>
           <div class="meta__links">${links}</div>
         </aside>
-        <div>
-          <div class="block" data-reveal><h2 class="block__h"><span class="label">01</span>The problem</h2><p>${p.problem}</p></div>
-          <div class="block" data-reveal><h2 class="block__h"><span class="label">02</span>What I built</h2><ul class="list">${p.built.map(b=>`<li>${b}</li>`).join('')}</ul></div>
-          <div class="block" data-reveal><h2 class="block__h"><span class="label">03</span>Impact</h2>
-            <div class="impact">${p.impact.map(m=>`<div class="impact__card"><span class="impact__n">${m.n}</span><span class="impact__l">${m.l}</span></div>`).join('')}</div>
-          </div>
-        </div>
+        <div>${sections(p)}</div>
       </div></section>
 
       <a class="next" href="project.html?p=${next.slug}"><div class="wrap">
