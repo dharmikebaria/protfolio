@@ -1048,15 +1048,15 @@
     </div>
 
     <div class="work__grid">
-      <!-- each card opens its own case-study page (project.html?p=...) -->
-      <a href="project.html?p=ga4-paid-traffic-dashboard" class="card" data-reveal>
+      <!-- each card opens its own case-study page (project.html?p=...) — engineering projects first, analytics last -->
+      <a href="project.html?p=floatchat" class="card" data-reveal>
         <div class="card__media">
-          <span class="card__badge">Django · BigQuery — 2025</span>
+          <span class="card__badge">Rails · Agentic AI — 2026</span>
           <span class="card__go">↗</span>
-          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1100&h=825&fit=crop" alt="GA4 Paid Traffic Dashboard — BigQuery BI tool" loading="lazy" />
+          <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?q=80&w=1100&h=825&fit=crop" alt="FloatChat agentic AI customer support platform" loading="lazy" onerror="this.style.display='none'" />
         </div>
-        <div class="card__foot"><h3 class="card__name">GA4 Paid Traffic Dashboard</h3><span class="card__type">BI / Analytics</span></div>
-        <p class="card__desc">BigQuery-backed BI tool that cross-references GA4 events with Google Ads spend, using date-partitioned tables and scheduled APScheduler reports.</p>
+        <div class="card__foot"><h3 class="card__name">FloatChat</h3><span class="card__type">Agentic AI</span></div>
+        <p class="card__desc">Self-hosted omnichannel support platform built on Chatwoot, with multi-agent AI that answers from a pgvector FAQ base, hands off to humans, and learns new FAQs from resolved chats.</p>
       </a>
 
       <a href="project.html?p=worktrackzilla" class="card" data-reveal style="--d:90ms">
@@ -1069,27 +1069,7 @@
         <p class="card__desc">Employee monitoring SaaS with a Django 5 API, Next.js 15 dashboard, Electron desktop agent, Celery + Redis jobs, and MinIO/S3 storage.</p>
       </a>
 
-      <a href="project.html?p=conversational-ai-data-analyst" class="card" data-reveal style="--d:60ms">
-        <div class="card__media">
-          <span class="card__badge">Streamlit · LLM — 2025</span>
-          <span class="card__go">↗</span>
-          <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=1100&h=825&fit=crop" alt="Conversational AI Data Analyst app" loading="lazy" />
-        </div>
-        <div class="card__foot"><h3 class="card__name">Conversational AI Data Analyst</h3><span class="card__type">Generative AI</span></div>
-        <p class="card__desc">Upload a CSV or Excel file and ask questions in plain English to get profiling, correlation and outlier analysis, charts, and exportable reports.</p>
-      </a>
-
-      <a href="project.html?p=medical-data-extraction" class="card" data-reveal style="--d:120ms">
-        <div class="card__media">
-          <span class="card__badge">Python · OCR — 2025</span>
-          <span class="card__go">↗</span>
-          <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=1100&h=825&fit=crop" alt="Medical Data Extraction OCR pipeline" loading="lazy" />
-        </div>
-        <div class="card__foot"><h3 class="card__name">Medical Data Extraction</h3><span class="card__type">OCR / ML</span></div>
-        <p class="card__desc">OCR pipeline with PyMuPDF, OpenCV, and pytesseract that extracts structured data from PDFs at 95% accuracy, cutting manual entry time by 80%.</p>
-      </a>
-
-      <a href="project.html?p=rag-voice-chat-system" class="card" data-reveal>
+      <a href="project.html?p=rag-voice-chat-system" class="card" data-reveal style="--d:60ms">
         <div class="card__media">
           <span class="card__badge">RAG · Voice AI — 2025</span>
           <span class="card__go">↗</span>
@@ -1099,7 +1079,17 @@
         <p class="card__desc">Production retrieval-augmented chat with ElevenLabs voice and real-time transcription — the stack behind 10+ chatbots for 8+ client brands.</p>
       </a>
 
-      <a href="project.html?p=selenium-automation-framework" class="card" data-reveal style="--d:90ms">
+      <a href="project.html?p=conversational-ai-data-analyst" class="card" data-reveal style="--d:120ms">
+        <div class="card__media">
+          <span class="card__badge">Streamlit · LLM — 2025</span>
+          <span class="card__go">↗</span>
+          <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=1100&h=825&fit=crop" alt="Conversational AI Data Analyst app" loading="lazy" />
+        </div>
+        <div class="card__foot"><h3 class="card__name">Conversational AI Data Analyst</h3><span class="card__type">Generative AI</span></div>
+        <p class="card__desc">Upload a CSV or Excel file and ask questions in plain English to get profiling, correlation and outlier analysis, charts, and exportable reports.</p>
+      </a>
+
+      <a href="project.html?p=selenium-automation-framework" class="card" data-reveal>
         <div class="card__media">
           <span class="card__badge">Python · Selenium — 2025</span>
           <span class="card__go">↗</span>
@@ -1109,7 +1099,7 @@
         <p class="card__desc">Reusable scraping framework with proxy rotation that collects data from 15+ platforms at an 85% success rate.</p>
       </a>
 
-      <a href="project.html?p=erp-data-automation-portal" class="card" data-reveal style="--d:60ms">
+      <a href="project.html?p=erp-data-automation-portal" class="card" data-reveal style="--d:90ms">
         <div class="card__media">
           <span class="card__badge">Django · PostgreSQL — 2026</span>
           <span class="card__go">↗</span>
@@ -1119,7 +1109,27 @@
         <p class="card__desc">Internal portal at Jolly Clamps with an openpyxl parser library that turns daily ERP and production-planning Excel exports into structured data models.</p>
       </a>
 
-      <a href="project.html?p=atliq-grand-bi-dashboard" class="card" data-reveal style="--d:120ms">
+      <a href="project.html?p=medical-data-extraction" class="card" data-reveal style="--d:60ms">
+        <div class="card__media">
+          <span class="card__badge">Python · OCR — 2025</span>
+          <span class="card__go">↗</span>
+          <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?q=80&w=1100&h=825&fit=crop" alt="Medical Data Extraction OCR pipeline" loading="lazy" />
+        </div>
+        <div class="card__foot"><h3 class="card__name">Medical Data Extraction</h3><span class="card__type">OCR / ML</span></div>
+        <p class="card__desc">OCR pipeline with PyMuPDF, OpenCV, and pytesseract that extracts structured data from PDFs at 95% accuracy, cutting manual entry time by 80%.</p>
+      </a>
+
+      <a href="project.html?p=ga4-paid-traffic-dashboard" class="card" data-reveal style="--d:120ms">
+        <div class="card__media">
+          <span class="card__badge">Django · BigQuery — 2025</span>
+          <span class="card__go">↗</span>
+          <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1100&h=825&fit=crop" alt="GA4 Paid Traffic Dashboard — BigQuery BI tool" loading="lazy" />
+        </div>
+        <div class="card__foot"><h3 class="card__name">GA4 Paid Traffic Dashboard</h3><span class="card__type">BI / Analytics</span></div>
+        <p class="card__desc">BigQuery-backed BI tool that cross-references GA4 events with Google Ads spend, using date-partitioned tables and scheduled APScheduler reports.</p>
+      </a>
+
+      <a href="project.html?p=atliq-grand-bi-dashboard" class="card" data-reveal>
         <div class="card__media">
           <span class="card__badge">Power BI · DAX — 2025</span>
           <span class="card__go">↗</span>
