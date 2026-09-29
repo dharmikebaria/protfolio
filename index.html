@@ -456,6 +456,59 @@
   }
   .srow:hover .tag{ border-color:var(--ink); }
 
+  /* ---------- expandable service rows ---------- */
+  .svc{ border-bottom:1px solid var(--line); }
+  .svc > summary{
+    list-style:none; cursor:pointer;
+    display:grid; grid-template-columns:auto 1fr auto auto; align-items:center;
+    gap:clamp(16px,4vw,60px); padding-block:clamp(26px,4vh,46px);
+    transition:padding-left .5s var(--ease);
+  }
+  .svc > summary::-webkit-details-marker{ display:none; }
+  .svc > summary:hover{ padding-left:clamp(8px,2vw,28px); }
+  .svc:hover .tag{ border-color:var(--ink); }
+  .svc__desc{ color:var(--ink-70); font-size:clamp(.95rem,1.2vw,1.08rem); font-weight:500; margin-top:8px; max-width:56ch; line-height:1.45; }
+  .svc__icon{
+    width:44px; height:44px; flex:none; border-radius:50%; border:1px solid var(--line-2);
+    display:grid; place-items:center; font-size:22px; line-height:1;
+    transition:transform .45s var(--ease), background .3s var(--ease), color .3s var(--ease), border-color .3s var(--ease);
+  }
+  .svc:hover .svc__icon{ border-color:var(--ink); }
+  .svc[open] .svc__icon{ transform:rotate(45deg); background:var(--ink); color:var(--paper); border-color:var(--ink); }
+  .svc__body{
+    display:grid; grid-template-columns:1.4fr 1fr; gap:clamp(20px,4vw,60px);
+    padding:0 0 clamp(28px,4vh,44px) clamp(40px,6vw,96px);
+  }
+  .svc[open] .svc__body{ animation:svcIn .55s var(--ease); }
+  @keyframes svcIn{ from{ opacity:0; transform:translateY(-10px); } to{ opacity:1; transform:none; } }
+  .svc__h{ margin-bottom:12px; }
+  .svc__list{ list-style:none; display:grid; gap:10px; color:var(--ink-70); }
+  .svc__list li{ position:relative; padding-left:1.6em; }
+  .svc__list li::before{ content:"→"; position:absolute; left:0; color:var(--ink); font-family:var(--mono); }
+  .svc__side{ display:flex; flex-direction:column; align-items:flex-start; gap:18px; }
+  .svc__proof{ font-weight:600; line-height:1.7; }
+  .svc__proof a{ text-decoration:underline; text-underline-offset:3px; }
+  .svc__proof a:hover{ opacity:.7; }
+
+  .svc-strip{
+    margin-top:clamp(30px,5vh,56px);
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px;
+    background:var(--ink); color:var(--paper); border-radius:24px; padding:clamp(22px,3vw,36px);
+  }
+  .svc-strip__t{ font-size:clamp(1.3rem,2.4vw,2rem); font-weight:800; letter-spacing:-.02em; line-height:1.1; }
+  .svc-strip__pills{ display:flex; gap:8px; flex-wrap:wrap; margin-top:14px; }
+  .svc-strip .tag{ border-color:rgba(244,242,238,.3); }
+  .btn--light{ background:var(--paper); color:var(--ink); border-color:var(--paper); }
+  .btn--light:hover{ background:transparent; color:var(--paper); }
+
+  @media (max-width:900px){
+    .svc > summary{ grid-template-columns:auto 1fr auto; row-gap:14px; }
+    .svc .srow__tags{ grid-column:1 / -1; grid-row:2; justify-content:flex-start; }
+    .svc__icon{ grid-column:3; grid-row:1; }
+    .svc__body{ grid-template-columns:1fr; padding-left:0; }
+  }
+  @media (hover:none){ .svc > summary:hover{ padding-left:0; } }
+
   /* ============================================================
      WORK / PROJECTS
      ============================================================ */
@@ -1050,43 +1103,168 @@
   <div class="wrap">
     <div class="shead" data-reveal>
       <h2 class="shead__title">Services</h2>
-      <span class="label">What I do — (05)</span>
+      <span class="label">What I do — (06) · tap to expand</span>
     </div>
 
     <div data-reveal>
-      <div class="srow">
-        <span class="srow__no">01</span>
-        <h3 class="srow__name">Python &amp; Backend Development</h3>
-        <div class="srow__tags"><span class="tag">Django</span><span class="tag">PostgreSQL</span><span class="tag">REST APIs</span></div>
-      </div>
+      <details class="svc" open>
+        <summary>
+          <span class="srow__no">01</span>
+          <div><h3 class="srow__name">Python &amp; Backend Development</h3><p class="svc__desc">Fast, secure REST APIs and backends that grow from MVP to multi-tenant SaaS.</p></div>
+          <span class="srow__tags"><span class="tag">Django</span><span class="tag">PostgreSQL</span><span class="tag">REST APIs</span></span>
+          <span class="svc__icon" aria-hidden="true">+</span>
+        </summary>
+        <div class="svc__body">
+          <div><p class="label svc__h">What I deliver</p>
+            <ul class="svc__list">
+              <li>REST APIs built with Django REST Framework</li>
+              <li>Multi-tenant SaaS backends with isolated customer data</li>
+              <li>Background jobs and queues with Celery &amp; Redis</li>
+              <li>Clean PostgreSQL data models</li>
+              <li>Dockerised, deploy-ready setups</li>
+            </ul>
+          </div>
+          <div class="svc__side">
+            <div><p class="label svc__h">Proof</p><p class="svc__proof"><a href="project.html?p=worktrackzilla">WorkTrackZilla</a> · <a href="project.html?p=erp-data-automation-portal">ERP Portal</a></p></div>
+            <a href="#contact" class="btn" data-service="Python and backend development">Discuss this <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </details>
     </div>
-    <div data-reveal style="--d:80ms">
-      <div class="srow">
-        <span class="srow__no">02</span>
-        <h3 class="srow__name">AI &amp; LLM Development</h3>
-        <div class="srow__tags"><span class="tag">Generative AI</span><span class="tag">RAG</span><span class="tag">Multi-Agent</span></div>
-      </div>
+
+    <div data-reveal style="--d:60ms">
+      <details class="svc">
+        <summary>
+          <span class="srow__no">02</span>
+          <div><h3 class="srow__name">AI Agents &amp; LLM Apps</h3><p class="svc__desc">AI assistants that answer from your own data, use tools, and hand off to humans when needed.</p></div>
+          <span class="srow__tags"><span class="tag">Agentic AI</span><span class="tag">RAG</span><span class="tag">LLMs</span></span>
+          <span class="svc__icon" aria-hidden="true">+</span>
+        </summary>
+        <div class="svc__body">
+          <div><p class="label svc__h">What I deliver</p>
+            <ul class="svc__list">
+              <li>Multi-agent assistants with tool calling and human handoff</li>
+              <li>RAG chatbots grounded in your documents and website</li>
+              <li>Voice AI with ElevenLabs and Vapi.ai</li>
+              <li>LLM reporting that flags anomalies and sends summaries to Slack or WhatsApp</li>
+              <li>Works with OpenAI, Claude and Gemini</li>
+            </ul>
+          </div>
+          <div class="svc__side">
+            <div><p class="label svc__h">Proof</p><p class="svc__proof"><a href="project.html?p=floatchat">FloatChat</a> · <a href="project.html?p=rag-voice-chat-system">RAG Voice Chat</a> · <a href="project.html?p=conversational-ai-data-analyst">AI Data Analyst</a></p></div>
+            <a href="#contact" class="btn" data-service="AI agents and LLM apps">Discuss this <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </details>
     </div>
-    <div data-reveal style="--d:160ms">
-      <div class="srow">
-        <span class="srow__no">03</span>
-        <h3 class="srow__name">Automation &amp; Web Scraping</h3>
-        <div class="srow__tags"><span class="tag">Selenium</span><span class="tag">n8n</span><span class="tag">Apps Script</span></div>
-      </div>
+
+    <div data-reveal style="--d:120ms">
+      <details class="svc">
+        <summary>
+          <span class="srow__no">03</span>
+          <div><h3 class="srow__name">Automation &amp; Web Scraping</h3><p class="svc__desc">Turn hours of repetitive manual work into scripts and workflows that run on their own.</p></div>
+          <span class="srow__tags"><span class="tag">Selenium</span><span class="tag">n8n</span><span class="tag">Apps Script</span></span>
+          <span class="svc__icon" aria-hidden="true">+</span>
+        </summary>
+        <div class="svc__body">
+          <div><p class="label svc__h">What I deliver</p>
+            <ul class="svc__list">
+              <li>Selenium scrapers with proxy rotation</li>
+              <li>n8n workflows that connect your apps</li>
+              <li>Google Sheets &amp; Apps Script automation</li>
+              <li>Automated Excel and ERP reporting</li>
+              <li>OCR pipelines that pull data out of PDFs</li>
+            </ul>
+          </div>
+          <div class="svc__side">
+            <div><p class="label svc__h">Proof</p><p class="svc__proof"><a href="project.html?p=selenium-automation-framework">Selenium Framework</a> · <a href="project.html?p=medical-data-extraction">Medical OCR</a> · <a href="project.html?p=erp-data-automation-portal">ERP Portal</a></p></div>
+            <a href="#contact" class="btn" data-service="automation and web scraping">Discuss this <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </details>
     </div>
+
+    <div data-reveal style="--d:180ms">
+      <details class="svc">
+        <summary>
+          <span class="srow__no">04</span>
+          <div><h3 class="srow__name">Data Engineering &amp; ETL</h3><p class="svc__desc">Reliable pipelines that bring data from APIs and exports into one source you can trust.</p></div>
+          <span class="srow__tags"><span class="tag">ETL</span><span class="tag">BigQuery</span><span class="tag">PostgreSQL</span></span>
+          <span class="svc__icon" aria-hidden="true">+</span>
+        </summary>
+        <div class="svc__body">
+          <div><p class="label svc__h">What I deliver</p>
+            <ul class="svc__list">
+              <li>ETL pipelines into BigQuery and PostgreSQL</li>
+              <li>GA4 and Google Ads data integration</li>
+              <li>Scheduled jobs and automated email reports</li>
+              <li>Data cleaning, validation and reconciliation</li>
+            </ul>
+          </div>
+          <div class="svc__side">
+            <div><p class="label svc__h">Proof</p><p class="svc__proof"><a href="project.html?p=ga4-paid-traffic-dashboard">GA4 Dashboard</a> · <a href="project.html?p=erp-data-automation-portal">ERP Portal</a></p></div>
+            <a href="#contact" class="btn" data-service="data engineering and ETL">Discuss this <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </details>
+    </div>
+
     <div data-reveal style="--d:240ms">
-      <div class="srow">
-        <span class="srow__no">04</span>
-        <h3 class="srow__name">Machine Learning &amp; Data Science</h3>
-        <div class="srow__tags"><span class="tag">Scikit-learn</span><span class="tag">Predictive Modeling</span><span class="tag">Statistics</span></div>
-      </div>
+      <details class="svc">
+        <summary>
+          <span class="srow__no">05</span>
+          <div><h3 class="srow__name">Machine Learning &amp; Data Science</h3><p class="svc__desc">Analysis and models that turn raw data into predictions and clear decisions.</p></div>
+          <span class="srow__tags"><span class="tag">Scikit-learn</span><span class="tag">Pandas</span><span class="tag">Statistics</span></span>
+          <span class="svc__icon" aria-hidden="true">+</span>
+        </summary>
+        <div class="svc__body">
+          <div><p class="label svc__h">What I deliver</p>
+            <ul class="svc__list">
+              <li>Exploratory data analysis and data cleaning</li>
+              <li>Predictive models with Scikit-learn</li>
+              <li>Statistical analysis and A/B testing</li>
+              <li>Self-service analytics apps in plain English</li>
+            </ul>
+          </div>
+          <div class="svc__side">
+            <div><p class="label svc__h">Proof</p><p class="svc__proof"><a href="project.html?p=conversational-ai-data-analyst">AI Data Analyst</a> · <a href="project.html?p=ga4-paid-traffic-dashboard">GA4 Dashboard</a></p></div>
+            <a href="#contact" class="btn" data-service="machine learning and data science">Discuss this <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </details>
     </div>
-    <div data-reveal style="--d:320ms">
-      <div class="srow">
-        <span class="srow__no">05</span>
-        <h3 class="srow__name">Data Engineering &amp; BI</h3>
-        <div class="srow__tags"><span class="tag">ETL</span><span class="tag">BigQuery</span><span class="tag">Power BI</span></div>
+
+    <div data-reveal style="--d:300ms">
+      <details class="svc">
+        <summary>
+          <span class="srow__no">06</span>
+          <div><h3 class="srow__name">Data Analysis &amp; BI Dashboards</h3><p class="svc__desc">Dashboards and reports that show leadership what's working — and what isn't.</p></div>
+          <span class="srow__tags"><span class="tag">Power BI</span><span class="tag">SQL</span><span class="tag">Looker Studio</span></span>
+          <span class="svc__icon" aria-hidden="true">+</span>
+        </summary>
+        <div class="svc__body">
+          <div><p class="label svc__h">What I deliver</p>
+            <ul class="svc__list">
+              <li>Power BI (DAX) and Looker Studio dashboards</li>
+              <li>KPI and MIS reporting</li>
+              <li>Advanced Excel and Google Sheets reports</li>
+              <li>Weekly insight and anomaly reports for leadership</li>
+            </ul>
+          </div>
+          <div class="svc__side">
+            <div><p class="label svc__h">Proof</p><p class="svc__proof"><a href="project.html?p=atliq-grand-bi-dashboard">Atliq Grand</a> · <a href="project.html?p=ga4-paid-traffic-dashboard">GA4 Dashboard</a></p></div>
+            <a href="#contact" class="btn" data-service="data analysis and BI dashboards">Discuss this <span class="arr">↗</span></a>
+          </div>
+        </div>
+      </details>
+    </div>
+
+    <div class="svc-strip" data-reveal>
+      <div>
+        <p class="svc-strip__t">Need something that isn't listed?</p>
+        <div class="svc-strip__pills"><span class="tag">Full-time roles</span><span class="tag">Freelance projects</span><span class="tag">Remote-friendly · IST</span></div>
       </div>
+      <a href="#contact" class="btn btn--light" data-service="a project">Let's talk <span class="arr">↗</span></a>
     </div>
   </div>
 </section>
@@ -1505,6 +1683,17 @@
     }, { threshold:0.4 });
     counters.forEach(c => co.observe(c));
   }
+
+  /* ---------- services: "Discuss this" pre-fills the contact message ---------- */
+  document.querySelectorAll('[data-service]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const box = document.getElementById('cProject');
+      if (box && !box.value.trim()){
+        box.value = 'Hi Dharmike, I\'d like to discuss ' + btn.dataset.service + '. ';
+      }
+      setTimeout(() => box && box.focus({ preventScroll:true }), 700);
+    });
+  });
 
   /* ---------- contact form: sends to your email via FormSubmit (new) ---------- */
   const form = document.getElementById('form');
