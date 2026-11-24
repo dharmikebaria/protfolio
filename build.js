@@ -298,7 +298,7 @@ const blogPage = page({
       '@context': 'https://schema.org', '@type': 'BlogPosting', '@id': blogUrl + '#post',
       headline: 'TODO: Post title', description: 'TODO: same text as the meta description',
       url: blogUrl, mainEntityOfPage: blogUrl, image: OG_IMAGE,
-      datePublished: 'TODO: YYYY-MM-DD', dateModified: 'TODO: YYYY-MM-DD',
+      datePublished: 'TODO: YYYY-MM-DDT00:00:00+05:30', dateModified: 'TODO: YYYY-MM-DDT00:00:00+05:30',
       inLanguage: 'en-IN', keywords: 'TODO: comma, separated, topics',
       author: PERSON, publisher: PERSON, isPartOf: { '@id': SITE + '/#website' }
     },

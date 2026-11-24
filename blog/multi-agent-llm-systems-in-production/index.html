@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en-IN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<!-- Blog post, written by hand from blog/_template.html. Edit this file directly; run node build.js only to refresh sitemap.xml. -->
+<title>Multi-Agent LLM Systems in Production | Dharmike Baria</title>
+<meta name="description" content="Four safeguards that keep a multi-agent LLM support system reliable in production: timeouts, a run registry, hard limits and run logging." />
+<meta name="author" content="Dharmike Baria" />
+<meta name="robots" content="index, follow, max-image-preview:large" />
+<link rel="canonical" href="https://www.dharmikbaria.online/blog/multi-agent-llm-systems-in-production/" />
+<meta name="theme-color" content="#0A0A0A" />
+<link rel="icon" href="/favicon.ico" sizes="48x48" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
+<meta property="og:type" content="article" />
+<meta property="og:site_name" content="Dharmike Baria" />
+<meta property="og:title" content="Multi-Agent LLM Systems in Production | Dharmike Baria" />
+<meta property="og:description" content="Four safeguards that keep a multi-agent LLM support system reliable in production: timeouts, a run registry, hard limits and run logging." />
+<meta property="og:url" content="https://www.dharmikbaria.online/blog/multi-agent-llm-systems-in-production/" />
+<meta property="og:image" content="https://www.dharmikbaria.online/og-image.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Dharmike Baria, Python Developer and AI/ML Engineer in Mumbai" />
+<meta property="og:locale" content="en_IN" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Multi-Agent LLM Systems in Production | Dharmike Baria" />
+<meta name="twitter:description" content="Four safeguards that keep a multi-agent LLM support system reliable in production: timeouts, a run registry, hard limits and run logging." />
+<meta name="twitter:image" content="https://www.dharmikbaria.online/og-image.jpg" />
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "@id": "https://www.dharmikbaria.online/blog/multi-agent-llm-systems-in-production/#post",
+  "headline": "Multi-Agent LLM Systems in Production: Four Safeguards",
+  "description": "Four safeguards that keep a multi-agent LLM support system reliable in production: timeouts, a run registry, hard limits and run logging.",
+  "url": "https://www.dharmikbaria.online/blog/multi-agent-llm-systems-in-production/",
+  "mainEntityOfPage": "https://www.dharmikbaria.online/blog/multi-agent-llm-systems-in-production/",
+  "image": "https://www.dharmikbaria.online/og-image.jpg",
+  "datePublished": "2026-11-24T00:00:00+05:30",
+  "dateModified": "2026-11-24T00:00:00+05:30",
+  "inLanguage": "en-IN",
+  "keywords": "multi-agent systems, LLM, agentic AI, RAG, Sidekiq, Redis, production reliability",
+  "author": {
+    "@type": "Person",
+    "@id": "https://www.dharmikbaria.online/#person",
+    "name": "Dharmike Baria",
+    "url": "https://www.dharmikbaria.online/"
+  },
+  "publisher": {
+    "@type": "Person",
+    "@id": "https://www.dharmikbaria.online/#person",
+    "name": "Dharmike Baria",
+    "url": "https://www.dharmikbaria.online/"
+  },
+  "isPartOf": {
+    "@id": "https://www.dharmikbaria.online/#website"
+  }
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "https://www.dharmikbaria.online/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Multi-Agent LLM Systems in Production: Four Safeguards",
+      "item": "https://www.dharmikbaria.online/blog/multi-agent-llm-systems-in-production/"
+    }
+  ]
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+
+<style>
+  :root{
+    --paper:#F4F2EE; --paper-2:#ECE9E2; --ink:#0A0A0A; --ink-70:rgba(10,10,10,.70);
+    --muted:#6A6662; --line:rgba(10,10,10,.12); --line-2:rgba(10,10,10,.22);
+    --display:"Archivo", system-ui, sans-serif; --mono:"Space Mono", ui-monospace, monospace;
+    --pad:clamp(20px,5vw,64px); --max:1440px; --sec:clamp(72px,11vh,140px);
+    --ease:cubic-bezier(.16,.84,.3,1); --ease-2:cubic-bezier(.62,.05,.01,.99);
+  }
+  *{ margin:0; padding:0; box-sizing:border-box; }
+  html{ -webkit-text-size-adjust:100%; scroll-behavior:smooth; }
+  body{ font-family:var(--display); background:var(--paper); color:var(--ink); line-height:1.55; -webkit-font-smoothing:antialiased; overflow-x:hidden; }
+  img{ display:block; max-width:100%; }
+  .skip{ position:fixed; left:12px; top:-80px; z-index:10000; background:var(--ink); color:var(--paper); font-family:var(--mono); font-size:13px; padding:10px 14px; border-radius:10px; }
+  .skip:focus{ top:12px; }
+  a{ color:inherit; text-decoration:none; }
+  button{ font:inherit; color:inherit; background:none; border:none; cursor:pointer; }
+  ::selection{ background:var(--ink); color:var(--paper); }
+  :focus-visible{ outline:2px solid var(--ink); outline-offset:3px; }
+  .wrap{ width:100%; max-width:var(--max); margin-inline:auto; padding-inline:var(--pad); }
+  .label{ font-family:var(--mono); font-size:12px; letter-spacing:.04em; text-transform:uppercase; color:var(--muted); }
+  .mark{ font-family:var(--mono); font-size:clamp(11px,1.2vw,13px); text-transform:uppercase; letter-spacing:.02em; background:var(--ink); color:var(--paper); padding:.28em .55em; display:inline-block; }
+  .tag{ font-family:var(--mono); font-size:12px; text-transform:uppercase; letter-spacing:.02em; border:1px solid var(--line-2); border-radius:100px; padding:.45em .9em; white-space:nowrap; display:inline-block; }
+  .grain{ position:fixed; inset:0; z-index:9000; pointer-events:none; opacity:.045; mix-blend-mode:multiply;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+
+  /* ---------- menu (same as home) ---------- */
+  .menu{ position:fixed; top:clamp(16px,3vh,28px); left:50%; transform:translateX(-50%); z-index:1000; width:min(92vw,430px);
+    background:var(--ink); color:var(--paper); border-radius:26px; padding:8px; box-shadow:0 18px 50px rgba(10,10,10,.22); }
+  .menu__bar{ display:flex; align-items:center; justify-content:space-between; padding-left:18px; }
+  .menu__brand{ font-weight:800; font-size:clamp(18px,1.6vw,22px); letter-spacing:-.01em; }
+  .menu__toggle{ width:48px; height:48px; flex:none; border-radius:14px; background:var(--paper); color:var(--ink); display:grid; place-items:center; transition:transform .4s var(--ease); }
+  .menu__toggle:hover{ transform:translateY(-1px); }
+  .menu__toggle > span{ grid-area:1/1; line-height:1; transition:opacity .3s var(--ease), transform .35s var(--ease); }
+  .menu__dots{ font-size:24px; }
+  .menu__close{ font-size:20px; opacity:0; transform:rotate(-90deg) scale(.5); }
+  .menu.is-open .menu__dots{ opacity:0; transform:rotate(90deg) scale(.5); }
+  .menu.is-open .menu__close{ opacity:1; transform:none; }
+  .menu__panel{ display:grid; justify-items:start; gap:8px; overflow:hidden; max-height:0; opacity:0; padding:0 8px;
+    transition:max-height .45s var(--ease), opacity .3s var(--ease), padding .45s var(--ease); }
+  .menu.is-open .menu__panel{ max-height:400px; opacity:1; padding:10px 8px 8px; }
+  .menu__panel a{ background:var(--paper); color:var(--ink); border-radius:14px; padding:13px 20px; font-weight:600; font-size:16px; min-width:150px;
+    opacity:0; transform:translateY(-8px); transition:transform .4s var(--ease), opacity .4s var(--ease), background .3s var(--ease); }
+  .menu__panel a:hover{ background:#e5e1d9; }
+  .menu.is-open .menu__panel a{ opacity:1; transform:none; }
+  .menu.is-open .menu__panel a:nth-child(2){ transition-delay:.06s; }
+  .menu.is-open .menu__panel a:nth-child(3){ transition-delay:.12s; }
+  .menu.is-open .menu__panel a:nth-child(4){ transition-delay:.18s; }
+
+  .btn{ display:inline-flex; align-items:center; gap:.6ch; font-size:14px; font-weight:600; line-height:1; padding:.95em 1.4em; border-radius:100px;
+    background:var(--ink); color:var(--paper); border:1px solid var(--ink); transition:transform .4s var(--ease), background .35s var(--ease), color .35s var(--ease); }
+  .btn:hover{ transform:translateY(-2px); background:transparent; color:var(--ink); }
+  .btn--ghost{ background:transparent; color:var(--ink); }
+  .btn--ghost:hover{ background:var(--ink); color:var(--paper); }
+
+  /* ---------- project hero ---------- */
+  .phero{ padding-top:clamp(120px,18vh,180px); }
+  .phero__back{ display:inline-flex; gap:.6ch; align-items:center; font-weight:600; font-size:14px; margin-bottom:clamp(26px,5vh,48px); }
+  .phero__back span{ transition:transform .4s var(--ease); }
+  .phero__back:hover span{ transform:translateX(-4px); }
+  .phero__top{ display:flex; justify-content:space-between; gap:16px; flex-wrap:wrap; padding-bottom:18px; border-bottom:1px solid var(--line); }
+  .phero__title{ font-weight:900; text-transform:uppercase; font-size:clamp(2.4rem,8vw,7.2rem); line-height:.92; letter-spacing:-.045em; margin-top:clamp(22px,4vh,40px); max-width:14ch; }
+  .phero__sum{ margin-top:clamp(20px,3vh,32px); font-size:clamp(1.05rem,1.6vw,1.4rem); font-weight:500; color:var(--ink-70); max-width:52ch; }
+  .phero__tags{ display:flex; gap:8px; flex-wrap:wrap; margin-top:clamp(20px,3vh,30px); }
+  .cover{ margin-top:clamp(36px,6vh,70px); aspect-ratio:16/7; overflow:hidden; border-radius:22px; background:linear-gradient(150deg,#d9d5ce,#c4c0b8); }
+  .cover img{ width:100%; height:100%; object-fit:cover; filter:grayscale(1) contrast(1.04); transition:filter .8s var(--ease), transform 1.2s var(--ease); }
+  .cover:hover img{ filter:grayscale(.1); transform:scale(1.03); }
+
+  /* ---------- body ---------- */
+  .pbody{ padding-block:var(--sec); }
+  .pgrid{ display:grid; grid-template-columns:minmax(240px,320px) 1fr; gap:clamp(30px,6vw,100px); align-items:start; }
+  .meta{ position:sticky; top:120px; display:grid; gap:22px; }
+  .meta__row{ border-top:1px solid var(--line); padding-top:12px; }
+  .meta__val{ font-weight:600; margin-top:4px; }
+  .meta__links{ display:flex; flex-direction:column; gap:10px; align-items:flex-start; }
+  .meta__note{ font-family:var(--mono); font-size:12px; color:var(--muted); }
+  .block + .block{ margin-top:clamp(44px,7vh,80px); }
+  .block__h{ font-size:clamp(1.6rem,3vw,2.6rem); font-weight:800; letter-spacing:-.03em; line-height:1; margin-bottom:18px; display:flex; gap:14px; align-items:baseline; }
+  .block__h .label{ font-size:12px; }
+  .block p{ font-size:clamp(1rem,1.3vw,1.15rem); color:var(--ink-70); max-width:68ch; }
+  .list{ list-style:none; display:grid; gap:12px; max-width:72ch; }
+  .list li{ position:relative; padding-left:1.7em; color:var(--ink-70); font-size:clamp(1rem,1.3vw,1.12rem); }
+  .list li::before{ content:"→"; position:absolute; left:0; color:var(--ink); font-family:var(--mono); }
+  .impact{ display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:clamp(14px,1.6vw,22px); }
+  .impact__card{ background:var(--ink); color:var(--paper); border-radius:22px; padding:clamp(20px,2vw,28px); display:flex; flex-direction:column; justify-content:space-between; gap:26px; min-height:170px; }
+  .impact__n{ font-size:clamp(2rem,3.6vw,3.2rem); font-weight:900; letter-spacing:-.04em; line-height:1; }
+  .impact__l{ font-family:var(--mono); font-size:12px; text-transform:uppercase; color:rgba(244,242,238,.65); }
+
+  /* ---------- how it works (flow) ---------- */
+  .flow{ display:grid; max-width:76ch; }
+  .flow__step{ display:grid; grid-template-columns:56px 1fr; gap:16px; padding-block:18px; border-top:1px solid var(--line); }
+  .flow__step:last-child{ border-bottom:1px solid var(--line); }
+  .flow__n{ width:40px; height:40px; border-radius:50%; background:var(--ink); color:var(--paper); display:grid; place-items:center; font-family:var(--mono); font-size:12px; }
+  .flow__t{ font-weight:700; font-size:clamp(1.05rem,1.4vw,1.2rem); letter-spacing:-.01em; }
+  .flow__d{ color:var(--ink-70); margin-top:4px; font-size:clamp(.95rem,1.2vw,1.05rem); }
+
+  /* ---------- key features ---------- */
+  .feat{ display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:14px; }
+  .feat__card{ background:var(--paper-2); border:1px solid var(--line-2); border-radius:18px; padding:20px 22px; transition:transform .4s var(--ease), border-color .3s var(--ease); }
+  .feat__card:hover{ transform:translateY(-3px); border-color:var(--ink); }
+  .feat__t{ font-weight:700; font-size:1.05rem; letter-spacing:-.01em; }
+  .feat__d{ color:var(--ink-70); font-size:.95rem; margin-top:6px; line-height:1.5; }
+
+  /* ---------- challenges & solutions ---------- */
+  .chal{ display:grid; gap:14px; }
+  .chal__row{ display:grid; grid-template-columns:1fr 1fr; border:1px solid var(--line-2); border-radius:18px; overflow:hidden; }
+  .chal__c, .chal__s{ padding:18px 22px; font-size:clamp(.95rem,1.2vw,1.05rem); line-height:1.5; }
+  .chal__c{ background:var(--paper-2); color:var(--ink-70); }
+  .chal__s{ background:var(--ink); color:var(--paper); }
+  .chal__k{ display:block; font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.04em; opacity:.6; margin-bottom:6px; }
+  @media (max-width:760px){
+    .flow__step{ grid-template-columns:44px 1fr; gap:12px; }
+    .flow__n{ width:34px; height:34px; font-size:11px; }
+    .chal__row{ grid-template-columns:1fr; }
+    .feat{ grid-template-columns:1fr; }
+  }
+  @media (hover:none){ .feat__card:hover{ transform:none; border-color:var(--line-2); } }
+
+  /* ---------- next project ---------- */
+  .next{ display:block; border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding-block:clamp(40px,8vh,90px); transition:background .4s var(--ease), color .4s var(--ease); }
+  .next:hover{ background:var(--ink); color:var(--paper); }
+  .next__t{ font-size:clamp(2rem,6vw,5.4rem); font-weight:900; text-transform:uppercase; letter-spacing:-.04em; line-height:.95; margin-top:14px; display:flex; justify-content:space-between; gap:20px; align-items:flex-end; }
+  .next__t span:last-child{ font-family:var(--mono); font-size:.5em; transition:transform .4s var(--ease); }
+  .next:hover .next__t span:last-child{ transform:translate(6px,-6px); }
+
+  /* ---------- all-projects list (fallback when no ?p=) ---------- */
+  .all{ margin-top:clamp(30px,5vh,56px); }
+  .all a{ display:grid; grid-template-columns:60px 1fr auto; gap:20px; align-items:baseline; padding-block:clamp(20px,3vh,32px); border-bottom:1px solid var(--line); transition:padding-left .5s var(--ease); }
+  .all a:hover{ padding-left:clamp(8px,2vw,24px); }
+  .all__n{ font-family:var(--mono); font-size:12px; color:var(--muted); }
+  .all__t{ font-size:clamp(1.3rem,2.6vw,2.2rem); font-weight:700; letter-spacing:-.02em; }
+
+  .foot{ background:var(--ink); color:var(--paper); padding-block:clamp(30px,5vh,50px); margin-top:var(--sec); }
+  .foot .wrap{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px; font-family:var(--mono); font-size:12px; text-transform:uppercase; color:rgba(244,242,238,.65); }
+  .foot a:hover{ color:var(--paper); }
+
+  [data-reveal]{ opacity:0; transform:translateY(30px); filter:blur(6px); transition:opacity .9s var(--ease), transform .9s var(--ease), filter .9s var(--ease); transition-delay:var(--d,0ms); }
+  [data-reveal].is-visible{ opacity:1; transform:none; filter:none; }
+
+  @media (max-width:900px){
+    .pgrid{ grid-template-columns:1fr; }
+    .meta{ position:static; grid-template-columns:repeat(2,1fr); }
+    .meta__links{ grid-column:1 / -1; flex-direction:row; flex-wrap:wrap; }
+  }
+  /* ---------- phones ---------- */
+  @media (max-width:760px){
+    :root{ --sec:clamp(56px,9vh,90px); }
+    .phero{ padding-top:110px; }
+    .phero__back{ margin-bottom:22px; }
+    .phero__title{ font-size:clamp(2rem,10vw,3rem); max-width:none; overflow-wrap:anywhere; hyphens:auto; }
+    .phero__sum{ font-size:1rem; }
+    .cover{ aspect-ratio:4/3; border-radius:16px; }
+    .meta{ grid-template-columns:1fr 1fr; gap:16px; }
+    .meta__links .btn{ flex:1 1 auto; justify-content:center; }
+    .block__h{ font-size:1.5rem; }
+    .block p, .list li{ font-size:1rem; }
+    .impact{ grid-template-columns:1fr 1fr; }
+    .impact__card{ min-height:140px; padding:18px; border-radius:18px; gap:18px; }
+    .impact__n{ font-size:1.8rem; overflow-wrap:anywhere; }
+    .impact__l{ font-size:11px; }
+    .next__t{ font-size:clamp(1.6rem,8vw,2.4rem); overflow-wrap:anywhere; }
+    .all a{ grid-template-columns:36px 1fr; gap:6px 14px; }
+    .all a .label{ grid-column:2; }
+    .tag{ font-size:11px; padding:.4em .8em; }
+    .foot .wrap{ flex-direction:column; }
+  }
+  @media (max-width:380px){ .impact{ grid-template-columns:1fr; } }
+  @media (hover:none){
+    .all a:hover{ padding-left:0; }
+    .cover:hover img{ transform:none; filter:grayscale(1) contrast(1.04); }
+  }
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{ animation:none !important; transition-duration:.001ms !important; }
+    [data-reveal]{ opacity:1; transform:none; filter:none; }
+  }
+</style>
+<noscript><style>[data-reveal]{ opacity:1 !important; transform:none !important; filter:none !important; }</style></noscript>
+<style>
+  .phero__title.post__h1{ font-size:clamp(2rem,5.2vw,4.4rem); max-width:20ch; }
+  .block p + p, .block p + ul, .block ul + p{ margin-top:16px; }
+  .block a{ text-decoration:underline; text-underline-offset:3px; }
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+<a class="skip" href="#main">Skip to content</a>
+
+<nav class="menu" id="menu" aria-label="Primary">
+  <div class="menu__bar">
+    <a href="/" class="menu__brand" aria-label="Dharmike Baria — home">Dharmike</a>
+    <button class="menu__toggle" id="menuToggle" aria-expanded="false" aria-controls="menuPanel" aria-label="Open menu">
+      <span class="menu__dots" aria-hidden="true">⋯</span>
+      <span class="menu__close" aria-hidden="true">✕</span>
+    </button>
+  </div>
+  <div class="menu__panel" id="menuPanel">
+    <a href="/">Home</a>
+    <a href="/projects/">All Projects</a>
+    <a href="/#contact">Contact</a>
+    <a href="/resume.pdf" download="Dharmike_Baria_Resume.pdf">Resume ↓</a>
+  </div>
+</nav>
+
+<main id="main">
+  <article>
+    <section class="phero"><div class="wrap">
+      <a href="/#thoughts" class="phero__back"><span>←</span> All writing</a>
+      <div class="phero__top"><span class="label">Article — <time datetime="2026-11-24">24 Nov 2026</time></span><span class="mark">Agentic AI · 4 min read</span></div>
+      <h1 class="phero__title post__h1">Multi-Agent LLM Systems in Production: Four Safeguards</h1>
+      <p class="phero__sum">A multi-agent demo works when everything goes right. Production is about what happens when a model call hangs, a job retries, or a conversation runs long. These are the four safeguards I added to FloatChat.</p>
+      <div class="phero__tags"><span class="tag">Multi-Agent Systems</span><span class="tag">LLMs</span><span class="tag">Redis</span><span class="tag">Sidekiq</span><span class="tag">RAG</span></div>
+    </div></section>
+
+    <section class="pbody"><div class="wrap pgrid">
+      <aside class="meta" aria-label="About the author">
+        <div class="meta__row"><p class="label">Written by</p><p class="meta__val"><a href="/"><u>Dharmike Baria</u></a></p></div>
+        <div class="meta__row"><p class="label">Role</p><p class="meta__val">Python Developer &amp; AI/ML Engineer, Mumbai</p></div>
+        <div class="meta__row"><p class="label">Related project</p><p class="meta__val"><a href="/projects/floatchat/"><u>FloatChat case study</u></a></p></div>
+      </aside>
+      <div>
+        <div class="block"><h2 class="block__h"><span class="label">01</span>The setup</h2>
+          <p><a href="/projects/floatchat/">FloatChat</a> is a self-hosted customer-support platform built on Chatwoot 4.13. Customers write in over live chat, email, WhatsApp, social or SMS, and a multi-agent AI layer answers the routine questions from the company's own knowledge base.</p>
+          <p>The flow is simple to describe. A message arrives, a listener checks that the inbox has an AI assistant attached, and a reply job is queued on Sidekiq. An orchestrator assistant reads the conversation and either answers or hands off to a scenario agent. Agents can call tools: a semantic FAQ lookup over pgvector, labels, priority, private notes, resolve, and handoff to a human.</p>
+          <p>Each of those steps is a place where a real system can fail. Four failures mattered most.</p>
+        </div>
+
+        <div class="block"><h2 class="block__h"><span class="label">02</span>Four failures, four safeguards</h2>
+          <div class="flow">
+            <div class="flow__step"><span class="flow__n">01</span><div><h3 class="flow__t">A slow model call blocks the queue</h3><p class="flow__d">Agent runs happen in background workers. If an LLM call hangs, the worker hangs with it, and every customer behind it waits. The fix is an LLM timeout guard: a slow call fails fast instead of stalling Sidekiq workers.</p></div></div>
+            <div class="flow__step"><span class="flow__n">02</span><div><h3 class="flow__t">A retry sends the same reply twice</h3><p class="flow__d">Background jobs retry, which is what you want for reliability. But a retried agent run can post a duplicate answer or repeat a tool action, such as adding the same label or note again. A Redis run registry tracks each run and prevents duplicate replies and repeated tool actions.</p></div></div>
+            <div class="flow__step"><span class="flow__n">03</span><div><h3 class="flow__t">Long conversations outgrow the context window and the budget</h3><p class="flow__d">Agents that hand off to each other can also loop. Every run is capped at 8 handoffs, 12 tool calls and 30 messages of history, and long messages are truncated before they reach the model. A hard ceiling makes the worst case predictable in both latency and cost.</p></div></div>
+            <div class="flow__step"><span class="flow__n">04</span><div><h3 class="flow__t">Nobody can tell what the agent did, or why</h3><p class="flow__d">When a customer gets a strange answer, "the model decided" is not a useful explanation. A run logger records every agent run, so a bad reply can be traced back to the handoffs and tool calls that produced it.</p></div></div>
+          </div>
+        </div>
+
+        <div class="block"><h2 class="block__h"><span class="label">03</span>Always leave a way out to a human</h2>
+          <p>The safeguards above keep the system stable. They do not make the AI right every time, so the most important tool an agent has is the one that stops it: human handoff.</p>
+          <p>When the AI cannot help, the conversation leaves bot mode, gets an activity note explaining what happened, and is auto-assigned to a human agent with free capacity. The customer is never stuck talking to a bot that has run out of answers.</p>
+        </div>
+
+        <div class="block"><h2 class="block__h"><span class="label">04</span>Let it learn, but review what it learns</h2>
+          <p>FloatChat mines resolved conversations for new FAQ entries, which is how the knowledge base keeps up with what customers actually ask. Left unchecked, that loop could also teach the system its own mistakes.</p>
+          <p>So new entries are saved as pending for review rather than going live, and they are de-duplicated against the approved ones. The system proposes; a person approves.</p>
+        </div>
+
+        <div class="block"><h2 class="block__h"><span class="label">05</span>Takeaways</h2>
+          <ul class="list">
+            <li>Put a timeout on every model call that runs inside a worker.</li>
+            <li>Make agent runs safe to retry, so a retry never repeats a reply or a tool action.</li>
+            <li>Cap handoffs, tool calls and history per run, and decide the numbers on purpose.</li>
+            <li>Log every run so you can explain any reply after the fact.</li>
+            <li>Give the agent a clean handoff to a human, and keep people in the loop for anything it learns.</li>
+          </ul>
+          <p>The full architecture, stack and feature list are in the <a href="/projects/floatchat/">FloatChat case study</a>.</p>
+        </div>
+      </div>
+    </div></section>
+  </article>
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <span>© 2026 Dharmike Baria — Python Developer &amp; AI/ML Engineer, Mumbai</span>
+    <span><a href="/">Home</a> · <a href="/projects/">Projects</a> · <a href="https://github.com/dharmikebaria" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/dharmike-baria/" target="_blank" rel="noopener">LinkedIn</a></span>
+  </div>
+</footer>
+
+<script>
+/* ---------- menu ---------- */
+const menu = document.getElementById('menu'), menuToggle = document.getElementById('menuToggle');
+const setMenu = (o) => { menu.classList.toggle('is-open', o); menuToggle.setAttribute('aria-expanded', o); menuToggle.setAttribute('aria-label', o ? 'Close menu' : 'Open menu'); };
+menuToggle.addEventListener('click', (e) => { e.stopPropagation(); setMenu(!menu.classList.contains('is-open')); });
+document.addEventListener('click', (e) => { if (!menu.contains(e.target)) setMenu(false); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setMenu(false); });
+/* ---------- reveals ---------- */
+const io = new IntersectionObserver((es) => es.forEach(e => { if (e.isIntersecting){ e.target.classList.add('is-visible'); io.unobserve(e.target); } }), { threshold:0.12, rootMargin:'0px 0px -6% 0px' });
+document.querySelectorAll('[data-reveal]').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
