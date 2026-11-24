@@ -1,22 +1,22 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-IN">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Projects — Dharmike Baria | Python Developer</title>
-<meta name="description" id="metaDesc" content="Project case studies by Dharmike Baria, Python Developer and AI/ML Engineer in Mumbai." />
-<meta name="author" content="Dharmike Baria" />
-<meta name="robots" content="index, follow, max-image-preview:large" />
-<link rel="canonical" id="canon" href="https://protfolio-dharmike-baria.vercel.app/project.html" />
+<!--
+  SOURCE FILE — not a page people land on.
+  • The style block and the PROJECT DATA below are read by build.js, which
+    writes the real, crawlable pages to /projects/<slug>/index.html.
+  • After editing styles or project text here, run:  node build.js
+  • Old links (project.html?p=<slug>) are redirected to the new URLs by
+    vercel.json, with the small script at the bottom as a fallback.
+-->
+<title>Projects — Dharmike Baria</title>
+<meta name="robots" content="noindex, follow" />
+<link rel="canonical" href="https://www.dharmikbaria.online/projects/" />
 <meta name="theme-color" content="#0A0A0A" />
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230A0A0A'/%3E%3Ctext x='50%25' y='56%25' text-anchor='middle' dominant-baseline='middle' font-family='Arial' font-weight='900' font-size='38' fill='%23F4F2EE'%3ED%3C/text%3E%3C/svg%3E" />
-<meta property="og:type" content="article" />
-<meta property="og:site_name" content="Dharmike Baria — Portfolio" />
-<meta property="og:title" id="ogTitle" content="Projects — Dharmike Baria" />
-<meta property="og:description" id="ogDesc" content="Project case studies by Dharmike Baria, Python Developer and AI/ML Engineer." />
-<meta property="og:url" id="ogUrl" content="https://protfolio-dharmike-baria.vercel.app/project.html" />
-<meta property="og:image" content="https://protfolio-dharmike-baria.vercel.app/dharmike-baria.jpg" />
-<meta name="twitter:card" content="summary_large_image" />
+<link rel="icon" href="/favicon.ico" sizes="48x48" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -24,7 +24,7 @@
 <style>
   :root{
     --paper:#F4F2EE; --paper-2:#ECE9E2; --ink:#0A0A0A; --ink-70:rgba(10,10,10,.70);
-    --muted:#8A8682; --line:rgba(10,10,10,.12); --line-2:rgba(10,10,10,.22);
+    --muted:#6A6662; --line:rgba(10,10,10,.12); --line-2:rgba(10,10,10,.22);
     --display:"Archivo", system-ui, sans-serif; --mono:"Space Mono", ui-monospace, monospace;
     --pad:clamp(20px,5vw,64px); --max:1440px; --sec:clamp(72px,11vh,140px);
     --ease:cubic-bezier(.16,.84,.3,1); --ease-2:cubic-bezier(.62,.05,.01,.99);
@@ -33,6 +33,8 @@
   html{ -webkit-text-size-adjust:100%; scroll-behavior:smooth; }
   body{ font-family:var(--display); background:var(--paper); color:var(--ink); line-height:1.55; -webkit-font-smoothing:antialiased; overflow-x:hidden; }
   img{ display:block; max-width:100%; }
+  .skip{ position:fixed; left:12px; top:-80px; z-index:10000; background:var(--ink); color:var(--paper); font-family:var(--mono); font-size:13px; padding:10px 14px; border-radius:10px; }
+  .skip:focus{ top:12px; }
   a{ color:inherit; text-decoration:none; }
   button{ font:inherit; color:inherit; background:none; border:none; cursor:pointer; }
   ::selection{ background:var(--ink); color:var(--paper); }
@@ -200,34 +202,35 @@
 
 <nav class="menu" id="menu" aria-label="Primary">
   <div class="menu__bar">
-    <a href="index.html" class="menu__brand">Dharmike</a>
+    <a href="/" class="menu__brand">Dharmike</a>
     <button class="menu__toggle" id="menuToggle" aria-expanded="false" aria-controls="menuPanel" aria-label="Open menu">
       <span class="menu__dots" aria-hidden="true">⋯</span>
       <span class="menu__close" aria-hidden="true">✕</span>
     </button>
   </div>
   <div class="menu__panel" id="menuPanel">
-    <a href="index.html">Home</a>
-    <a href="index.html#work">All Projects</a>
-    <a href="index.html#contact">Contact</a>
-    <a href="resume.pdf" download="Dharmike_Baria_Resume.pdf">Resume ↓</a>
+    <a href="/">Home</a>
+    <a href="/projects/">All Projects</a>
+    <a href="/#contact">Contact</a>
+    <a href="/resume.pdf" download="Dharmike_Baria_Resume.pdf">Resume ↓</a>
   </div>
 </nav>
 
 <main id="app">
-  <noscript><div class="wrap" style="padding-top:160px">Please enable JavaScript to view this project, or go back to the <a href="index.html#work"><u>projects list</u></a>.</div></noscript>
+  <div class="wrap" style="padding-top:160px">The project case studies have moved — see <a href="/projects/"><u>all projects</u></a>.</div>
 </main>
 
 <footer class="foot">
   <div class="wrap">
     <span>© 2026 Dharmike Baria</span>
-    <span><a href="index.html">Home</a> · <a href="https://github.com/dharmikebaria" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/dharmike-baria/" target="_blank" rel="noopener">LinkedIn</a></span>
+    <span><a href="/">Home</a> · <a href="https://github.com/dharmikebaria" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/dharmike-baria/" target="_blank" rel="noopener">LinkedIn</a></span>
   </div>
 </footer>
 
 <script>
+/* BUILD:DATA-START (build.js reads everything up to BUILD:DATA-END) */
 /* =====================================================================
-   PROJECT DATA — edit text here. Set `repo` to each project's own
+   PROJECT DATA — edit text here, then run `node build.js`. Set `repo` to each project's own
    GitHub URL (and `demo` to a live link if you have one).
    ===================================================================== */
 const GH = 'https://github.com/dharmikebaria';
@@ -580,104 +583,14 @@ const EXTRA = {
 };
 PROJECTS.forEach(p => Object.assign(p, EXTRA[p.slug] || {}));
 
-/* builds the numbered case-study sections for a project */
-function sections(p){
-  const S = [];
-  S.push(['The problem', `<p>${p.problem}</p>`]);
-  if (p.flow) S.push(['How it works', `<div class="flow">${p.flow.map((f,i)=>`<div class="flow__step"><span class="flow__n">${String(i+1).padStart(2,'0')}</span><div><p class="flow__t">${f.t}</p><p class="flow__d">${f.d}</p></div></div>`).join('')}</div>`]);
-  S.push(['What I built', `<ul class="list">${p.built.map(b=>`<li>${b}</li>`).join('')}</ul>`]);
-  if (p.features) S.push(['Key features', `<div class="feat">${p.features.map(f=>`<div class="feat__card"><p class="feat__t">${f.t}</p><p class="feat__d">${f.d}</p></div>`).join('')}</div>`]);
-  if (p.challenges) S.push(['Challenges &amp; solutions', `<div class="chal">${p.challenges.map(c=>`<div class="chal__row"><div class="chal__c"><span class="chal__k">Challenge</span>${c.c}</div><div class="chal__s"><span class="chal__k">Solution</span>${c.s}</div></div>`).join('')}</div>`]);
-  S.push(['Impact', `<div class="impact">${p.impact.map(m=>`<div class="impact__card"><span class="impact__n">${m.n}</span><span class="impact__l">${m.l}</span></div>`).join('')}</div>`]);
-  return S.map((s,i)=>`<div class="block" data-reveal><h2 class="block__h"><span class="label">${String(i+1).padStart(2,'0')}</span>${s[0]}</h2>${s[1]}</div>`).join('');
-}
+/* BUILD:DATA-END */
 
-/* ---------- render ---------- */
-const BASE = 'https://protfolio-dharmike-baria.vercel.app/';
-const app = document.getElementById('app');
-const slug = new URLSearchParams(location.search).get('p');
-const idx = PROJECTS.findIndex(p => p.slug === slug);
-
-function setMeta(title, desc, url){
-  document.title = title;
-  document.getElementById('metaDesc').setAttribute('content', desc);
-  document.getElementById('ogTitle').setAttribute('content', title);
-  document.getElementById('ogDesc').setAttribute('content', desc);
-  document.getElementById('ogUrl').setAttribute('content', url);
-  document.getElementById('canon').setAttribute('href', url);
-}
-
-if (idx === -1){
-  setMeta('Projects — Dharmike Baria | Python Developer', 'Project case studies by Dharmike Baria: Django SaaS, LLM and RAG systems, ETL pipelines, web automation and BI dashboards.', BASE + 'project.html');
-  app.innerHTML = `
-    <section class="phero"><div class="wrap">
-      <a href="index.html#work" class="phero__back"><span>←</span> Back to home</a>
-      <div class="phero__top"><span class="label">Case studies — (${String(PROJECTS.length).padStart(2,'0')})</span></div>
-      <h1 class="phero__title">All Projects</h1>
-      <nav class="all">
-        ${PROJECTS.map((p,i)=>`<a href="project.html?p=${p.slug}" data-reveal><span class="all__n">${String(i+1).padStart(2,'0')}</span><span class="all__t">${p.title}</span><span class="label">${p.type}</span></a>`).join('')}
-      </nav>
-    </div></section>`;
-} else {
-  const p = PROJECTS[idx];
-  const next = PROJECTS[(idx + 1) % PROJECTS.length];
-  const num = String(idx+1).padStart(2,'0') + ' / ' + String(PROJECTS.length).padStart(2,'0');
-  setMeta(p.title + ' — Dharmike Baria | Project Case Study', p.summary, BASE + 'project.html?p=' + p.slug);
-
-  const links = p.repo
-    ? `<a class="btn" href="${p.repo}" target="_blank" rel="noopener">View on GitHub ↗</a>${p.demo ? `<a class="btn btn--ghost" href="${p.demo}" target="_blank" rel="noopener">Live demo ↗</a>` : ''}`
-    : `<span class="meta__note">${p.privateNote || 'Private project.'}</span>`;
-
-  app.innerHTML = `
-    <article>
-      <section class="phero"><div class="wrap">
-        <a href="index.html#work" class="phero__back" data-reveal><span>←</span> All projects</a>
-        <div class="phero__top" data-reveal><span class="label">Project — ${num}</span><span class="mark">${p.type} · ${p.year}</span></div>
-        <h1 class="phero__title" data-reveal>${p.title}</h1>
-        <p class="phero__sum" data-reveal style="--d:80ms">${p.summary}</p>
-        <div class="phero__tags" data-reveal style="--d:140ms">${p.stack.map(s=>`<span class="tag">${s}</span>`).join('')}</div>
-        <div class="cover" data-reveal style="--d:180ms"><img src="${p.img}" alt="${p.title} — project cover" onerror="this.style.display='none'"></div>
-      </div></section>
-
-      <section class="pbody"><div class="wrap pgrid">
-        <aside class="meta" data-reveal>
-          <div class="meta__row"><p class="label">Where</p><p class="meta__val">${p.where}</p></div>
-          <div class="meta__row"><p class="label">Year</p><p class="meta__val">${p.year}</p></div>
-          <div class="meta__row"><p class="label">Category</p><p class="meta__val">${p.type}</p></div>
-          <div class="meta__row"><p class="label">My role</p><p class="meta__val">${p.role || 'Dharmike Baria'}</p></div>
-          <div class="meta__links">${links}</div>
-        </aside>
-        <div>${sections(p)}</div>
-      </div></section>
-
-      <a class="next" href="project.html?p=${next.slug}"><div class="wrap">
-        <span class="label">Next project</span>
-        <div class="next__t"><span>${next.title}</span><span>↗</span></div>
-      </div></a>
-    </article>`;
-
-  /* structured data for Google */
-  const ld = document.createElement('script');
-  ld.type = 'application/ld+json';
-  ld.textContent = JSON.stringify({
-    '@context':'https://schema.org', '@type':'CreativeWork',
-    name:p.title, description:p.summary, url:BASE + 'project.html?p=' + p.slug,
-    image:p.img, dateCreated:p.year, keywords:p.stack.join(', '),
-    author:{ '@type':'Person', name:'Dharmike Baria', url:BASE }
-  });
-  document.head.appendChild(ld);
-}
-
-/* ---------- menu ---------- */
-const menu = document.getElementById('menu'), menuToggle = document.getElementById('menuToggle');
-const setMenu = (o) => { menu.classList.toggle('is-open', o); menuToggle.setAttribute('aria-expanded', o); menuToggle.setAttribute('aria-label', o ? 'Close menu' : 'Open menu'); };
-menuToggle.addEventListener('click', (e) => { e.stopPropagation(); setMenu(!menu.classList.contains('is-open')); });
-document.addEventListener('click', (e) => { if (!menu.contains(e.target)) setMenu(false); });
-document.addEventListener('keydown', (e) => { if (e.key === 'Escape') setMenu(false); });
-
-/* ---------- reveals ---------- */
-const io = new IntersectionObserver((es) => es.forEach(e => { if (e.isIntersecting){ e.target.classList.add('is-visible'); io.unobserve(e.target); } }), { threshold:0.12, rootMargin:'0px 0px -6% 0px' });
-document.querySelectorAll('[data-reveal]').forEach(el => io.observe(el));
+/* ---------- old URL fallback: project.html?p=<slug> -> /projects/<slug>/ ---------- */
+(function(){
+  var slug = new URLSearchParams(location.search).get('p');
+  var known = PROJECTS.some(function(p){ return p.slug === slug; });
+  location.replace(known ? '/projects/' + slug + '/' : '/projects/');
+})();
 </script>
 </body>
 </html>
