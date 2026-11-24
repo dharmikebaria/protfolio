@@ -88,7 +88,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
 <link rel="preconnect" href="https://images.unsplash.com" crossorigin />
-<link rel="preload" as="image" href="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&amp;w=1800&amp;h=790&amp;fit=crop&amp;auto=format" fetchpriority="high" />
+<link rel="preload" as="image" href="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&amp;w=1800&amp;h=790&amp;fit=crop&amp;auto=format" imagesrcset="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&amp;w=640&amp;h=281&amp;fit=crop&amp;auto=format 640w, https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&amp;w=960&amp;h=421&amp;fit=crop&amp;auto=format 960w, https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&amp;w=1280&amp;h=562&amp;fit=crop&amp;auto=format 1280w, https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&amp;w=1800&amp;h=790&amp;fit=crop&amp;auto=format 1800w" imagesizes="(max-width: 1440px) 100vw, 1440px" fetchpriority="high" />
 <style>
   :root{
     --paper:#F4F2EE; --paper-2:#ECE9E2; --ink:#0A0A0A; --ink-70:rgba(10,10,10,.70);
@@ -281,6 +281,7 @@
   <div class="menu__panel" id="menuPanel">
     <a href="/">Home</a>
     <a href="/projects/">All Projects</a>
+    <a href="/blog/">Writing</a>
     <a href="/#contact">Contact</a>
     <a href="/resume.pdf" download="Dharmike_Baria_Resume.pdf">Resume ↓</a>
   </div>
@@ -294,7 +295,7 @@
       <h1 class="phero__title" data-reveal>GA4 Paid Traffic Dashboard</h1>
       <p class="phero__sum" data-reveal style="--d:80ms">An internal BI tool that cross-references GA4 event data with Google Ads spend, so the marketing team can see what paid campaigns actually deliver.</p>
       <div class="phero__tags" data-reveal style="--d:140ms"><span class="tag">Python</span><span class="tag">SQL</span><span class="tag">BigQuery</span><span class="tag">GA4</span><span class="tag">Google Ads API</span><span class="tag">PostgreSQL</span><span class="tag">Django REST</span><span class="tag">APScheduler</span></div>
-      <div class="cover" data-reveal style="--d:180ms"><img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&amp;w=1800&amp;h=790&amp;fit=crop&amp;auto=format" alt="Illustrative cover image for the GA4 Paid Traffic Dashboard case study" width="1800" height="790" fetchpriority="high" decoding="async" onerror="this.style.display='none'"></div>
+      <div class="cover" data-reveal style="--d:180ms"><img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&amp;w=1800&amp;h=790&amp;fit=crop&amp;auto=format" srcset="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&amp;w=640&amp;h=281&amp;fit=crop&amp;auto=format 640w, https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&amp;w=960&amp;h=421&amp;fit=crop&amp;auto=format 960w, https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&amp;w=1280&amp;h=562&amp;fit=crop&amp;auto=format 1280w, https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&amp;w=1800&amp;h=790&amp;fit=crop&amp;auto=format 1800w" sizes="(max-width: 1440px) 100vw, 1440px" alt="Illustrative cover image for the GA4 Paid Traffic Dashboard case study" width="1800" height="790" fetchpriority="high" decoding="async" onerror="this.style.display='none'"></div>
     </div></section>
 
     <section class="pbody"><div class="wrap pgrid">
@@ -313,6 +314,7 @@
           <div class="block" data-reveal><h2 class="block__h"><span class="label">04</span>Key features</h2><div class="feat"><div class="feat__card"><h3 class="feat__t">Date-partitioned queries</h3><p class="feat__d">Efficient BigQuery access for any window.</p></div><div class="feat__card"><h3 class="feat__t">Spend vs results</h3><p class="feat__d">Google Ads cost matched to GA4 behaviour.</p></div><div class="feat__card"><h3 class="feat__t">REST API</h3><p class="feat__d">Django REST Framework + PostgreSQL.</p></div><div class="feat__card"><h3 class="feat__t">Scheduled reports</h3><p class="feat__d">Automatic email delivery.</p></div></div></div>
           <div class="block" data-reveal><h2 class="block__h"><span class="label">05</span>Challenges &amp; solutions</h2><div class="chal"><div class="chal__row"><div class="chal__c"><span class="chal__k">Challenge</span>Querying GA4's daily partitioned tables for any date range.</div><div class="chal__s"><span class="chal__k">Solution</span>Parameterised the GA4 table IDs so the right partitions are selected automatically.</div></div><div class="chal__row"><div class="chal__c"><span class="chal__k">Challenge</span>Unreliable tracking between ad clicks and GA4 sessions.</div><div class="chal__s"><span class="chal__k">Solution</span>Validated GCLID and UTM tracking with statistical analysis and A/B testing, reaching 100% data accuracy.</div></div></div></div>
           <div class="block" data-reveal><h2 class="block__h"><span class="label">06</span>Impact</h2><div class="impact"><div class="impact__card"><span class="impact__n">70%</span><span class="impact__l">Faster time-to-insight across the BI dashboards</span></div><div class="impact__card"><span class="impact__n">100%</span><span class="impact__l">Data accuracy after GCLID &amp; UTM tracking validation</span></div><div class="impact__card"><span class="impact__n">Auto</span><span class="impact__l">Scheduled email reports — no manual pulls</span></div></div></div>
+          <div class="block" data-reveal><h2 class="block__h"><span class="label">07</span>Related writing</h2><ul class="list"><li><a href="/blog/building-reliable-data-pipelines/"><u>From ETL to Insight: Building Reliable Data Pipelines</u></a></li></ul></div>
       </div>
     </div></section>
 

@@ -46,7 +46,16 @@
     "@type": "Person",
     "@id": "https://www.dharmikbaria.online/#person",
     "name": "Dharmike Baria",
-    "url": "https://www.dharmikbaria.online/"
+    "url": "https://www.dharmikbaria.online/",
+    "jobTitle": "Python Developer & AI/ML Engineer",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Jolly Clamps Pvt. Ltd."
+    },
+    "sameAs": [
+      "https://www.linkedin.com/in/dharmike-baria/",
+      "https://github.com/dharmikebaria"
+    ]
   },
   "publisher": {
     "@type": "Person",
@@ -56,7 +65,17 @@
   },
   "isPartOf": {
     "@id": "https://www.dharmikbaria.online/#website"
-  }
+  },
+  "citation": [
+    "https://developers.google.com/google-ads/api/docs/start",
+    "https://support.google.com/analytics/answer/9358801",
+    "https://cloud.google.com/bigquery/pricing",
+    "https://cloud.google.com/bigquery/docs/querying-wildcard-tables",
+    "https://support.google.com/google-ads/answer/3095550",
+    "https://support.google.com/analytics/answer/10917952",
+    "https://apscheduler.readthedocs.io",
+    "https://openpyxl.readthedocs.io"
+  ]
 }
 </script>
 <script type="application/ld+json">
@@ -266,6 +285,8 @@
   .block p + pre, .block pre + p{ margin-top:16px; }
   .block pre{ background:var(--ink); color:var(--paper); font-family:var(--mono); font-size:13px; line-height:1.65; padding:18px 20px; border-radius:14px; overflow-x:auto; }
   .pgrid > *{ min-width:0; }
+  .author-box{ border-top:1px solid var(--line); padding-top:clamp(28px,4vh,40px); }
+  .block .list a{ text-decoration:underline; text-underline-offset:3px; }
 </style>
 </head>
 <body>
@@ -291,7 +312,7 @@
 <main id="main">
   <article>
     <section class="phero"><div class="wrap">
-      <a href="/#thoughts" class="phero__back"><span>←</span> All writing</a>
+      <a href="/blog/" class="phero__back"><span>←</span> All writing</a>
       <div class="phero__top"><span class="label">Article — <time datetime="2026-11-24">24 Nov 2026</time></span><span class="mark">Data Engineering · 6 min read</span></div>
       <h1 class="phero__title post__h1">From ETL to Insight: Building Reliable Data Pipelines</h1>
       <p class="phero__sum">A data pipeline is only useful if people trust the number at the end of it. This is how I built an ETL pipeline that joins GA4 data in BigQuery with Google Ads spend, and what made it reliable enough to act on.</p>
@@ -300,7 +321,7 @@
 
     <section class="pbody"><div class="wrap pgrid">
       <aside class="meta" aria-label="About the author">
-        <div class="meta__row"><p class="label">Written by</p><p class="meta__val"><a href="/"><u>Dharmike Baria</u></a></p></div>
+        <div class="meta__row"><p class="label">Written by</p><p class="meta__val"><a href="/" rel="author"><u>Dharmike Baria</u></a></p></div>
         <div class="meta__row"><p class="label">Role</p><p class="meta__val">Python Developer &amp; AI/ML Engineer, Mumbai</p></div>
         <div class="meta__row"><p class="label">Related projects</p><p class="meta__val"><a href="/projects/ga4-paid-traffic-dashboard/"><u>GA4 Paid Traffic Dashboard</u></a><br><a href="/projects/erp-data-automation-portal/"><u>ERP Data Automation Portal</u></a></p></div>
       </aside>
@@ -317,15 +338,15 @@
         </div>
 
         <div class="block"><h2 class="block__h"><span class="label">03</span>The architecture, step by step</h2>
-          <div class="flow"><div class="flow__step"><span class="flow__n">01</span><div><h3 class="flow__t">Extract GA4 events from BigQuery</h3><p class="flow__d">GA4 events are exported daily into date-partitioned tables in Google BigQuery, and the event data is queried there directly with SQL.</p></div></div><div class="flow__step"><span class="flow__n">02</span><div><h3 class="flow__t">Select the right partitions</h3><p class="flow__d">Parameterised table IDs pick the partitions for any reporting window, so the same query serves any date range.</p></div></div><div class="flow__step"><span class="flow__n">03</span><div><h3 class="flow__t">Extract spend from the Google Ads API</h3><p class="flow__d">Campaign spend is fetched through the Google Ads API instead of a manual export.</p></div></div><div class="flow__step"><span class="flow__n">04</span><div><h3 class="flow__t">Join and compute</h3><p class="flow__d">Events and spend are combined to measure performance per campaign.</p></div></div><div class="flow__step"><span class="flow__n">05</span><div><h3 class="flow__t">Serve and schedule</h3><p class="flow__d">Results are served through a Django REST Framework backend backed by PostgreSQL, and reports are emailed on a schedule by APScheduler.</p></div></div></div>
+          <div class="flow"><div class="flow__step"><span class="flow__n">01</span><div><h3 class="flow__t">Extract GA4 events from BigQuery</h3><p class="flow__d">GA4 events are exported daily into date-partitioned tables in Google BigQuery, and the event data is queried there directly with SQL.</p></div></div><div class="flow__step"><span class="flow__n">02</span><div><h3 class="flow__t">Select the right partitions</h3><p class="flow__d">Parameterised table IDs pick the partitions for any reporting window, so the same query serves any date range.</p></div></div><div class="flow__step"><span class="flow__n">03</span><div><h3 class="flow__t">Extract spend from the Google Ads API</h3><p class="flow__d">Campaign spend is fetched through the <a href="https://developers.google.com/google-ads/api/docs/start">Google Ads API</a> instead of a manual export.</p></div></div><div class="flow__step"><span class="flow__n">04</span><div><h3 class="flow__t">Join and compute</h3><p class="flow__d">Events and spend are combined to measure performance per campaign.</p></div></div><div class="flow__step"><span class="flow__n">05</span><div><h3 class="flow__t">Serve and schedule</h3><p class="flow__d">Results are served through a Django REST Framework backend backed by PostgreSQL, and reports are emailed on a schedule by APScheduler.</p></div></div></div>
           <p>The stack is deliberately ordinary: Python, SQL, BigQuery, the Google Ads API, PostgreSQL, Django REST Framework and APScheduler. Reliability came from how the pieces were used, not from exotic tools.</p>
         </div>
 
         <div class="block"><h2 class="block__h"><span class="label">04</span>Querying GA4 data in BigQuery for any date range</h2>
-          <p>The GA4 BigQuery export writes one table per day, with the date as a suffix in the table name. That is efficient, because a query only needs to scan the days it covers. It also invites a bad habit: hard-coding dates into queries, then editing them by hand every time someone wants a different window.</p>
-          <p>It also matters for cost. BigQuery charges by the amount of data a query scans, so a query that reads every day of history to answer a question about last week is slower and more expensive than it needs to be.</p>
+          <p>The <a href="https://support.google.com/analytics/answer/9358801">GA4 BigQuery export</a> writes one table per day, with the date as a suffix in the table name. That is efficient, because a query only needs to scan the days it covers. It also invites a bad habit: hard-coding dates into queries, then editing them by hand every time someone wants a different window.</p>
+          <p>It also matters for cost. Under BigQuery's <a href="https://cloud.google.com/bigquery/pricing">on-demand pricing</a>, you are charged for the bytes a query processes, so a query that reads every day of history to answer a question about last week is slower and more expensive than it needs to be.</p>
           <p>The pipeline parameterises the table IDs instead, so the right partitions are selected automatically for any reporting window. Nobody edits SQL to change a date range, which removes a whole class of copy-and-paste mistakes.</p>
-          <p>As an illustration of the general technique (not the production query), BigQuery lets you query all the daily tables with a wildcard and filter them by suffix using parameters:</p>
+          <p>As an illustration of the general technique (not the production query), BigQuery lets you <a href="https://cloud.google.com/bigquery/docs/querying-wildcard-tables">query all the daily tables with a wildcard</a> and filter them by suffix using parameters:</p>
           <pre><code>SELECT event_name, COUNT(*) AS events
 FROM `my-project.analytics_123456.events_*`
 WHERE _TABLE_SUFFIX BETWEEN @start_date AND @end_date
@@ -335,7 +356,7 @@ ORDER BY events DESC;</code></pre>
         </div>
 
         <div class="block"><h2 class="block__h"><span class="label">05</span>Validate the join before you trust the join</h2>
-          <p>Joining ad spend to on-site behaviour depends on the tracking that links an ad click to a GA4 session. That link comes from the GCLID, the click identifier Google Ads adds to ad URLs, and from UTM parameters that tag the campaign, source and medium.</p>
+          <p>Joining ad spend to on-site behaviour depends on the tracking that links an ad click to a GA4 session. That link comes from the GCLID, the click identifier Google Ads adds to ad URLs through <a href="https://support.google.com/google-ads/answer/3095550">auto-tagging</a>, and from <a href="https://support.google.com/analytics/answer/10917952">UTM parameters</a> that tag the campaign, source and medium.</p>
           <p>That tracking was unreliable. When the keys connecting two datasets are wrong, every metric built on the join is wrong too, and no amount of clever SQL downstream can fix it.</p>
           <p>So before building on the join, I validated GCLID and UTM tracking using statistical analysis and A/B testing, reaching 100% data accuracy. It was the least visible part of the project and the most important one, because everything the dashboard reports depends on it.</p>
           <p>The general lesson: when a pipeline combines sources, check the keys first. Count how many records match, how many do not, and why. A join that silently drops or duplicates rows is one of the most common ways a pipeline produces confident, wrong numbers.</p>
@@ -343,7 +364,7 @@ ORDER BY events DESC;</code></pre>
 
         <div class="block"><h2 class="block__h"><span class="label">06</span>Serve the data, then take people out of delivery</h2>
           <p>Once the numbers are right, they need to reach people. The results are served through a Django REST Framework backend with PostgreSQL, which gives the dashboards a stable API instead of a folder of files.</p>
-          <p>Then there is delivery. A report that depends on someone remembering to run it is not really a pipeline; it is a manual task with extra steps. APScheduler sends reports by email on a schedule, so the numbers arrive without anyone pulling them.</p>
+          <p>Then there is delivery. A report that depends on someone remembering to run it is not really a pipeline; it is a manual task with extra steps. <a href="https://apscheduler.readthedocs.io">APScheduler</a> sends reports by email on a schedule, so the numbers arrive without anyone pulling them.</p>
           <p>An API also gives every consumer the same numbers. When three people each open their own copy of an export, they end up with three slightly different versions of the truth. When everyone reads from one endpoint, a correction made once reaches everyone.</p>
           <p>Across the BI dashboards I worked on there, time-to-insight fell by 70%.</p>
         </div>
@@ -356,13 +377,22 @@ ORDER BY events DESC;</code></pre>
 
         <div class="block"><h2 class="block__h"><span class="label">08</span>The same pattern with a messier source</h2>
           <p>The sources change, but the shape of the pipeline does not. At Jolly Clamps, the inputs are not APIs but daily Excel exports from the ERP and production-planning systems: dispatch, lead time, MPS / MTO schedules and forecast demand.</p>
-          <p>Excel exports are harder to work with than APIs, because every export type has its own layout. The <a href="/projects/erp-data-automation-portal/">ERP Data Automation Portal</a> handles this with a reusable openpyxl parser library that maps each export into a consistent data model. Parsed data is stored in structured PostgreSQL models through Django REST Framework, teams use a React portal instead of passing spreadsheets around, and recurring production and dispatch reports are generated automatically with Google Apps Script.</p>
+          <p>Excel exports are harder to work with than APIs, because every export type has its own layout. The <a href="/projects/erp-data-automation-portal/">ERP Data Automation Portal</a> handles this with a reusable <a href="https://openpyxl.readthedocs.io">openpyxl</a> parser library that maps each export into a consistent data model. Parsed data is stored in structured PostgreSQL models through Django REST Framework, teams use a React portal instead of passing spreadsheets around, and recurring production and dispatch reports are generated automatically with Google Apps Script.</p>
           <p>The principle is the same as with GA4: deal with the mess once, at the edge of the system, and give everything downstream one clean, predictable shape.</p>
         </div>
 
         <div class="block"><h2 class="block__h"><span class="label">09</span>A checklist for reliable ETL pipelines</h2>
           <ul class="list"><li>Start from the question the team is asking, then find where each half of the answer lives.</li><li>Check the keys that link your sources before building anything on the join.</li><li>Parameterise date ranges and table names, so nobody edits a query by hand.</li><li>Map messy inputs into one consistent data model as early as possible.</li><li>Serve results through an API, not a folder of exports.</li><li>Automate delivery, so the pipeline does not depend on anyone remembering to run it.</li></ul>
           <p>The full details are in the <a href="/projects/ga4-paid-traffic-dashboard/">GA4 Paid Traffic Dashboard</a> and <a href="/projects/erp-data-automation-portal/">ERP Data Automation Portal</a> case studies. If you are working on something similar, you can <a href="/#contact">get in touch here</a>.</p>
+        </div>
+
+        <div class="block"><h2 class="block__h"><span class="label">→</span>Related reading</h2>
+          <ul class="list"><li><a href="/blog/multi-agent-llm-systems-in-production/">Multi-Agent LLM Systems in Production: Four Safeguards</a></li><li><a href="/blog/rag-in-practice/">RAG in Practice: Grounding LLMs in Your Own Data</a></li><li><a href="/projects/ga4-paid-traffic-dashboard/">GA4 Paid Traffic Dashboard case study</a></li><li><a href="/projects/erp-data-automation-portal/">ERP Data Automation Portal case study</a></li><li><a href="/blog/">All articles</a></li></ul>
+        </div>
+
+        <div class="block author-box"><h2 class="block__h"><span class="label">→</span>About the author</h2>
+          <p>I'm <a href="/" rel="author">Dharmike Baria</a>, a Python Developer and AI/ML Engineer based in Mumbai, India, currently building Python-based internal tools and data automation at Jolly Clamps Pvt. Ltd. With 1.5 years across backend development, machine learning and data engineering, I build Django APIs, multi-agent LLM systems, ETL pipelines and full-stack SaaS products.</p>
+          <p><a href="/">Portfolio</a> · <a href="/projects/">Case studies</a> · <a href="https://www.linkedin.com/in/dharmike-baria/" rel="me noopener" target="_blank">LinkedIn</a> · <a href="https://github.com/dharmikebaria" rel="me noopener" target="_blank">GitHub</a></p>
         </div>
       </div>
     </div></section>

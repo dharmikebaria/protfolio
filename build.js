@@ -70,6 +70,41 @@ function write(rel, html) {
   console.log('wrote', rel);
 }
 
+/* ---------- published blog posts (hand-written pages in blog/<slug>/index.html) ---------- */
+const BLOG_DIR = path.join(ROOT, 'blog');
+const POSTS = (fs.existsSync(BLOG_DIR) ? fs.readdirSync(BLOG_DIR, { withFileTypes: true }) : [])
+  .filter(d => d.isDirectory() && fs.existsSync(path.join(BLOG_DIR, d.name, 'index.html')))
+  .map(d => {
+    const s = fs.readFileSync(path.join(BLOG_DIR, d.name, 'index.html'), 'utf8').replace(/\r\n/g, '\n');
+    const pick = (re) => ((s.match(re) || [])[1] || '').trim();
+    return {
+      slug: d.name,
+      url: `${SITE}/blog/${d.name}/`,
+      title: pick(/<h1[^>]*>([^<]*)<\/h1>/),
+      desc: pick(/<meta name="description" content="([^"]*)"/),
+      date: pick(/<time datetime="([^"]*)"/),
+      topic: pick(/<span class="mark">([^<·]*)·/),
+      noindex: /<meta name="robots" content="noindex/.test(s)
+    };
+  })
+  .filter(p => !p.noindex)
+  .sort((a, b) => b.date.localeCompare(a.date) || a.title.localeCompare(b.title));
+
+/* project -> related blog posts, shown as "Related writing" on the project page */
+const RELATED_POSTS = {
+  'floatchat': ['multi-agent-llm-systems-in-production', 'rag-in-practice'],
+  'rag-voice-chat-system': ['rag-in-practice'],
+  'ga4-paid-traffic-dashboard': ['building-reliable-data-pipelines'],
+  'erp-data-automation-portal': ['building-reliable-data-pipelines']
+};
+
+/* responsive Unsplash variants: swaps the w=/h= query params for each width */
+const unsplashSrcset = (img, widths, ratio) =>
+  widths.map(w => `${img.replace(/w=\d+&h=\d+/, `w=${w}&h=${Math.round(w * ratio)}`)}&auto=format ${w}w`).join(', ');
+
+/* listing pages: a one-line description under each title */
+const LIST_STYLE = '<style>.all__d{ display:block; margin-top:8px; max-width:62ch; font-size:clamp(.95rem,1.2vw,1.05rem); font-weight:400; letter-spacing:0; line-height:1.5; color:var(--ink-70); }</style>';
+
 /* ---------- shared page shell ---------- */
 function page({ title, desc, url, robots = 'index, follow, max-image-preview:large', ogType = 'website', schema = [], extraHead = '', main }) {
   return `<!doctype html>
@@ -125,6 +160,7 @@ ${extraHead}
   <div class="menu__panel" id="menuPanel">
     <a href="/">Home</a>
     <a href="/projects/">All Projects</a>
+    <a href="/blog/">Writing</a>
     <a href="/#contact">Contact</a>
     <a href="/resume.pdf" download="Dharmike_Baria_Resume.pdf">Resume ↓</a>
   </div>
@@ -172,6 +208,8 @@ function sections(p) {
   if (p.features) S.push(['Key features', `<div class="feat">${p.features.map(f => `<div class="feat__card"><h3 class="feat__t">${t(f.t)}</h3><p class="feat__d">${t(f.d)}</p></div>`).join('')}</div>`]);
   if (p.challenges) S.push(['Challenges &amp; solutions', `<div class="chal">${p.challenges.map(c => `<div class="chal__row"><div class="chal__c"><span class="chal__k">Challenge</span>${t(c.c)}</div><div class="chal__s"><span class="chal__k">Solution</span>${t(c.s)}</div></div>`).join('')}</div>`]);
   S.push(['Impact', `<div class="impact">${p.impact.map(m => `<div class="impact__card"><span class="impact__n">${t(m.n)}</span><span class="impact__l">${t(m.l)}</span></div>`).join('')}</div>`]);
+  const rel = (RELATED_POSTS[p.slug] || []).map(s => POSTS.find(x => x.slug === s)).filter(Boolean);
+  if (rel.length) S.push(['Related writing', `<ul class="list">${rel.map(r => `<li><a href="/blog/${r.slug}/"><u>${t(r.title)}</u></a></li>`).join('')}</ul>`]);
   return S.map((s, i) => `<div class="block" data-reveal><h2 class="block__h"><span class="label">${pad(i + 1)}</span>${s[0]}</h2>${s[1]}</div>`).join('\n          ');
 }
 
@@ -182,6 +220,8 @@ PROJECTS.forEach((p, idx) => {
   const num = pad(idx + 1) + ' / ' + pad(PROJECTS.length);
   const ownRepo = p.repo && p.repo !== GH;
   const cover = p.img + '&auto=format';
+  const coverSet = unsplashSrcset(p.img, [640, 960, 1280, 1800], 790 / 1800);
+  const coverSizes = '(max-width: 1440px) 100vw, 1440px';
   const links = p.repo
     ? `<a class="btn" href="${p.repo}" target="_blank" rel="noopener">${ownRepo ? `View ${t(p.title)} on GitHub` : `${NAME} on GitHub`} ↗</a>${p.demo ? `<a class="btn btn--ghost" href="${p.demo}" target="_blank" rel="noopener">Live demo ↗</a>` : ''}`
     : `<span class="meta__note">${t(p.privateNote || 'Private project.')}</span>`;
@@ -210,7 +250,7 @@ PROJECTS.forEach((p, idx) => {
     url,
     ogType: 'article',
     schema: [work, crumbs([['Home', SITE + '/'], ['Projects', SITE + '/projects/'], [plain(p.title), url]])],
-    extraHead: `<link rel="preconnect" href="https://images.unsplash.com" crossorigin />\n<link rel="preload" as="image" href="${esc(cover)}" fetchpriority="high" />`,
+    extraHead: `<link rel="preconnect" href="https://images.unsplash.com" crossorigin />\n<link rel="preload" as="image" href="${esc(cover)}" imagesrcset="${esc(coverSet)}" imagesizes="${coverSizes}" fetchpriority="high" />`,
     main: `  <article>
     <section class="phero"><div class="wrap">
       <a href="/projects/" class="phero__back" data-reveal><span>←</span> All projects</a>
@@ -218,7 +258,7 @@ PROJECTS.forEach((p, idx) => {
       <h1 class="phero__title" data-reveal>${t(p.title)}</h1>
       <p class="phero__sum" data-reveal style="--d:80ms">${t(p.summary)}</p>
       <div class="phero__tags" data-reveal style="--d:140ms">${p.stack.map(s => `<span class="tag">${t(s)}</span>`).join('')}</div>
-      <div class="cover" data-reveal style="--d:180ms"><img src="${esc(cover)}" alt="Illustrative cover image for the ${esc(p.title)} case study" width="1800" height="790" fetchpriority="high" decoding="async" onerror="this.style.display='none'"></div>
+      <div class="cover" data-reveal style="--d:180ms"><img src="${esc(cover)}" srcset="${esc(coverSet)}" sizes="${coverSizes}" alt="Illustrative cover image for the ${esc(p.title)} case study" width="1800" height="790" fetchpriority="high" decoding="async" onerror="this.style.display='none'"></div>
     </div></section>
 
     <section class="pbody"><div class="wrap pgrid">
@@ -257,15 +297,66 @@ write('projects/index.html', page({
     },
     crumbs([['Home', SITE + '/'], ['Projects', SITE + '/projects/']])
   ],
+  extraHead: LIST_STYLE,
   main: `  <section class="phero"><div class="wrap">
     <a href="/#work" class="phero__back"><span>←</span> Back to home</a>
     <div class="phero__top"><span class="label">Case studies by ${NAME} — (${pad(PROJECTS.length)})</span></div>
     <h1 class="phero__title">All Projects</h1>
+    <p class="phero__sum">Case studies from my work as a Python Developer and AI/ML Engineer in Mumbai: multi-agent LLM and RAG systems, a multi-tenant Django SaaS, ETL pipelines on BigQuery and PostgreSQL, web automation, OCR data extraction and BI dashboards. Each one covers the problem, how the system works, what I built and the impact.</p>
     <nav class="all" aria-label="Project case studies">
-      ${PROJECTS.map((p, i) => `<a href="/projects/${p.slug}/" data-reveal><span class="all__n">${pad(i + 1)}</span><span class="all__t">${t(p.title)}</span><span class="label">${t(p.type)}</span></a>`).join('\n      ')}
+      ${PROJECTS.map((p, i) => `<a href="/projects/${p.slug}/" data-reveal><span class="all__n">${pad(i + 1)}</span><span class="all__t">${t(p.title)}<span class="all__d">${t(p.summary)}</span></span><span class="label">${t(p.type)}</span></a>`).join('\n      ')}
     </nav>
   </div></section>`
 }));
+
+/* ---------- blog index ---------- */
+if (POSTS.length) write('blog/index.html', page({
+  title: `Writing on Python, AI/ML & Data | ${NAME}`,
+  desc: `Articles by ${NAME}, Python Developer and AI/ML Engineer in Mumbai, on multi-agent LLM systems, RAG, ETL data pipelines and production engineering.`,
+  url: SITE + '/blog/',
+  extraHead: LIST_STYLE,
+  schema: [
+    {
+      '@context': 'https://schema.org', '@type': 'Blog', '@id': SITE + '/blog/#blog',
+      name: `${NAME} — Writing`, url: SITE + '/blog/', inLanguage: 'en-IN',
+      isPartOf: { '@id': SITE + '/#website' }, author: PERSON, publisher: PERSON,
+      blogPost: POSTS.map(p => ({ '@type': 'BlogPosting', headline: plain(p.title), url: p.url, datePublished: p.date, author: PERSON }))
+    },
+    crumbs([['Home', SITE + '/'], ['Writing', SITE + '/blog/']])
+  ],
+  main: `  <section class="phero"><div class="wrap">
+    <a href="/#thoughts" class="phero__back"><span>←</span> Back to home</a>
+    <div class="phero__top"><span class="label">Articles by ${NAME} — (${pad(POSTS.length)})</span></div>
+    <h1 class="phero__title">Writing</h1>
+    <p class="phero__sum">Long-form articles on building AI and data systems that hold up in production, drawn from my own projects: multi-agent LLM systems, retrieval-augmented generation and reliable ETL pipelines.</p>
+    <nav class="all" aria-label="Articles">
+      ${POSTS.map((p, i) => `<a href="/blog/${p.slug}/" data-reveal><span class="all__n">${pad(i + 1)}</span><span class="all__t">${t(p.title)}<span class="all__d">${t(p.desc)}</span></span><span class="label">${t(p.topic)}</span></a>`).join('\n      ')}
+    </nav>
+  </div></section>`
+}));
+
+/* ---------- llms.txt (plain-text site summary for AI search tools) ---------- */
+write('llms.txt', `# ${NAME}
+
+> Python Developer and AI/ML Engineer based in Mumbai, India, open to remote work. Builds Django APIs, multi-agent LLM systems, RAG chatbots, ETL pipelines and automation tools. Currently at Jolly Clamps Pvt. Ltd.
+
+This site is ${NAME}'s portfolio: project case studies and long-form articles.
+
+## Profile
+
+- [Home](${SITE}/): about, experience, skills, services and contact
+- [Resume (PDF)](${SITE}/resume.pdf)
+- [LinkedIn](https://www.linkedin.com/in/dharmike-baria/)
+- [GitHub](${GH})
+
+## Projects
+
+${PROJECTS.map(p => `- [${plain(p.title)}](${SITE}/projects/${p.slug}/): ${plain(p.summary)}`).join('\n')}
+
+## Articles
+
+${POSTS.map(p => `- [${plain(p.title)}](${p.url}): ${plain(p.desc)}`).join('\n')}
+`);
 
 /* ---------- 404 ---------- */
 write('404.html', page({
@@ -306,7 +397,7 @@ const blogPage = page({
   ],
   main: `  <article>
     <section class="phero"><div class="wrap">
-      <a href="/#thoughts" class="phero__back"><span>←</span> All writing</a>
+      <a href="/blog/" class="phero__back"><span>←</span> All writing</a>
       <div class="phero__top"><span class="label">Article — <time datetime="TODO-YYYY-MM-DD">TODO: 1 Jan 2027</time></span><span class="mark">TODO: Topic · X min read</span></div>
       <h1 class="phero__title">TODO: Post title</h1>
       <p class="phero__sum">TODO: a two-sentence summary that answers the question in the title.</p>
@@ -339,6 +430,7 @@ write('blog/_template.html', blogPage.replace('<!-- Generated by build.js', `<!-
 
 /* ---------- sitemap ---------- */
 const urls = [{ loc: SITE + '/', lastmod: TODAY, priority: '1.0' }, { loc: SITE + '/projects/', lastmod: TODAY, priority: '0.9' }];
+if (POSTS.length) urls.push({ loc: SITE + '/blog/', lastmod: TODAY, priority: '0.8' });
 PROJECTS.forEach((p, i) => urls.push({ loc: `${SITE}/projects/${p.slug}/`, lastmod: TODAY, priority: i < 6 ? '0.8' : '0.7' }));
 const blogDir = path.join(ROOT, 'blog');
 fs.readdirSync(blogDir, { withFileTypes: true })

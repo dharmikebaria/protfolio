@@ -46,7 +46,16 @@
     "@type": "Person",
     "@id": "https://www.dharmikbaria.online/#person",
     "name": "Dharmike Baria",
-    "url": "https://www.dharmikbaria.online/"
+    "url": "https://www.dharmikbaria.online/",
+    "jobTitle": "Python Developer & AI/ML Engineer",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Jolly Clamps Pvt. Ltd."
+    },
+    "sameAs": [
+      "https://www.linkedin.com/in/dharmike-baria/",
+      "https://github.com/dharmikebaria"
+    ]
   },
   "publisher": {
     "@type": "Person",
@@ -56,7 +65,13 @@
   },
   "isPartOf": {
     "@id": "https://www.dharmikbaria.online/#website"
-  }
+  },
+  "citation": [
+    "https://platform.openai.com/docs/guides/embeddings",
+    "https://github.com/pgvector/pgvector",
+    "https://elevenlabs.io",
+    "https://vapi.ai"
+  ]
 }
 </script>
 <script type="application/ld+json">
@@ -266,6 +281,8 @@
   .block p + pre, .block pre + p{ margin-top:16px; }
   .block pre{ background:var(--ink); color:var(--paper); font-family:var(--mono); font-size:13px; line-height:1.65; padding:18px 20px; border-radius:14px; overflow-x:auto; }
   .pgrid > *{ min-width:0; }
+  .author-box{ border-top:1px solid var(--line); padding-top:clamp(28px,4vh,40px); }
+  .block .list a{ text-decoration:underline; text-underline-offset:3px; }
 </style>
 </head>
 <body>
@@ -291,7 +308,7 @@
 <main id="main">
   <article>
     <section class="phero"><div class="wrap">
-      <a href="/#thoughts" class="phero__back"><span>←</span> All writing</a>
+      <a href="/blog/" class="phero__back"><span>←</span> All writing</a>
       <div class="phero__top"><span class="label">Article — <time datetime="2026-11-24">24 Nov 2026</time></span><span class="mark">Generative AI · 6 min read</span></div>
       <h1 class="phero__title post__h1">RAG in Practice: Grounding LLMs in Your Own Data</h1>
       <p class="phero__sum">A language model knows a lot about the world and nothing about your business. Retrieval-augmented generation closes that gap. Here is how RAG works in the chatbots I have built, including the ones that talk.</p>
@@ -300,7 +317,7 @@
 
     <section class="pbody"><div class="wrap pgrid">
       <aside class="meta" aria-label="About the author">
-        <div class="meta__row"><p class="label">Written by</p><p class="meta__val"><a href="/"><u>Dharmike Baria</u></a></p></div>
+        <div class="meta__row"><p class="label">Written by</p><p class="meta__val"><a href="/" rel="author"><u>Dharmike Baria</u></a></p></div>
         <div class="meta__row"><p class="label">Role</p><p class="meta__val">Python Developer &amp; AI/ML Engineer, Mumbai</p></div>
         <div class="meta__row"><p class="label">Related projects</p><p class="meta__val"><a href="/projects/rag-voice-chat-system/"><u>RAG Voice Chat System</u></a><br><a href="/projects/floatchat/"><u>FloatChat</u></a></p></div>
       </aside>
@@ -325,8 +342,8 @@
 
         <div class="block"><h2 class="block__h"><span class="label">04</span>Step two: embeddings and vector search with pgvector</h2>
           <p>To find relevant entries, each one is converted into an embedding: a list of numbers that represents its meaning. Questions with similar meanings end up with similar embeddings even when they use different words, so "Can I send it back?" can match an entry about returns.</p>
-          <p>In FloatChat, entries are embedded with OpenAI's text-embedding-3-small model and stored in PostgreSQL using pgvector, as 1536-dimension vectors searched by cosine similarity. Keeping the vectors in PostgreSQL means the knowledge base lives next to the rest of the application data, with no separate vector database to run.</p>
-          <p>As a general illustration (not FloatChat's actual query), a pgvector similarity search looks like this, where &lt;=&gt; is pgvector's cosine distance operator:</p>
+          <p>In FloatChat, entries are embedded with OpenAI's <a href="https://platform.openai.com/docs/guides/embeddings">text-embedding-3-small</a> model and stored in PostgreSQL using <a href="https://github.com/pgvector/pgvector">pgvector</a>, as 1536-dimension vectors searched by cosine similarity. Keeping the vectors in PostgreSQL means the knowledge base lives next to the rest of the application data, with no separate vector database to run.</p>
+          <p>As a general illustration (not FloatChat's actual query), a pgvector similarity search looks like this, where &lt;=&gt; is <a href="https://github.com/pgvector/pgvector">pgvector's cosine distance operator</a>:</p>
           <pre><code>SELECT question, answer
 FROM faq_entries
 ORDER BY embedding &lt;=&gt; $1
@@ -346,13 +363,13 @@ LIMIT 5;</code></pre>
         </div>
 
         <div class="block"><h2 class="block__h"><span class="label">07</span>Adding a voice</h2>
-          <p>In the RAG Voice Chat System, people can talk instead of type. Real-time transcription turns speech into text, the RAG pipeline produces a grounded answer, and ElevenLabs turns that answer into natural voice.</p>
+          <p>In the RAG Voice Chat System, people can talk instead of type. Real-time transcription turns speech into text, the RAG pipeline produces a grounded answer, and <a href="https://elevenlabs.io">ElevenLabs</a> turns that answer into natural voice.</p>
           <p>Voice raises the stakes on accuracy. On screen, a reader can skim a reply and notice something odd. A spoken answer sounds equally confident whether it is right or wrong, and the listener has fewer cues to question it. Grounding matters even more when the output is a voice.</p>
         </div>
 
         <div class="block"><h2 class="block__h"><span class="label">08</span>One stack, many brands</h2>
           <p>The second challenge was scale: serving many brands without rebuilding a chatbot each time. The answer was one reusable stack, configured and deployed per brand. The retrieval, generation and voice pieces stay the same; only the knowledge and configuration change.</p>
-          <p>That stack now sits behind 10+ AI chatbots for 8+ client brands. Alongside it, Vapi.ai is configured for outbound voice-AI outreach across 4 countries.</p>
+          <p>That stack now sits behind 10+ AI chatbots for 8+ client brands. Alongside it, <a href="https://vapi.ai">Vapi.ai</a> is configured for outbound voice-AI outreach across 4 countries.</p>
           <p>Treating each brand as configuration rather than a fork is what keeps this manageable. A fix or improvement lands once and reaches every brand.</p>
         </div>
 
@@ -370,6 +387,15 @@ LIMIT 5;</code></pre>
         <div class="block"><h2 class="block__h"><span class="label">11</span>A RAG checklist</h2>
           <ul class="list"><li>Treat the knowledge base as the product. Retrieval cannot fix content that is missing or wrong.</li><li>Structure content so it matches the questions people actually ask.</li><li>Use embeddings to match on meaning, and keep vectors close to your data where you can, for example with pgvector.</li><li>Tell the model to answer only from what was retrieved.</li><li>Decide what happens when retrieval finds nothing, and prefer a human handoff to a guess.</li><li>Review anything the system learns before it goes live.</li><li>Build the pipeline once and make each brand a configuration, not a fork.</li></ul>
           <p>More detail is in the <a href="/projects/rag-voice-chat-system/">RAG Voice Chat System</a> and <a href="/projects/floatchat/">FloatChat</a> case studies. If you are building a RAG system, you can <a href="/#contact">get in touch here</a>.</p>
+        </div>
+
+        <div class="block"><h2 class="block__h"><span class="label">→</span>Related reading</h2>
+          <ul class="list"><li><a href="/blog/multi-agent-llm-systems-in-production/">Multi-Agent LLM Systems in Production: Four Safeguards</a></li><li><a href="/blog/building-reliable-data-pipelines/">From ETL to Insight: Building Reliable Data Pipelines</a></li><li><a href="/projects/rag-voice-chat-system/">RAG Voice Chat System case study</a></li><li><a href="/projects/floatchat/">FloatChat case study</a></li><li><a href="/blog/">All articles</a></li></ul>
+        </div>
+
+        <div class="block author-box"><h2 class="block__h"><span class="label">→</span>About the author</h2>
+          <p>I'm <a href="/" rel="author">Dharmike Baria</a>, a Python Developer and AI/ML Engineer based in Mumbai, India, currently building Python-based internal tools and data automation at Jolly Clamps Pvt. Ltd. With 1.5 years across backend development, machine learning and data engineering, I build Django APIs, multi-agent LLM systems, ETL pipelines and full-stack SaaS products.</p>
+          <p><a href="/">Portfolio</a> · <a href="/projects/">Case studies</a> · <a href="https://www.linkedin.com/in/dharmike-baria/" rel="me noopener" target="_blank">LinkedIn</a> · <a href="https://github.com/dharmikebaria" rel="me noopener" target="_blank">GitHub</a></p>
         </div>
       </div>
     </div></section>

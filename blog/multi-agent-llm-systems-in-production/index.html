@@ -46,7 +46,16 @@
     "@type": "Person",
     "@id": "https://www.dharmikbaria.online/#person",
     "name": "Dharmike Baria",
-    "url": "https://www.dharmikbaria.online/"
+    "url": "https://www.dharmikbaria.online/",
+    "jobTitle": "Python Developer & AI/ML Engineer",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Jolly Clamps Pvt. Ltd."
+    },
+    "sameAs": [
+      "https://www.linkedin.com/in/dharmike-baria/",
+      "https://github.com/dharmikebaria"
+    ]
   },
   "publisher": {
     "@type": "Person",
@@ -56,7 +65,11 @@
   },
   "isPartOf": {
     "@id": "https://www.dharmikbaria.online/#website"
-  }
+  },
+  "citation": [
+    "https://www.chatwoot.com",
+    "https://github.com/sidekiq/sidekiq/wiki/Error-Handling"
+  ]
 }
 </script>
 <script type="application/ld+json">
@@ -266,6 +279,8 @@
   .block p + pre, .block pre + p{ margin-top:16px; }
   .block pre{ background:var(--ink); color:var(--paper); font-family:var(--mono); font-size:13px; line-height:1.65; padding:18px 20px; border-radius:14px; overflow-x:auto; }
   .pgrid > *{ min-width:0; }
+  .author-box{ border-top:1px solid var(--line); padding-top:clamp(28px,4vh,40px); }
+  .block .list a{ text-decoration:underline; text-underline-offset:3px; }
 </style>
 </head>
 <body>
@@ -291,7 +306,7 @@
 <main id="main">
   <article>
     <section class="phero"><div class="wrap">
-      <a href="/#thoughts" class="phero__back"><span>←</span> All writing</a>
+      <a href="/blog/" class="phero__back"><span>←</span> All writing</a>
       <div class="phero__top"><span class="label">Article — <time datetime="2026-11-24">24 Nov 2026</time></span><span class="mark">Agentic AI · 7 min read</span></div>
       <h1 class="phero__title post__h1">Multi-Agent LLM Systems in Production: Four Safeguards</h1>
       <p class="phero__sum">A multi-agent demo works when everything goes right. Production is about what happens when a model call hangs, a job retries, or a conversation runs long. These are the safeguards I added to FloatChat, and why each one matters.</p>
@@ -300,7 +315,7 @@
 
     <section class="pbody"><div class="wrap pgrid">
       <aside class="meta" aria-label="About the author">
-        <div class="meta__row"><p class="label">Written by</p><p class="meta__val"><a href="/"><u>Dharmike Baria</u></a></p></div>
+        <div class="meta__row"><p class="label">Written by</p><p class="meta__val"><a href="/" rel="author"><u>Dharmike Baria</u></a></p></div>
         <div class="meta__row"><p class="label">Role</p><p class="meta__val">Python Developer &amp; AI/ML Engineer, Mumbai</p></div>
         <div class="meta__row"><p class="label">Related project</p><p class="meta__val"><a href="/projects/floatchat/"><u>FloatChat case study</u></a></p></div>
       </aside>
@@ -312,7 +327,7 @@
         </div>
 
         <div class="block"><h2 class="block__h"><span class="label">02</span>The system: FloatChat</h2>
-          <p><a href="/projects/floatchat/">FloatChat</a> is a rebranded, self-hosted fork of Chatwoot 4.13, built on Rails 7.1, Vue 3, PostgreSQL and Redis with Sidekiq, and deployed with Docker. Customers write in over live chat, email, WhatsApp, social channels or SMS, and everything lands in one inbox.</p>
+          <p><a href="/projects/floatchat/">FloatChat</a> is a rebranded, self-hosted fork of <a href="https://www.chatwoot.com">Chatwoot</a> 4.13, built on Rails 7.1, Vue 3, PostgreSQL and Redis with Sidekiq, and deployed with Docker. Customers write in over live chat, email, WhatsApp, social channels or SMS, and everything lands in one inbox.</p>
           <p>The AI layer works like this:</p>
           <div class="flow"><div class="flow__step"><span class="flow__n">01</span><div><h3 class="flow__t">A message arrives</h3><p class="flow__d">The conversation sits in the pending (bot) state, waiting for the AI to respond.</p></div></div><div class="flow__step"><span class="flow__n">02</span><div><h3 class="flow__t">A job is queued</h3><p class="flow__d">A listener checks that the inbox has an AI assistant attached and queues the reply job on Sidekiq.</p></div></div><div class="flow__step"><span class="flow__n">03</span><div><h3 class="flow__t">The orchestrator decides</h3><p class="flow__d">An orchestrator assistant reads the conversation history and either answers or hands off to an admin-defined scenario agent.</p></div></div><div class="flow__step"><span class="flow__n">04</span><div><h3 class="flow__t">Agents use tools</h3><p class="flow__d">Seven built-in tools cover FAQ lookup, human handoff, resolving the conversation, private and contact notes, labels and priority.</p></div></div><div class="flow__step"><span class="flow__n">05</span><div><h3 class="flow__t">Reply or hand off</h3><p class="flow__d">The answer goes to the customer, or the conversation is passed to a person.</p></div></div></div>
           <p>Every arrow in that flow is a place where something can go wrong. Four failures mattered most.</p>
@@ -325,7 +340,7 @@
         </div>
 
         <div class="block"><h2 class="block__h"><span class="label">04</span>Safeguard 2: make every run safe to retry</h2>
-          <p>Background jobs retry. That is a feature: if a worker crashes or a network call fails, the job runs again and the customer still gets an answer. But an agent run is not a pure function. By the time it fails, it may already have posted a reply, added a label or written a private note.</p>
+          <p>Background jobs retry; Sidekiq, for example, <a href="https://github.com/sidekiq/sidekiq/wiki/Error-Handling">retries failed jobs automatically</a>. That is a feature: if a worker crashes or a network call fails, the job runs again and the customer still gets an answer. But an agent run is not a pure function. By the time it fails, it may already have posted a reply, added a label or written a private note.</p>
           <p>Run the same job again and you can get a duplicate reply, or the same tool action twice. For a customer, two identical answers look broken. For the support team, repeated labels and notes make the conversation history harder to trust.</p>
           <p>FloatChat uses a Redis run registry that tracks each agent run and prevents duplicate replies and repeated tool actions. In general terms this is idempotency: a retry should recognise work that is already done and skip it, rather than doing it again. If you are building this yourself, the pattern is:</p>
           <ul class="list"><li>Give each run a stable identity, so a retry is recognised as the same run.</li><li>Record side effects such as replies and tool actions as they happen, not only at the end.</li><li>Check that record before acting, so a retry only does what is still missing.</li></ul>
@@ -363,6 +378,15 @@
         <div class="block"><h2 class="block__h"><span class="label">10</span>A production checklist for multi-agent LLM systems</h2>
           <ul class="list"><li>Put an explicit timeout on every model and API call made from a worker.</li><li>Make agent runs safe to retry, so a retry never repeats a reply or a tool action.</li><li>Cap handoffs, tool calls and conversation history per run, and choose the numbers on purpose.</li><li>Log every run so any reply can be traced back to the steps that produced it.</li><li>Make human handoff fast, automatic and full of context.</li><li>Review anything the system learns before it goes live.</li><li>Keep the model and provider configurable per assistant.</li></ul>
           <p>The full architecture, stack and feature list are in the <a href="/projects/floatchat/">FloatChat case study</a>. If you are building something similar, you can <a href="/#contact">get in touch here</a>.</p>
+        </div>
+
+        <div class="block"><h2 class="block__h"><span class="label">→</span>Related reading</h2>
+          <ul class="list"><li><a href="/blog/building-reliable-data-pipelines/">From ETL to Insight: Building Reliable Data Pipelines</a></li><li><a href="/blog/rag-in-practice/">RAG in Practice: Grounding LLMs in Your Own Data</a></li><li><a href="/projects/floatchat/">FloatChat case study</a></li><li><a href="/blog/">All articles</a></li></ul>
+        </div>
+
+        <div class="block author-box"><h2 class="block__h"><span class="label">→</span>About the author</h2>
+          <p>I'm <a href="/" rel="author">Dharmike Baria</a>, a Python Developer and AI/ML Engineer based in Mumbai, India, currently building Python-based internal tools and data automation at Jolly Clamps Pvt. Ltd. With 1.5 years across backend development, machine learning and data engineering, I build Django APIs, multi-agent LLM systems, ETL pipelines and full-stack SaaS products.</p>
+          <p><a href="/">Portfolio</a> · <a href="/projects/">Case studies</a> · <a href="https://www.linkedin.com/in/dharmike-baria/" rel="me noopener" target="_blank">LinkedIn</a> · <a href="https://github.com/dharmikebaria" rel="me noopener" target="_blank">GitHub</a></p>
         </div>
       </div>
     </div></section>

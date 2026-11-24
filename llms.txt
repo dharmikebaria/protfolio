@@ -1,0 +1,30 @@
+# Dharmike Baria
+
+> Python Developer and AI/ML Engineer based in Mumbai, India, open to remote work. Builds Django APIs, multi-agent LLM systems, RAG chatbots, ETL pipelines and automation tools. Currently at Jolly Clamps Pvt. Ltd.
+
+This site is Dharmike Baria's portfolio: project case studies and long-form articles.
+
+## Profile
+
+- [Home](https://www.dharmikbaria.online/): about, experience, skills, services and contact
+- [Resume (PDF)](https://www.dharmikbaria.online/resume.pdf)
+- [LinkedIn](https://www.linkedin.com/in/dharmike-baria/)
+- [GitHub](https://github.com/dharmikebaria)
+
+## Projects
+
+- [FloatChat](https://www.dharmikbaria.online/projects/floatchat/): A self-hosted, omnichannel customer-support platform built on Chatwoot 4.13, with a multi-agent AI layer that answers customers from the knowledge base, hands off to humans when it can't, and learns new FAQs from resolved conversations.
+- [WorkTrackZilla](https://www.dharmikbaria.online/projects/worktrackzilla/): A multi-tenant employee monitoring SaaS — a web dashboard for managers plus a desktop agent for employees, built on a Django and Next.js stack.
+- [RAG Voice Chat System](https://www.dharmikbaria.online/projects/rag-voice-chat-system/): A production retrieval-augmented chat system with natural voice replies and real-time transcription.
+- [Conversational AI Data Analyst](https://www.dharmikbaria.online/projects/conversational-ai-data-analyst/): Upload a CSV or Excel file and ask questions in plain English — the app profiles the data, finds correlations and outliers, draws charts, and exports a report.
+- [Selenium Automation Framework](https://www.dharmikbaria.online/projects/selenium-automation-framework/): A reusable Python + Selenium framework that collects data from many websites reliably, with proxy rotation built in.
+- [ERP Data Automation Portal](https://www.dharmikbaria.online/projects/erp-data-automation-portal/): An internal enterprise portal that turns daily ERP and production-planning Excel exports into clean, structured data for the operations team.
+- [Medical Data Extraction](https://www.dharmikbaria.online/projects/medical-data-extraction/): A Python OCR pipeline that reads medical PDFs and pulls out structured data automatically.
+- [GA4 Paid Traffic Dashboard](https://www.dharmikbaria.online/projects/ga4-paid-traffic-dashboard/): An internal BI tool that cross-references GA4 event data with Google Ads spend, so the marketing team can see what paid campaigns actually deliver.
+- [Atliq Grand BI Dashboard](https://www.dharmikbaria.online/projects/atliq-grand-bi-dashboard/): A Power BI dashboard analysing hotel revenue and occupancy across multiple revenue streams.
+
+## Articles
+
+- [From ETL to Insight: Building Reliable Data Pipelines](https://www.dharmikbaria.online/blog/building-reliable-data-pipelines/): How I joined GA4 data in BigQuery with Google Ads spend, validated the tracking and automated the reports, and reused the pattern for ERP exports.
+- [Multi-Agent LLM Systems in Production: Four Safeguards](https://www.dharmikbaria.online/blog/multi-agent-llm-systems-in-production/): Four safeguards that keep a multi-agent LLM support system reliable in production: timeouts, a run registry, hard limits and run logging.
+- [RAG in Practice: Grounding LLMs in Your Own Data](https://www.dharmikbaria.online/blog/rag-in-practice/): A practical look at retrieval-augmented generation: grounding chatbot answers in your own content, adding voice, and reusing one stack across brands.

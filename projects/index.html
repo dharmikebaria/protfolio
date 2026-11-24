@@ -129,7 +129,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
-
+<style>.all__d{ display:block; margin-top:8px; max-width:62ch; font-size:clamp(.95rem,1.2vw,1.05rem); font-weight:400; letter-spacing:0; line-height:1.5; color:var(--ink-70); }</style>
 <style>
   :root{
     --paper:#F4F2EE; --paper-2:#ECE9E2; --ink:#0A0A0A; --ink-70:rgba(10,10,10,.70);
@@ -322,6 +322,7 @@
   <div class="menu__panel" id="menuPanel">
     <a href="/">Home</a>
     <a href="/projects/">All Projects</a>
+    <a href="/blog/">Writing</a>
     <a href="/#contact">Contact</a>
     <a href="/resume.pdf" download="Dharmike_Baria_Resume.pdf">Resume ↓</a>
   </div>
@@ -332,16 +333,17 @@
     <a href="/#work" class="phero__back"><span>←</span> Back to home</a>
     <div class="phero__top"><span class="label">Case studies by Dharmike Baria — (09)</span></div>
     <h1 class="phero__title">All Projects</h1>
+    <p class="phero__sum">Case studies from my work as a Python Developer and AI/ML Engineer in Mumbai: multi-agent LLM and RAG systems, a multi-tenant Django SaaS, ETL pipelines on BigQuery and PostgreSQL, web automation, OCR data extraction and BI dashboards. Each one covers the problem, how the system works, what I built and the impact.</p>
     <nav class="all" aria-label="Project case studies">
-      <a href="/projects/floatchat/" data-reveal><span class="all__n">01</span><span class="all__t">FloatChat</span><span class="label">Agentic AI</span></a>
-      <a href="/projects/worktrackzilla/" data-reveal><span class="all__n">02</span><span class="all__t">WorkTrackZilla</span><span class="label">Multi-Tenant SaaS</span></a>
-      <a href="/projects/rag-voice-chat-system/" data-reveal><span class="all__n">03</span><span class="all__t">RAG Voice Chat System</span><span class="label">NLP / Voice AI</span></a>
-      <a href="/projects/conversational-ai-data-analyst/" data-reveal><span class="all__n">04</span><span class="all__t">Conversational AI Data Analyst</span><span class="label">Generative AI</span></a>
-      <a href="/projects/selenium-automation-framework/" data-reveal><span class="all__n">05</span><span class="all__t">Selenium Automation Framework</span><span class="label">Web Automation</span></a>
-      <a href="/projects/erp-data-automation-portal/" data-reveal><span class="all__n">06</span><span class="all__t">ERP Data Automation Portal</span><span class="label">Internal Tool</span></a>
-      <a href="/projects/medical-data-extraction/" data-reveal><span class="all__n">07</span><span class="all__t">Medical Data Extraction</span><span class="label">OCR / ML</span></a>
-      <a href="/projects/ga4-paid-traffic-dashboard/" data-reveal><span class="all__n">08</span><span class="all__t">GA4 Paid Traffic Dashboard</span><span class="label">BI / Analytics</span></a>
-      <a href="/projects/atliq-grand-bi-dashboard/" data-reveal><span class="all__n">09</span><span class="all__t">Atliq Grand BI Dashboard</span><span class="label">Power BI</span></a>
+      <a href="/projects/floatchat/" data-reveal><span class="all__n">01</span><span class="all__t">FloatChat<span class="all__d">A self-hosted, omnichannel customer-support platform built on Chatwoot 4.13, with a multi-agent AI layer that answers customers from the knowledge base, hands off to humans when it can't, and learns new FAQs from resolved conversations.</span></span><span class="label">Agentic AI</span></a>
+      <a href="/projects/worktrackzilla/" data-reveal><span class="all__n">02</span><span class="all__t">WorkTrackZilla<span class="all__d">A multi-tenant employee monitoring SaaS — a web dashboard for managers plus a desktop agent for employees, built on a Django and Next.js stack.</span></span><span class="label">Multi-Tenant SaaS</span></a>
+      <a href="/projects/rag-voice-chat-system/" data-reveal><span class="all__n">03</span><span class="all__t">RAG Voice Chat System<span class="all__d">A production retrieval-augmented chat system with natural voice replies and real-time transcription.</span></span><span class="label">NLP / Voice AI</span></a>
+      <a href="/projects/conversational-ai-data-analyst/" data-reveal><span class="all__n">04</span><span class="all__t">Conversational AI Data Analyst<span class="all__d">Upload a CSV or Excel file and ask questions in plain English — the app profiles the data, finds correlations and outliers, draws charts, and exports a report.</span></span><span class="label">Generative AI</span></a>
+      <a href="/projects/selenium-automation-framework/" data-reveal><span class="all__n">05</span><span class="all__t">Selenium Automation Framework<span class="all__d">A reusable Python + Selenium framework that collects data from many websites reliably, with proxy rotation built in.</span></span><span class="label">Web Automation</span></a>
+      <a href="/projects/erp-data-automation-portal/" data-reveal><span class="all__n">06</span><span class="all__t">ERP Data Automation Portal<span class="all__d">An internal enterprise portal that turns daily ERP and production-planning Excel exports into clean, structured data for the operations team.</span></span><span class="label">Internal Tool</span></a>
+      <a href="/projects/medical-data-extraction/" data-reveal><span class="all__n">07</span><span class="all__t">Medical Data Extraction<span class="all__d">A Python OCR pipeline that reads medical PDFs and pulls out structured data automatically.</span></span><span class="label">OCR / ML</span></a>
+      <a href="/projects/ga4-paid-traffic-dashboard/" data-reveal><span class="all__n">08</span><span class="all__t">GA4 Paid Traffic Dashboard<span class="all__d">An internal BI tool that cross-references GA4 event data with Google Ads spend, so the marketing team can see what paid campaigns actually deliver.</span></span><span class="label">BI / Analytics</span></a>
+      <a href="/projects/atliq-grand-bi-dashboard/" data-reveal><span class="all__n">09</span><span class="all__t">Atliq Grand BI Dashboard<span class="all__d">A Power BI dashboard analysing hotel revenue and occupancy across multiple revenue streams.</span></span><span class="label">Power BI</span></a>
     </nav>
   </div></section>
 </main>
