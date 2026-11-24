@@ -263,6 +263,9 @@
   .phero__title.post__h1{ font-size:clamp(2rem,5.2vw,4.4rem); max-width:20ch; }
   .block p + p, .block p + ul, .block ul + p{ margin-top:16px; }
   .block a{ text-decoration:underline; text-underline-offset:3px; }
+  .block p + pre, .block pre + p{ margin-top:16px; }
+  .block pre{ background:var(--ink); color:var(--paper); font-family:var(--mono); font-size:13px; line-height:1.65; padding:18px 20px; border-radius:14px; overflow-x:auto; }
+  .pgrid > *{ min-width:0; }
 </style>
 </head>
 <body>
@@ -289,9 +292,9 @@
   <article>
     <section class="phero"><div class="wrap">
       <a href="/#thoughts" class="phero__back"><span>←</span> All writing</a>
-      <div class="phero__top"><span class="label">Article — <time datetime="2026-11-24">24 Nov 2026</time></span><span class="mark">Data Engineering · 4 min read</span></div>
+      <div class="phero__top"><span class="label">Article — <time datetime="2026-11-24">24 Nov 2026</time></span><span class="mark">Data Engineering · 6 min read</span></div>
       <h1 class="phero__title post__h1">From ETL to Insight: Building Reliable Data Pipelines</h1>
-      <p class="phero__sum">A pipeline is only useful if people trust the number at the end of it. This is how I built one that joins GA4 data in BigQuery with Google Ads spend, and what made it reliable enough to act on.</p>
+      <p class="phero__sum">A data pipeline is only useful if people trust the number at the end of it. This is how I built an ETL pipeline that joins GA4 data in BigQuery with Google Ads spend, and what made it reliable enough to act on.</p>
       <div class="phero__tags"><span class="tag">ETL</span><span class="tag">BigQuery</span><span class="tag">GA4</span><span class="tag">Google Ads API</span><span class="tag">PostgreSQL</span></div>
     </div></section>
 
@@ -302,42 +305,64 @@
         <div class="meta__row"><p class="label">Related projects</p><p class="meta__val"><a href="/projects/ga4-paid-traffic-dashboard/"><u>GA4 Paid Traffic Dashboard</u></a><br><a href="/projects/erp-data-automation-portal/"><u>ERP Data Automation Portal</u></a></p></div>
       </aside>
       <div>
-        <div class="block"><h2 class="block__h"><span class="label">01</span>Two systems, one question</h2>
+        <div class="block"><h2 class="block__h"><span class="label">01</span>A question split across two systems</h2>
           <p>The marketing team had a simple question: what do our paid campaigns actually deliver? The answer was split across two systems. Ad spend lived in Google Ads. Conversions and user behaviour lived in GA4.</p>
-          <p>Comparing the two meant manual exports and spreadsheets, so campaign decisions were slow and hard to trust. The <a href="/projects/ga4-paid-traffic-dashboard/">GA4 Paid Traffic Dashboard</a> replaced that with a pipeline.</p>
+          <p>Comparing the two meant manual exports and spreadsheets. Spend was downloaded from one tool, conversions from the other, and the numbers were lined up by hand. It worked, slowly, and nobody was fully sure the numbers matched. Campaign decisions were slow and hard to trust.</p>
+          <p>The <a href="/projects/ga4-paid-traffic-dashboard/">GA4 Paid Traffic Dashboard</a> replaced that process with an ETL data pipeline. This article covers how it is built and, more importantly, what made it reliable enough that people acted on its numbers.</p>
         </div>
 
-        <div class="block"><h2 class="block__h"><span class="label">02</span>The pipeline, end to end</h2>
-          <div class="flow">
-            <div class="flow__step"><span class="flow__n">01</span><div><h3 class="flow__t">Extract GA4 events from BigQuery</h3><p class="flow__d">GA4 events are exported daily into date-partitioned BigQuery tables, and the event data is queried there directly with SQL.</p></div></div>
-            <div class="flow__step"><span class="flow__n">02</span><div><h3 class="flow__t">Select the right partitions</h3><p class="flow__d">Parameterised table IDs pick the partitions for any reporting window, so the same query serves any date range.</p></div></div>
-            <div class="flow__step"><span class="flow__n">03</span><div><h3 class="flow__t">Extract spend from the Google Ads API</h3><p class="flow__d">Campaign spend is fetched through the Google Ads API instead of a manual export.</p></div></div>
-            <div class="flow__step"><span class="flow__n">04</span><div><h3 class="flow__t">Join and compute</h3><p class="flow__d">Events and spend are combined to measure performance per campaign.</p></div></div>
-            <div class="flow__step"><span class="flow__n">05</span><div><h3 class="flow__t">Serve and schedule</h3><p class="flow__d">Results are served through a Django REST Framework backend backed by PostgreSQL, and reports are emailed on a schedule by APScheduler.</p></div></div>
-          </div>
+        <div class="block"><h2 class="block__h"><span class="label">02</span>Why manual exports are not a pipeline</h2>
+          <p>Manual exports fail in predictable ways. Date ranges drift between the two downloads. A filter is applied in one tool and not the other. A spreadsheet formula is copied one row short. Each mistake is small, but together they make every number arguable, and an arguable number does not get used.</p>
+          <p>A data pipeline fixes this by making each step the same every time. The extraction uses the same query, the join uses the same keys, and the output arrives on the same schedule. The goal is not only speed. It is consistency, because consistency is what earns trust.</p>
         </div>
 
-        <div class="block"><h2 class="block__h"><span class="label">03</span>What made it reliable</h2>
-          <div class="flow">
-            <div class="flow__step"><span class="flow__n">01</span><div><h3 class="flow__t">Validate the join before you trust the join</h3><p class="flow__d">A join between ad clicks and GA4 sessions is only as good as the tracking that links them, and that tracking was unreliable. I validated GCLID and UTM tracking with statistical analysis and A/B testing, reaching 100% data accuracy. Everything downstream depends on this step.</p></div></div>
-            <div class="flow__step"><span class="flow__n">02</span><div><h3 class="flow__t">Parameterise instead of hard-coding</h3><p class="flow__d">Daily partitioned tables invite one-off queries with dates typed in by hand. Parameterising the table IDs means the right partitions are selected automatically, and nobody edits SQL to change a reporting window.</p></div></div>
-            <div class="flow__step"><span class="flow__n">03</span><div><h3 class="flow__t">Take people out of the delivery step</h3><p class="flow__d">A report that depends on someone remembering to run it is not a pipeline. Scheduled email delivery means the numbers arrive without a manual pull.</p></div></div>
-          </div>
+        <div class="block"><h2 class="block__h"><span class="label">03</span>The architecture, step by step</h2>
+          <div class="flow"><div class="flow__step"><span class="flow__n">01</span><div><h3 class="flow__t">Extract GA4 events from BigQuery</h3><p class="flow__d">GA4 events are exported daily into date-partitioned tables in Google BigQuery, and the event data is queried there directly with SQL.</p></div></div><div class="flow__step"><span class="flow__n">02</span><div><h3 class="flow__t">Select the right partitions</h3><p class="flow__d">Parameterised table IDs pick the partitions for any reporting window, so the same query serves any date range.</p></div></div><div class="flow__step"><span class="flow__n">03</span><div><h3 class="flow__t">Extract spend from the Google Ads API</h3><p class="flow__d">Campaign spend is fetched through the Google Ads API instead of a manual export.</p></div></div><div class="flow__step"><span class="flow__n">04</span><div><h3 class="flow__t">Join and compute</h3><p class="flow__d">Events and spend are combined to measure performance per campaign.</p></div></div><div class="flow__step"><span class="flow__n">05</span><div><h3 class="flow__t">Serve and schedule</h3><p class="flow__d">Results are served through a Django REST Framework backend backed by PostgreSQL, and reports are emailed on a schedule by APScheduler.</p></div></div></div>
+          <p>The stack is deliberately ordinary: Python, SQL, BigQuery, the Google Ads API, PostgreSQL, Django REST Framework and APScheduler. Reliability came from how the pieces were used, not from exotic tools.</p>
         </div>
 
-        <div class="block"><h2 class="block__h"><span class="label">04</span>The same pattern, a different source</h2>
-          <p>The sources change, the shape does not. At Jolly Clamps the inputs are not APIs but daily Excel exports from the ERP and production-planning systems: dispatch, lead time, MPS / MTO schedules and forecast demand.</p>
-          <p>Every export type has its own Excel layout, so the <a href="/projects/erp-data-automation-portal/">ERP Data Automation Portal</a> uses a reusable openpyxl parser library that maps each export into a consistent data model. Parsed data is stored in structured PostgreSQL models through Django REST Framework, and recurring reports are generated automatically. A repeatable ingestion pipeline replaced daily manual spreadsheet handling.</p>
+        <div class="block"><h2 class="block__h"><span class="label">04</span>Querying GA4 data in BigQuery for any date range</h2>
+          <p>The GA4 BigQuery export writes one table per day, with the date as a suffix in the table name. That is efficient, because a query only needs to scan the days it covers. It also invites a bad habit: hard-coding dates into queries, then editing them by hand every time someone wants a different window.</p>
+          <p>It also matters for cost. BigQuery charges by the amount of data a query scans, so a query that reads every day of history to answer a question about last week is slower and more expensive than it needs to be.</p>
+          <p>The pipeline parameterises the table IDs instead, so the right partitions are selected automatically for any reporting window. Nobody edits SQL to change a date range, which removes a whole class of copy-and-paste mistakes.</p>
+          <p>As an illustration of the general technique (not the production query), BigQuery lets you query all the daily tables with a wildcard and filter them by suffix using parameters:</p>
+          <pre><code>SELECT event_name, COUNT(*) AS events
+FROM `my-project.analytics_123456.events_*`
+WHERE _TABLE_SUFFIX BETWEEN @start_date AND @end_date
+GROUP BY event_name
+ORDER BY events DESC;</code></pre>
+          <p>Because the date range is a parameter, the same query can power a daily report, a monthly review and a one-off question, and BigQuery only scans the tables inside the range.</p>
         </div>
 
-        <div class="block"><h2 class="block__h"><span class="label">05</span>Takeaways</h2>
-          <ul class="list">
-            <li>Start from the question the team is asking, then find where each half of the answer lives.</li>
-            <li>Check the keys that link your sources before you build anything on the join.</li>
-            <li>Parameterise date ranges and table names so no one edits a query by hand.</li>
-            <li>Map messy inputs into one consistent data model as early as possible.</li>
-            <li>Automate delivery, so the pipeline does not depend on anyone's memory.</li>
-          </ul>
+        <div class="block"><h2 class="block__h"><span class="label">05</span>Validate the join before you trust the join</h2>
+          <p>Joining ad spend to on-site behaviour depends on the tracking that links an ad click to a GA4 session. That link comes from the GCLID, the click identifier Google Ads adds to ad URLs, and from UTM parameters that tag the campaign, source and medium.</p>
+          <p>That tracking was unreliable. When the keys connecting two datasets are wrong, every metric built on the join is wrong too, and no amount of clever SQL downstream can fix it.</p>
+          <p>So before building on the join, I validated GCLID and UTM tracking using statistical analysis and A/B testing, reaching 100% data accuracy. It was the least visible part of the project and the most important one, because everything the dashboard reports depends on it.</p>
+          <p>The general lesson: when a pipeline combines sources, check the keys first. Count how many records match, how many do not, and why. A join that silently drops or duplicates rows is one of the most common ways a pipeline produces confident, wrong numbers.</p>
+        </div>
+
+        <div class="block"><h2 class="block__h"><span class="label">06</span>Serve the data, then take people out of delivery</h2>
+          <p>Once the numbers are right, they need to reach people. The results are served through a Django REST Framework backend with PostgreSQL, which gives the dashboards a stable API instead of a folder of files.</p>
+          <p>Then there is delivery. A report that depends on someone remembering to run it is not really a pipeline; it is a manual task with extra steps. APScheduler sends reports by email on a schedule, so the numbers arrive without anyone pulling them.</p>
+          <p>An API also gives every consumer the same numbers. When three people each open their own copy of an export, they end up with three slightly different versions of the truth. When everyone reads from one endpoint, a correction made once reaches everyone.</p>
+          <p>Across the BI dashboards I worked on there, time-to-insight fell by 70%.</p>
+        </div>
+
+        <div class="block"><h2 class="block__h"><span class="label">07</span>Habits that keep any data pipeline trustworthy</h2>
+          <p>Beyond the specifics of GA4 and Google Ads, a few general habits separate pipelines people trust from pipelines people double-check. None of them are complicated; they are mostly about being able to answer "is this number right?" quickly.</p>
+          <div class="flow"><div class="flow__step"><span class="flow__n">01</span><div><h3 class="flow__t">Make loads safe to re-run</h3><p class="flow__d">If a day's load fails halfway, running it again should replace that day's data, not add a second copy. Pipelines that append blindly turn every retry into a duplicate.</p></div></div><div class="flow__step"><span class="flow__n">02</span><div><h3 class="flow__t">Keep raw data separate from results</h3><p class="flow__d">Store what came out of the source unchanged, and build the transformed tables from it. When a calculation turns out to be wrong, you can fix it and rebuild instead of re-extracting everything.</p></div></div><div class="flow__step"><span class="flow__n">03</span><div><h3 class="flow__t">Watch freshness and volume</h3><p class="flow__d">A simple daily check that the latest data arrived, and that the row count is in a normal range, catches most silent failures before a stakeholder does.</p></div></div><div class="flow__step"><span class="flow__n">04</span><div><h3 class="flow__t">Write down what each metric means</h3><p class="flow__d">Agree on definitions such as what counts as a conversion and which date a cost belongs to. Many arguments about numbers are really arguments about definitions.</p></div></div></div>
+          <p>Each of these is cheap to add at the start and expensive to retrofit once people depend on the output.</p>
+        </div>
+
+        <div class="block"><h2 class="block__h"><span class="label">08</span>The same pattern with a messier source</h2>
+          <p>The sources change, but the shape of the pipeline does not. At Jolly Clamps, the inputs are not APIs but daily Excel exports from the ERP and production-planning systems: dispatch, lead time, MPS / MTO schedules and forecast demand.</p>
+          <p>Excel exports are harder to work with than APIs, because every export type has its own layout. The <a href="/projects/erp-data-automation-portal/">ERP Data Automation Portal</a> handles this with a reusable openpyxl parser library that maps each export into a consistent data model. Parsed data is stored in structured PostgreSQL models through Django REST Framework, teams use a React portal instead of passing spreadsheets around, and recurring production and dispatch reports are generated automatically with Google Apps Script.</p>
+          <p>The principle is the same as with GA4: deal with the mess once, at the edge of the system, and give everything downstream one clean, predictable shape.</p>
+        </div>
+
+        <div class="block"><h2 class="block__h"><span class="label">09</span>A checklist for reliable ETL pipelines</h2>
+          <ul class="list"><li>Start from the question the team is asking, then find where each half of the answer lives.</li><li>Check the keys that link your sources before building anything on the join.</li><li>Parameterise date ranges and table names, so nobody edits a query by hand.</li><li>Map messy inputs into one consistent data model as early as possible.</li><li>Serve results through an API, not a folder of exports.</li><li>Automate delivery, so the pipeline does not depend on anyone remembering to run it.</li></ul>
+          <p>The full details are in the <a href="/projects/ga4-paid-traffic-dashboard/">GA4 Paid Traffic Dashboard</a> and <a href="/projects/erp-data-automation-portal/">ERP Data Automation Portal</a> case studies. If you are working on something similar, you can <a href="/#contact">get in touch here</a>.</p>
         </div>
       </div>
     </div></section>

@@ -263,6 +263,9 @@
   .phero__title.post__h1{ font-size:clamp(2rem,5.2vw,4.4rem); max-width:20ch; }
   .block p + p, .block p + ul, .block ul + p{ margin-top:16px; }
   .block a{ text-decoration:underline; text-underline-offset:3px; }
+  .block p + pre, .block pre + p{ margin-top:16px; }
+  .block pre{ background:var(--ink); color:var(--paper); font-family:var(--mono); font-size:13px; line-height:1.65; padding:18px 20px; border-radius:14px; overflow-x:auto; }
+  .pgrid > *{ min-width:0; }
 </style>
 </head>
 <body>
@@ -289,10 +292,10 @@
   <article>
     <section class="phero"><div class="wrap">
       <a href="/#thoughts" class="phero__back"><span>←</span> All writing</a>
-      <div class="phero__top"><span class="label">Article — <time datetime="2026-11-24">24 Nov 2026</time></span><span class="mark">Agentic AI · 4 min read</span></div>
+      <div class="phero__top"><span class="label">Article — <time datetime="2026-11-24">24 Nov 2026</time></span><span class="mark">Agentic AI · 7 min read</span></div>
       <h1 class="phero__title post__h1">Multi-Agent LLM Systems in Production: Four Safeguards</h1>
-      <p class="phero__sum">A multi-agent demo works when everything goes right. Production is about what happens when a model call hangs, a job retries, or a conversation runs long. These are the four safeguards I added to FloatChat.</p>
-      <div class="phero__tags"><span class="tag">Multi-Agent Systems</span><span class="tag">LLMs</span><span class="tag">Redis</span><span class="tag">Sidekiq</span><span class="tag">RAG</span></div>
+      <p class="phero__sum">A multi-agent demo works when everything goes right. Production is about what happens when a model call hangs, a job retries, or a conversation runs long. These are the safeguards I added to FloatChat, and why each one matters.</p>
+      <div class="phero__tags"><span class="tag">Multi-Agent Systems</span><span class="tag">LLMs</span><span class="tag">Agentic AI</span><span class="tag">Redis</span><span class="tag">Sidekiq</span></div>
     </div></section>
 
     <section class="pbody"><div class="wrap pgrid">
@@ -302,40 +305,64 @@
         <div class="meta__row"><p class="label">Related project</p><p class="meta__val"><a href="/projects/floatchat/"><u>FloatChat case study</u></a></p></div>
       </aside>
       <div>
-        <div class="block"><h2 class="block__h"><span class="label">01</span>The setup</h2>
-          <p><a href="/projects/floatchat/">FloatChat</a> is a self-hosted customer-support platform built on Chatwoot 4.13. Customers write in over live chat, email, WhatsApp, social or SMS, and a multi-agent AI layer answers the routine questions from the company's own knowledge base.</p>
-          <p>The flow is simple to describe. A message arrives, a listener checks that the inbox has an AI assistant attached, and a reply job is queued on Sidekiq. An orchestrator assistant reads the conversation and either answers or hands off to a scenario agent. Agents can call tools: a semantic FAQ lookup over pgvector, labels, priority, private notes, resolve, and handoff to a human.</p>
-          <p>Each of those steps is a place where a real system can fail. Four failures mattered most.</p>
+        <div class="block"><h2 class="block__h"><span class="label">01</span>Why multi-agent demos break in production</h2>
+          <p>Most multi-agent LLM demos are built for the happy path. A user asks a question, an orchestrator picks the right agent, the agent calls a tool, and a clean answer comes back. It looks finished. Then real traffic arrives.</p>
+          <p>In production, model APIs are sometimes slow. Background jobs retry. Conversations run for dozens of messages. Agents hand off to each other in ways nobody planned. None of these are rare edge cases; they are what normal operation looks like at volume. A system that only handles the happy path will eventually reply twice, stall a queue, run up a large bill, or say something nobody can explain.</p>
+          <p>This article walks through the safeguards I added to FloatChat, a self-hosted customer-support platform with a multi-agent AI layer. The specifics come from a Ruby on Rails system, but the ideas apply to any agentic AI stack, including Python ones.</p>
         </div>
 
-        <div class="block"><h2 class="block__h"><span class="label">02</span>Four failures, four safeguards</h2>
-          <div class="flow">
-            <div class="flow__step"><span class="flow__n">01</span><div><h3 class="flow__t">A slow model call blocks the queue</h3><p class="flow__d">Agent runs happen in background workers. If an LLM call hangs, the worker hangs with it, and every customer behind it waits. The fix is an LLM timeout guard: a slow call fails fast instead of stalling Sidekiq workers.</p></div></div>
-            <div class="flow__step"><span class="flow__n">02</span><div><h3 class="flow__t">A retry sends the same reply twice</h3><p class="flow__d">Background jobs retry, which is what you want for reliability. But a retried agent run can post a duplicate answer or repeat a tool action, such as adding the same label or note again. A Redis run registry tracks each run and prevents duplicate replies and repeated tool actions.</p></div></div>
-            <div class="flow__step"><span class="flow__n">03</span><div><h3 class="flow__t">Long conversations outgrow the context window and the budget</h3><p class="flow__d">Agents that hand off to each other can also loop. Every run is capped at 8 handoffs, 12 tool calls and 30 messages of history, and long messages are truncated before they reach the model. A hard ceiling makes the worst case predictable in both latency and cost.</p></div></div>
-            <div class="flow__step"><span class="flow__n">04</span><div><h3 class="flow__t">Nobody can tell what the agent did, or why</h3><p class="flow__d">When a customer gets a strange answer, "the model decided" is not a useful explanation. A run logger records every agent run, so a bad reply can be traced back to the handoffs and tool calls that produced it.</p></div></div>
-          </div>
+        <div class="block"><h2 class="block__h"><span class="label">02</span>The system: FloatChat</h2>
+          <p><a href="/projects/floatchat/">FloatChat</a> is a rebranded, self-hosted fork of Chatwoot 4.13, built on Rails 7.1, Vue 3, PostgreSQL and Redis with Sidekiq, and deployed with Docker. Customers write in over live chat, email, WhatsApp, social channels or SMS, and everything lands in one inbox.</p>
+          <p>The AI layer works like this:</p>
+          <div class="flow"><div class="flow__step"><span class="flow__n">01</span><div><h3 class="flow__t">A message arrives</h3><p class="flow__d">The conversation sits in the pending (bot) state, waiting for the AI to respond.</p></div></div><div class="flow__step"><span class="flow__n">02</span><div><h3 class="flow__t">A job is queued</h3><p class="flow__d">A listener checks that the inbox has an AI assistant attached and queues the reply job on Sidekiq.</p></div></div><div class="flow__step"><span class="flow__n">03</span><div><h3 class="flow__t">The orchestrator decides</h3><p class="flow__d">An orchestrator assistant reads the conversation history and either answers or hands off to an admin-defined scenario agent.</p></div></div><div class="flow__step"><span class="flow__n">04</span><div><h3 class="flow__t">Agents use tools</h3><p class="flow__d">Seven built-in tools cover FAQ lookup, human handoff, resolving the conversation, private and contact notes, labels and priority.</p></div></div><div class="flow__step"><span class="flow__n">05</span><div><h3 class="flow__t">Reply or hand off</h3><p class="flow__d">The answer goes to the customer, or the conversation is passed to a person.</p></div></div></div>
+          <p>Every arrow in that flow is a place where something can go wrong. Four failures mattered most.</p>
         </div>
 
-        <div class="block"><h2 class="block__h"><span class="label">03</span>Always leave a way out to a human</h2>
+        <div class="block"><h2 class="block__h"><span class="label">03</span>Safeguard 1: a timeout on every model call</h2>
+          <p>Agent runs happen inside background workers, and a worker handles one job at a time. If an LLM call hangs, the worker hangs with it. Every customer whose reply job is queued behind it waits too, even though their questions have nothing to do with the slow call.</p>
+          <p>The fix is an LLM timeout guard: a slow model call fails fast instead of stalling Sidekiq workers. A failed run is a much better outcome than a frozen queue, because a failure is visible and can be handled, while a hang quietly delays everyone.</p>
+          <p>The general rule for any agentic system is simple. Never call a model, or any external API, from a worker without an explicit timeout. Choose the number on purpose, based on how long you are willing to make a customer wait, not on a library default.</p>
+        </div>
+
+        <div class="block"><h2 class="block__h"><span class="label">04</span>Safeguard 2: make every run safe to retry</h2>
+          <p>Background jobs retry. That is a feature: if a worker crashes or a network call fails, the job runs again and the customer still gets an answer. But an agent run is not a pure function. By the time it fails, it may already have posted a reply, added a label or written a private note.</p>
+          <p>Run the same job again and you can get a duplicate reply, or the same tool action twice. For a customer, two identical answers look broken. For the support team, repeated labels and notes make the conversation history harder to trust.</p>
+          <p>FloatChat uses a Redis run registry that tracks each agent run and prevents duplicate replies and repeated tool actions. In general terms this is idempotency: a retry should recognise work that is already done and skip it, rather than doing it again. If you are building this yourself, the pattern is:</p>
+          <ul class="list"><li>Give each run a stable identity, so a retry is recognised as the same run.</li><li>Record side effects such as replies and tool actions as they happen, not only at the end.</li><li>Check that record before acting, so a retry only does what is still missing.</li></ul>
+        </div>
+
+        <div class="block"><h2 class="block__h"><span class="label">05</span>Safeguard 3: hard limits on handoffs, tool calls and history</h2>
+          <p>Agents that can hand off to each other can also loop. An orchestrator passes to a scenario agent, which decides the question belongs elsewhere and passes it back. Tool calls can repeat in the same way. Meanwhile, every message in a long conversation adds to the context sent to the model, which raises cost and latency and eventually hits the context window.</p>
+          <p>FloatChat caps every run at 8 handoffs, 12 tool calls and 30 messages of history, and truncates long messages before they reach the model.</p>
+          <p>Hard limits do two things. They make the worst case predictable: you know the maximum number of model calls one customer message can trigger, so you know the maximum cost and roughly the maximum time. And they turn an endless loop into an ordinary failure that can be handled like any other, usually by handing the conversation to a person.</p>
+          <p>The exact numbers matter less than the fact that they exist and were chosen deliberately. Start with limits that comfortably cover your real conversations, then watch the logs to see whether runs ever hit them.</p>
+        </div>
+
+        <div class="block"><h2 class="block__h"><span class="label">06</span>Safeguard 4: log every run</h2>
+          <p>When a customer gets a strange answer, someone will ask why. "The model decided" is not an explanation anyone can act on. To answer the question you need to know which agent handled the conversation, which tools it called, what came back, and where it handed off.</p>
+          <p>FloatChat records every agent run with a run logger, for tracing and debugging. That turns a bad reply from a mystery into something you can trace back to the step that caused it, whether that was a missing FAQ entry, a poor handoff decision or a tool returning the wrong thing.</p>
+          <p>Logs also tell you whether the other safeguards are working. If runs regularly hit the handoff limit, the scenario agents need clearer boundaries. If timeouts fire often, the model or provider may be the problem.</p>
+        </div>
+
+        <div class="block"><h2 class="block__h"><span class="label">07</span>Always leave a way out to a human</h2>
           <p>The safeguards above keep the system stable. They do not make the AI right every time, so the most important tool an agent has is the one that stops it: human handoff.</p>
-          <p>When the AI cannot help, the conversation leaves bot mode, gets an activity note explaining what happened, and is auto-assigned to a human agent with free capacity. The customer is never stuck talking to a bot that has run out of answers.</p>
+          <p>In FloatChat, when the AI cannot help, the conversation leaves bot mode, gets an activity note explaining what happened, and is auto-assigned to a human agent with free capacity. The customer is never stuck talking to a bot that has run out of answers, and the person who picks it up can see why it arrived.</p>
+          <p>Design the handoff as a first-class path, not an error case. It should be fast, it should carry context, and it should be the default whenever the AI is unsure.</p>
         </div>
 
-        <div class="block"><h2 class="block__h"><span class="label">04</span>Let it learn, but review what it learns</h2>
-          <p>FloatChat mines resolved conversations for new FAQ entries, which is how the knowledge base keeps up with what customers actually ask. Left unchecked, that loop could also teach the system its own mistakes.</p>
-          <p>So new entries are saved as pending for review rather than going live, and they are de-duplicated against the approved ones. The system proposes; a person approves.</p>
+        <div class="block"><h2 class="block__h"><span class="label">08</span>Let it learn, but review what it learns</h2>
+          <p>FloatChat mines resolved conversations for new FAQ entries, which is how the knowledge base keeps up with what customers actually ask. Left unchecked, that loop could also teach the system its own mistakes: a wrong answer that happened to close a conversation would become a new FAQ.</p>
+          <p>So new entries are saved as pending for review rather than going live, and they are de-duplicated against the approved ones. The system proposes; a person approves. It is a small step that keeps a self-improving system from drifting.</p>
         </div>
 
-        <div class="block"><h2 class="block__h"><span class="label">05</span>Takeaways</h2>
-          <ul class="list">
-            <li>Put a timeout on every model call that runs inside a worker.</li>
-            <li>Make agent runs safe to retry, so a retry never repeats a reply or a tool action.</li>
-            <li>Cap handoffs, tool calls and history per run, and decide the numbers on purpose.</li>
-            <li>Log every run so you can explain any reply after the fact.</li>
-            <li>Give the agent a clean handoff to a human, and keep people in the loop for anything it learns.</li>
-          </ul>
-          <p>The full architecture, stack and feature list are in the <a href="/projects/floatchat/">FloatChat case study</a>.</p>
+        <div class="block"><h2 class="block__h"><span class="label">09</span>Keep the model a configuration choice</h2>
+          <p>Models change quickly, and the best one for a task today may not be the best in six months. In FloatChat the model, provider and temperature are set per assistant, with GPT-4.1 as the default and provider mapping for OpenAI, Anthropic, Google, Mistral and DeepSeek.</p>
+          <p>Treating the model as configuration rather than code means you can try a new one on a single assistant, compare the results, and switch without a deploy. The safeguards stay the same whichever model sits underneath.</p>
+        </div>
+
+        <div class="block"><h2 class="block__h"><span class="label">10</span>A production checklist for multi-agent LLM systems</h2>
+          <ul class="list"><li>Put an explicit timeout on every model and API call made from a worker.</li><li>Make agent runs safe to retry, so a retry never repeats a reply or a tool action.</li><li>Cap handoffs, tool calls and conversation history per run, and choose the numbers on purpose.</li><li>Log every run so any reply can be traced back to the steps that produced it.</li><li>Make human handoff fast, automatic and full of context.</li><li>Review anything the system learns before it goes live.</li><li>Keep the model and provider configurable per assistant.</li></ul>
+          <p>The full architecture, stack and feature list are in the <a href="/projects/floatchat/">FloatChat case study</a>. If you are building something similar, you can <a href="/#contact">get in touch here</a>.</p>
         </div>
       </div>
     </div></section>

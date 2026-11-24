@@ -263,6 +263,9 @@
   .phero__title.post__h1{ font-size:clamp(2rem,5.2vw,4.4rem); max-width:20ch; }
   .block p + p, .block p + ul, .block ul + p{ margin-top:16px; }
   .block a{ text-decoration:underline; text-underline-offset:3px; }
+  .block p + pre, .block pre + p{ margin-top:16px; }
+  .block pre{ background:var(--ink); color:var(--paper); font-family:var(--mono); font-size:13px; line-height:1.65; padding:18px 20px; border-radius:14px; overflow-x:auto; }
+  .pgrid > *{ min-width:0; }
 </style>
 </head>
 <body>
@@ -289,9 +292,9 @@
   <article>
     <section class="phero"><div class="wrap">
       <a href="/#thoughts" class="phero__back"><span>←</span> All writing</a>
-      <div class="phero__top"><span class="label">Article — <time datetime="2026-11-24">24 Nov 2026</time></span><span class="mark">Generative AI · 4 min read</span></div>
+      <div class="phero__top"><span class="label">Article — <time datetime="2026-11-24">24 Nov 2026</time></span><span class="mark">Generative AI · 6 min read</span></div>
       <h1 class="phero__title post__h1">RAG in Practice: Grounding LLMs in Your Own Data</h1>
-      <p class="phero__sum">A language model knows a lot about the world and nothing about your business. Retrieval-augmented generation closes that gap. Here is how it works in the chatbots I have built, including the ones that talk.</p>
+      <p class="phero__sum">A language model knows a lot about the world and nothing about your business. Retrieval-augmented generation closes that gap. Here is how RAG works in the chatbots I have built, including the ones that talk.</p>
       <div class="phero__tags"><span class="tag">RAG</span><span class="tag">LLMs</span><span class="tag">Embeddings</span><span class="tag">pgvector</span><span class="tag">Voice AI</span></div>
     </div></section>
 
@@ -302,41 +305,71 @@
         <div class="meta__row"><p class="label">Related projects</p><p class="meta__val"><a href="/projects/rag-voice-chat-system/"><u>RAG Voice Chat System</u></a><br><a href="/projects/floatchat/"><u>FloatChat</u></a></p></div>
       </aside>
       <div>
-        <div class="block"><h2 class="block__h"><span class="label">01</span>Why generic answers are not enough</h2>
-          <p>Client brands needed chatbots that answer from their own content, not generic LLM guesses. A model on its own will happily produce a fluent answer that does not match a brand's real facts, and a customer cannot tell the difference.</p>
-          <p>Retrieval-augmented generation, or RAG, fixes this by changing where the answer comes from. Instead of asking the model what it knows, you hand it the relevant passages and ask it to answer from those.</p>
+        <div class="block"><h2 class="block__h"><span class="label">01</span>The problem with generic answers</h2>
+          <p>A large language model knows a lot about the world and nothing about your business. Ask it about a brand's return policy, opening hours or product range and it will produce a fluent answer anyway. Sometimes that answer is right. Often it is a plausible guess, and a customer cannot tell the difference.</p>
+          <p>That was the problem with the client chatbots I worked on: brands needed bots that answer from their own content, not generic LLM guesses. Retrieval-augmented generation, or RAG, is how we solved it.</p>
+          <p>This article explains how RAG works in practice, using two systems I have built: a <a href="/projects/rag-voice-chat-system/">RAG Voice Chat System</a> deployed across multiple client brands, and the knowledge base inside <a href="/projects/floatchat/">FloatChat</a>, a self-hosted support platform.</p>
         </div>
 
-        <div class="block"><h2 class="block__h"><span class="label">02</span>The three steps</h2>
-          <div class="flow">
-            <div class="flow__step"><span class="flow__n">01</span><div><h3 class="flow__t">Prepare the knowledge</h3><p class="flow__d">Each brand's own content becomes the chatbot's knowledge source. This is the part that decides answer quality: the model can only be as accurate as what it is given.</p></div></div>
-            <div class="flow__step"><span class="flow__n">02</span><div><h3 class="flow__t">Retrieve</h3><p class="flow__d">For every question, the most relevant passages are retrieved from that brand's content.</p></div></div>
-            <div class="flow__step"><span class="flow__n">03</span><div><h3 class="flow__t">Generate a grounded answer</h3><p class="flow__d">The LLM answers using only the retrieved passages, so replies come from the brand's content rather than general model knowledge.</p></div></div>
-          </div>
+        <div class="block"><h2 class="block__h"><span class="label">02</span>What retrieval-augmented generation actually does</h2>
+          <p>RAG changes where the answer comes from. Instead of asking the model what it knows, you first search your own content for passages relevant to the question, then give those passages to the model and ask it to answer from them.</p>
+          <div class="flow"><div class="flow__step"><span class="flow__n">01</span><div><h3 class="flow__t">Prepare the knowledge</h3><p class="flow__d">The brand's own content becomes the chatbot's knowledge source.</p></div></div><div class="flow__step"><span class="flow__n">02</span><div><h3 class="flow__t">Retrieve</h3><p class="flow__d">For every question, the most relevant passages are retrieved from that content.</p></div></div><div class="flow__step"><span class="flow__n">03</span><div><h3 class="flow__t">Generate a grounded answer</h3><p class="flow__d">The model answers using only the retrieved passages.</p></div></div></div>
+          <p>The model still does the writing, but it is no longer the source of the facts. That is the whole idea, and most of the engineering is in making each of those three steps good.</p>
         </div>
 
-        <div class="block"><h2 class="block__h"><span class="label">03</span>What a knowledge base looks like</h2>
-          <p><a href="/projects/floatchat/">FloatChat</a>, a self-hosted support platform, shows the preparation step in detail. Crawled websites and uploaded PDFs are turned into question-and-answer pairs. Each pair is embedded with text-embedding-3-small and stored in PostgreSQL with pgvector, as 1536-dimension vectors searched by cosine similarity.</p>
-          <p>When a customer asks something, an FAQ lookup tool runs a semantic search over those vectors and the agent answers from what it finds. When the AI cannot answer from the knowledge base, the conversation is handed to a human.</p>
+        <div class="block"><h2 class="block__h"><span class="label">03</span>Step one: the knowledge base decides the quality</h2>
+          <p>It is tempting to focus on the model, but answer quality is mostly decided before the model is involved. If the right information is missing from the knowledge base, or buried in a long page that never gets retrieved, no model can answer correctly.</p>
+          <p>FloatChat takes a structured approach. Crawled websites and uploaded PDFs are turned into question-and-answer pairs rather than stored as raw pages. A customer question is then matched against questions the knowledge base already answers, which tends to be a cleaner match than searching long documents.</p>
+          <p>Whatever format you choose, treat the knowledge base as a product: keep it accurate, remove outdated entries, and add what customers actually ask about.</p>
         </div>
 
-        <div class="block"><h2 class="block__h"><span class="label">04</span>Adding a voice</h2>
-          <p>In the <a href="/projects/rag-voice-chat-system/">RAG Voice Chat System</a>, people can talk instead of type. Real-time transcription turns speech into text, and ElevenLabs turns the answer into natural voice.</p>
-          <p>Voice makes grounding more important, not less. A spoken answer sounds confident whatever it says, so it has to be right.</p>
+        <div class="block"><h2 class="block__h"><span class="label">04</span>Step two: embeddings and vector search with pgvector</h2>
+          <p>To find relevant entries, each one is converted into an embedding: a list of numbers that represents its meaning. Questions with similar meanings end up with similar embeddings even when they use different words, so "Can I send it back?" can match an entry about returns.</p>
+          <p>In FloatChat, entries are embedded with OpenAI's text-embedding-3-small model and stored in PostgreSQL using pgvector, as 1536-dimension vectors searched by cosine similarity. Keeping the vectors in PostgreSQL means the knowledge base lives next to the rest of the application data, with no separate vector database to run.</p>
+          <p>As a general illustration (not FloatChat's actual query), a pgvector similarity search looks like this, where &lt;=&gt; is pgvector's cosine distance operator:</p>
+          <pre><code>SELECT question, answer
+FROM faq_entries
+ORDER BY embedding &lt;=&gt; $1
+LIMIT 5;</code></pre>
+          <p>The application embeds the customer's question, passes that vector in as $1, and gets back the closest entries. Those entries become the context the model answers from.</p>
         </div>
 
-        <div class="block"><h2 class="block__h"><span class="label">05</span>One stack, many brands</h2>
-          <p>The second problem was scale: serving many brands without rebuilding a bot each time. The answer was one reusable stack, configured and deployed per brand. Only the knowledge changes.</p>
-          <p>That stack is now behind 10+ chatbots for 8+ client brands. Alongside it, Vapi.ai is configured for outbound voice outreach across 4 countries.</p>
+        <div class="block"><h2 class="block__h"><span class="label">05</span>Step three: answer from the context, and only the context</h2>
+          <p>The final step is to give the model the retrieved passages and the question, with a clear instruction to answer only from what was provided. The instruction matters: without it, the model will happily fill gaps from general knowledge, which is exactly what RAG is meant to prevent.</p>
+          <p>In FloatChat this happens through an FAQ lookup tool. The agent searches the knowledge base, reads what comes back, and answers from it.</p>
         </div>
 
-        <div class="block"><h2 class="block__h"><span class="label">06</span>Takeaways</h2>
-          <ul class="list">
-            <li>Treat the knowledge source as the product. Retrieval cannot fix content that is missing or wrong.</li>
-            <li>Tell the model to answer only from what was retrieved.</li>
-            <li>Decide what happens when retrieval finds nothing, and prefer a human handoff to a guess.</li>
-            <li>Build the pipeline once and make the brand a configuration, not a fork.</li>
-          </ul>
+        <div class="block"><h2 class="block__h"><span class="label">06</span>When retrieval finds nothing</h2>
+          <p>Every RAG system meets questions its knowledge base cannot answer. What happens next is a design decision, and the worst option is to let the model improvise.</p>
+          <p>In FloatChat, when the AI cannot answer from the knowledge base, the conversation is handed to a human: it leaves bot mode, gets an activity note, and is auto-assigned to an agent with free capacity. A customer who reaches a person is far better served than one who receives a confident wrong answer.</p>
+          <p>Those unanswered questions are useful signals too. FloatChat mines resolved conversations for new FAQ entries, saves them as pending for review and de-duplicates them against approved ones, so the knowledge base grows from real gaps rather than guesses.</p>
+        </div>
+
+        <div class="block"><h2 class="block__h"><span class="label">07</span>Adding a voice</h2>
+          <p>In the RAG Voice Chat System, people can talk instead of type. Real-time transcription turns speech into text, the RAG pipeline produces a grounded answer, and ElevenLabs turns that answer into natural voice.</p>
+          <p>Voice raises the stakes on accuracy. On screen, a reader can skim a reply and notice something odd. A spoken answer sounds equally confident whether it is right or wrong, and the listener has fewer cues to question it. Grounding matters even more when the output is a voice.</p>
+        </div>
+
+        <div class="block"><h2 class="block__h"><span class="label">08</span>One stack, many brands</h2>
+          <p>The second challenge was scale: serving many brands without rebuilding a chatbot each time. The answer was one reusable stack, configured and deployed per brand. The retrieval, generation and voice pieces stay the same; only the knowledge and configuration change.</p>
+          <p>That stack now sits behind 10+ AI chatbots for 8+ client brands. Alongside it, Vapi.ai is configured for outbound voice-AI outreach across 4 countries.</p>
+          <p>Treating each brand as configuration rather than a fork is what keeps this manageable. A fix or improvement lands once and reaches every brand.</p>
+        </div>
+
+        <div class="block"><h2 class="block__h"><span class="label">09</span>Common RAG mistakes to avoid</h2>
+          <p>Most RAG systems that disappoint fail in the same few ways. These are general patterns worth checking in any retrieval-augmented generation project, whatever stack it uses.</p>
+          <div class="flow"><div class="flow__step"><span class="flow__n">01</span><div><h3 class="flow__t">Chunks that are too big or too small</h3><p class="flow__d">If you split documents into chunks, very large chunks bury the relevant sentence among unrelated text, and very small ones lose the context needed to understand it. Chunks should each answer something on their own.</p></div></div><div class="flow__step"><span class="flow__n">02</span><div><h3 class="flow__t">Retrieving too much</h3><p class="flow__d">Passing a dozen loosely related passages to the model makes it harder, not easier, to find the right answer. A few highly relevant passages usually beat many mediocre ones.</p></div></div><div class="flow__step"><span class="flow__n">03</span><div><h3 class="flow__t">Mixing knowledge that should be separate</h3><p class="flow__d">In a multi-tenant system, one brand's chatbot must never retrieve another brand's content. Keep each knowledge base clearly scoped, and filter by it on every search.</p></div></div><div class="flow__step"><span class="flow__n">04</span><div><h3 class="flow__t">Letting content go stale</h3><p class="flow__d">A knowledge base that was accurate at launch drifts as policies, prices and products change. Retrieval will faithfully return outdated answers unless someone keeps the content current.</p></div></div></div>
+        </div>
+
+        <div class="block"><h2 class="block__h"><span class="label">10</span>How to test a RAG system</h2>
+          <p>It is hard to improve what you do not measure, and RAG systems are easy to judge by gut feel. A light, repeatable test set works better.</p>
+          <p>Collect a set of real questions, ideally from actual customer conversations, along with what a correct answer should contain. Then check two things separately. First, retrieval: for each question, did the right entry appear in the results? Second, generation: given the right entry, did the model produce a correct, grounded answer?</p>
+          <p>Separating the two tells you where to spend effort. If retrieval misses, improve the content or the search. If retrieval is right but answers are wrong, improve the instructions or the model. Re-run the same set after every change, so you know whether it helped.</p>
+        </div>
+
+        <div class="block"><h2 class="block__h"><span class="label">11</span>A RAG checklist</h2>
+          <ul class="list"><li>Treat the knowledge base as the product. Retrieval cannot fix content that is missing or wrong.</li><li>Structure content so it matches the questions people actually ask.</li><li>Use embeddings to match on meaning, and keep vectors close to your data where you can, for example with pgvector.</li><li>Tell the model to answer only from what was retrieved.</li><li>Decide what happens when retrieval finds nothing, and prefer a human handoff to a guess.</li><li>Review anything the system learns before it goes live.</li><li>Build the pipeline once and make each brand a configuration, not a fork.</li></ul>
+          <p>More detail is in the <a href="/projects/rag-voice-chat-system/">RAG Voice Chat System</a> and <a href="/projects/floatchat/">FloatChat</a> case studies. If you are building a RAG system, you can <a href="/#contact">get in touch here</a>.</p>
         </div>
       </div>
     </div></section>
